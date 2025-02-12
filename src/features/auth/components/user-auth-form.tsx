@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/form"
 import { LoginSchema } from "@/lib/schema/login_schema"
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from 'sonner';
 import { useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
