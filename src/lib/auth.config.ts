@@ -1,43 +1,91 @@
-import { NextAuthConfig } from 'next-auth';
-import CredentialProvider from 'next-auth/providers/credentials';
-import GithubProvider from 'next-auth/providers/github';
+import { DrizzleAdapter } from "@auth/drizzle-adapter"
+import type { NextAuthConfig } from "next-auth"
+import { User } from "next-auth"
+import { encode as defaultEncode } from "next-auth/jwt"
+import Credentials from "next-auth/providers/credentials"
+import Github from "next-auth/providers/github"
+import Passkey from "next-auth/providers/passkey"
+import { v4 as uuid } from "uuid"
+import { getUserFromDb } from "./user.actions"
+import { db } from "./db"
+import {
+  accountsTable,
+  authenticatorsTable,
+  sessionsTable,
+  usersTable,
+  verificationTokensTable,
+} from "./schema/schema"
 
-const authConfig = {
+const adapter = DrizzleAdapter(db, {
+  accountsTable,
+  usersTable,
+  authenticatorsTable,
+  sessionsTable,
+  verificationTokensTable,
+} as any)
+
+const authConfig: NextAuthConfig = {
+  adapter,
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID ?? '',
-      clientSecret: process.env.GITHUB_SECRET ?? ''
+    Github({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
-    CredentialProvider({
+    Credentials({
       credentials: {
-        email: {
-          type: 'email'
-        },
-        password: {
-          type: 'password'
-        }
+        email: {},
+        password: {},
       },
-      async authorize(credentials, req) {
-        const user = {
-          id: '1',
-          name: 'John',
-          email: credentials?.email as string
-        };
-        if (user) {
-          // Any object returned will be saved in `user` property of the JWT
-          return user;
-        } else {
-          // If you return null then an error will be displayed advising the user to check their details.
-          return null;
+      async authorize(credentials) {
+        const { email, password } = credentials
 
-          // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
+        const res = await getUserFromDb(email as string, password as string)
+        if (res.success) {
+          return res.data as User
         }
-      }
-    })
+
+        return null
+      },
+    }),
+    Passkey,
   ],
+  callbacks: {
+    async jwt({ token, user, account }) {
+      if (account?.provider === "credentials") {
+        token.credentials = true
+      }
+      return token
+    },
+  },
+  jwt: {
+    encode: async function (params) {
+      if (params.token?.credentials) {
+        const sessionToken = uuid()
+
+        if (!params.token.sub) {
+          throw new Error("No user ID found in token")
+        }
+
+        const createdSession = await adapter?.createSession?.({
+          sessionToken: sessionToken,
+          userId: params.token.sub,
+          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        })
+
+        if (!createdSession) {
+          throw new Error("Failed to create session")
+        }
+
+        return sessionToken
+      }
+      return defaultEncode(params)
+    },
+  },
+  secret: process.env.AUTH_SECRET!,
+  experimental: { enableWebAuthn: true },
   pages: {
     signIn: '/' //sigin page
   }
-} satisfies NextAuthConfig;
+}
 
 export default authConfig;
