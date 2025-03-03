@@ -5,7 +5,7 @@ export type Product = {
   name: string;
   description: string;
   created_at: string;
-  price: number;
+  price: string;
   id: number;
   category: string;
   updated_at: string;
@@ -20,6 +20,14 @@ export const navItems: NavItem[] = [
     isActive: false,
     shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Open Orders',
+    url: '/dashboard/orders',
+    icon: 'kanban',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
   },
   {
     title: 'New Orders',

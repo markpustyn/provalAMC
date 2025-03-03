@@ -60,9 +60,10 @@ export default function UserAuthForm({
             callbackUrl: callbackUrl ?? '/dashboard'
           });
       }
+      toast.success('Signed In Successfully!');
       router.push("/dashboard/overview")
     } else {
-        toast.success('Signed In Successfully!');
+        toast.warning('Incorrect Email or Password');
     }
   }
 

@@ -7,6 +7,7 @@ import { RegisterSchema } from "./schema/signup_schema"
 import { eq } from "drizzle-orm"
 import bcryptjs from "bcryptjs"
 
+
 import { revalidatePath } from "next/cache"
 export async function getUserFromDb(email: string, password: string) {
   try {

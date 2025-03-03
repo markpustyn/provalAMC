@@ -13,6 +13,33 @@ export interface NavItem {
   items?: NavItem[];
 }
 
+export interface OpenOrder {
+  id: number;
+  PropAddress: string;
+  PropCity:string;
+  PropOwner: string;
+  PropState: string;
+  PropZip: string;
+  Services: string;
+  UserID: number;
+  PONumber: string;
+  dbaName: string;
+  PropDesc: string;
+  AccContact: string;
+  AccMobile: string;
+  AccHome: string;
+  AccWork: string;
+  AccEmail: string;
+  CallbackReference:string;
+  Notes: string;
+  ReportHTML:string;
+  Status: string
+}
+
+
+
+
+
 export interface NavItemWithChildren extends NavItem {
   items: NavItemWithChildren[];
 }
