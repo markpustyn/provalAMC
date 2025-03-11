@@ -33,8 +33,29 @@ export interface OpenOrder {
   CallbackReference:string;
   Notes: string;
   ReportHTML:string;
-  Status: string
+  Status: string;
+  isDone: boolean;
 }
+
+export interface AuthCredentials{
+  // id:string,
+	fname:string,
+	lname:string,
+	email:string,
+	phone:string,
+	password:string,
+	companyName:string,
+	licenseNum:string,
+	street:string,
+	city:string,
+	state:string,
+  // role:string,
+	zip:string,
+  // statued: string,
+	// lastActivityDate:string,
+	// createdAt:string,
+}
+
 
 
 

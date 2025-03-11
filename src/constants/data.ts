@@ -58,14 +58,14 @@ export const navItems: NavItem[] = [
       }
     ]
   },
-  // {
-  //   title: 'Kanban',
-  //   url: '/dashboard/kanban',
-  //   icon: 'kanban',
-  //   shortcut: ['k', 'k'],
-  //   isActive: false,
-  //   items: [] // No child items
-  // }
+  {
+    title: 'Create Order',
+    url: '/dashboard/product/new',
+    icon: 'kanban',
+    shortcut: ['k', 'k'],
+    isActive: false,
+    items: []
+  }
 ];
 
 export interface SaleUser {

@@ -1,5 +1,6 @@
-export const sampleOrder = [
-    [
+import { OpenOrder } from "types"
+
+export const SampleOrder: OpenOrder[] = [
       {
         id: 1,
         PropAddress: "123 Main Street",
@@ -21,9 +22,8 @@ export const sampleOrder = [
         Notes: "quis cupidatat consectetur aute voluptate",
         ReportHTML: "nostrud enim ut adipisicing dolor",
         Status: "Completed",
-      }
-    ],
-    [
+        isDone: true,
+      },
       {
         id: 2,
         PropAddress: "456 Oak Avenue",
@@ -44,10 +44,9 @@ export const sampleOrder = [
         CallbackReference: "https://yourapisite.com?id=654321",
         Notes: "occaecat do dolor occaecat",
         ReportHTML: "consectetur sit elit veniam",
-        Status: "Awaiting Vendor Approval"
-      }
-    ],
-    [
+        Status: "Awaiting Vendor Approval",
+        isDone: false,
+      },
       {
         id: 3,
         PropAddress: "789 Pine Road",
@@ -68,10 +67,9 @@ export const sampleOrder = [
         CallbackReference: "https://yourapisite.com?id=789012",
         Notes: "commodo ullamco labore velit",
         ReportHTML: "voluptate laboris minim aute",
-        Status: "Awaiting QC"
-      }
-    ],
-    [
+        Status: "Awaiting QC",
+        isDone: true,
+      },
       {
         id: 4,
         PropAddress: "101 Maple Street",
@@ -92,10 +90,9 @@ export const sampleOrder = [
         CallbackReference: "https://yourapisite.com?id=101010",
         Notes: "sint ullamco pariatur irure",
         ReportHTML: "adipisicing deserunt ex officia", 
-        Status: "Awaiting Report from Vendor"
-      }
-    ],
-    [
+        Status: "Awaiting Report from Vendor",
+        isDone: true,
+      },
       {
         id: 5,
         PropAddress: "202 Birch Lane",
@@ -116,8 +113,9 @@ export const sampleOrder = [
         CallbackReference: "https://yourapisite.com?id=202020",
         Notes: "velit pariatur nostrud aliqua",
         ReportHTML: "eiusmod veniam sunt sint",
-        Status: "Awaiting Report from Vendor"
+        Status: "Awaiting Report from Vendor",
+        isDone: false
       }
-    ]
   ]
+
   

@@ -1,90 +1,70 @@
-import { DrizzleAdapter } from "@auth/drizzle-adapter"
+// import { DrizzleAdapter } from "@auth/drizzle-adapter"
 import type { NextAuthConfig } from "next-auth"
 import { User } from "next-auth"
-import { encode as defaultEncode } from "next-auth/jwt"
+// import { encode as defaultEncode } from "next-auth/jwt"
 import Credentials from "next-auth/providers/credentials"
-import Github from "next-auth/providers/github"
-import Passkey from "next-auth/providers/passkey"
-import { v4 as uuid } from "uuid"
-import { getUserFromDb } from "./user.actions"
-import { db } from "./db"
-import {
-  accountsTable,
-  authenticatorsTable,
-  sessionsTable,
-  usersTable,
-  verificationTokensTable,
-} from "./schema/schema"
+// import { v4 as uuid } from "uuid"
+// import { getUserFromDb } from "./user.actions"
+import { db } from "@/db/drizzle"
+import { users } from "@/db/schema"
+import { compare } from "bcryptjs"
+import { eq } from "drizzle-orm";
 
-const adapter = DrizzleAdapter(db, {
-  accountsTable,
-  usersTable,
-  authenticatorsTable,
-  sessionsTable,
-  verificationTokensTable,
-} as any)
 
 const authConfig: NextAuthConfig = {
-  adapter,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
-    Github({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
     Credentials({
-      credentials: {
-        email: {},
-        password: {},
-      },
       async authorize(credentials) {
-        const { email, password } = credentials
-
-        const res = await getUserFromDb(email as string, password as string)
-        if (res.success) {
-          return res.data as User
+        if (!credentials?.email || !credentials?.password) {
+          return null;
         }
 
-        return null
+        const user = await db
+          .select()
+          .from(users)
+          .where(eq(users.email, credentials.email.toString()))
+          .limit(1);
+
+        if (user.length === 0) return null;
+
+        const isPasswordValid = await compare(
+          credentials.password.toString(),
+          user[0].password,
+        );
+
+        if (!isPasswordValid) return null;
+
+        return {
+          id: user[0].id.toString(),
+          email: user[0].email,
+          name: user[0].name,
+        } as User;
       },
     }),
-    Passkey,
   ],
   callbacks: {
-    async jwt({ token, user, account }) {
-      if (account?.provider === "credentials") {
-        token.credentials = true
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
       }
       return token
     },
-  },
-  jwt: {
-    encode: async function (params) {
-      if (params.token?.credentials) {
-        const sessionToken = uuid()
-
-        if (!params.token.sub) {
-          throw new Error("No user ID found in token")
-        }
-
-        const createdSession = await adapter?.createSession?.({
-          sessionToken: sessionToken,
-          userId: params.token.sub,
-          expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
-        })
-
-        if (!createdSession) {
-          throw new Error("Failed to create session")
-        }
-
-        return sessionToken
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
       }
-      return defaultEncode(params)
+
+      return session;
     },
   },
   secret: process.env.AUTH_SECRET!,
-  experimental: { enableWebAuthn: true },
   pages: {
-    signIn: '/' //sigin page
+    signIn: '/'
   }
 }
 

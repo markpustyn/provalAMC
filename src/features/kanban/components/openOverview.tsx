@@ -21,6 +21,7 @@ const OpenOverview = ({
   Notes,
   ReportHTML,
   Status,
+  isDone,
 }: OpenOrder) => {
   return (
     <section>

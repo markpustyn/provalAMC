@@ -2,6 +2,7 @@ import { Product } from '@/constants/data';
 import { fakeProducts } from '@/constants/mock-api';
 import { searchParamsCache } from '@/lib/searchparams';
 import { DataTable as ProductTable } from '@/components/ui/table/data-table';
+import { SampleOrder } from '@/constants';
 import { columns } from './product-tables/columns';
 
 type ProductListingPage = {};
@@ -27,7 +28,7 @@ export default async function ProductListingPage({}: ProductListingPage) {
   return (
     <ProductTable
       columns={columns}
-      data={products}
+      data={SampleOrder}
       totalItems={totalProducts}
     />
   );

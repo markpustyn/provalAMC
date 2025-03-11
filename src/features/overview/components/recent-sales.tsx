@@ -11,8 +11,7 @@ export function RecentSales() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Recent Sales</CardTitle>
-        <CardDescription>You made 265 sales this month.</CardDescription>
+        <CardTitle>Vendors</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-8'>
