@@ -72,7 +72,7 @@ export async function login({
   if(!success) {
     redirect('/too-many')
   }
-  
+
   try {
     LoginSchema.parse({
       email,
@@ -125,18 +125,18 @@ export async function register(params: AuthCredentials) {
       message: "User already exists.",
     }
   }
-  // RegisterSchema.parse({
-  //   email,
-  //   password,
-  // })
+  RegisterSchema.parse({
+    email,
+    password,
+  })
 
   const hash = await bcryptjs.hash(password, 10)
 
   try {
-    // RegisterSchema.parse({
-    //   email,
-    //   password,
-    // })
+    RegisterSchema.parse({
+      email,
+      password,
+    })
     await db
       .insert(users) 
       .values({
