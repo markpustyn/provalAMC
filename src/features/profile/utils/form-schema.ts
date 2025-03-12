@@ -1,10 +1,10 @@
 import * as z from 'zod';
 
 export const profileSchema = z.object({
-  firstname: z
+  fname: z
     .string()
     .min(3, { message: 'Product Name must be at least 3 characters' }),
-  lastname: z
+  lname: z
     .string()
     .min(3, { message: 'Product Name must be at least 3 characters' }),
   email: z
@@ -13,7 +13,6 @@ export const profileSchema = z.object({
   contactno: z.coerce.number(),
   country: z.string().min(1, { message: 'Please select a category' }),
   city: z.string().min(1, { message: 'Please select a category' }),
-  // jobs array is for the dynamic fields
   jobs: z.array(
     z.object({
       jobcountry: z.string().min(1, { message: 'Please select a category' }),

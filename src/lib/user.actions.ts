@@ -10,6 +10,9 @@ import { revalidatePath } from "next/cache"
 import { users } from "@/db/schema"
 import { AuthCredentials } from "types"
 import  {db}  from "@/db/drizzle"
+import { headers } from "next/headers"
+import ratelimit from "./ratelimit"
+import { redirect } from "next/navigation"
 
 
 // export async function getUserFromDb(email: string, password: string) {
@@ -63,6 +66,13 @@ export async function login({
   email: string
   password: string
 }) {
+
+  const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
+  const {success} = await ratelimit.limit(ip)
+  if(!success) {
+    redirect('/too-many')
+  }
+  
   try {
     LoginSchema.parse({
       email,
@@ -102,6 +112,12 @@ export async function register(params: AuthCredentials) {
   } = params;
     
   const existedUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
+
+  const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
+  const {success} = await ratelimit.limit(ip)
+  if(!success) {
+    redirect('/too-many')
+  }
 
   if (existedUser.length > 0) {
     return {

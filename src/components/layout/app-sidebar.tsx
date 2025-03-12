@@ -45,6 +45,8 @@ import Link from 'next/link';
 import { redirect, usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
+import { getInitials } from '@/lib/utils';
+
 
 export const company = {
   name: 'Acme Inc',
@@ -140,12 +142,8 @@ export default function AppSidebar() {
                   className='data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground'
                 >
                   <Avatar className='h-8 w-8 rounded-lg'>
-                    <AvatarImage
-                      src={session?.user?.image || ''}
-                      alt={session?.user?.name || ''}
-                    />
                     <AvatarFallback className='rounded-lg'>
-                      {session?.user?.name?.slice(0, 2)?.toUpperCase() || 'CN'}
+                    {getInitials(session?.user?.name || "QN")}
                     </AvatarFallback>
                   </Avatar>
                   <div className='grid flex-1 text-left text-sm leading-tight'>
@@ -173,8 +171,7 @@ export default function AppSidebar() {
                         alt={session?.user?.name || ''}
                       />
                       <AvatarFallback className='rounded-lg'>
-                        {session?.user?.name?.slice(0, 2)?.toUpperCase() ||
-                          'CN'}
+                      {getInitials(session?.user?.name || "QN")}
                       </AvatarFallback>
                     </Avatar>
                     <div className='grid flex-1 text-left text-sm leading-tight'>

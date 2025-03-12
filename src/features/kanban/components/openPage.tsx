@@ -12,7 +12,7 @@ import { users } from '@/db/schema';
 
 export default async function KanbanViewPage() {
   const results = await db.select().from(users)
-  console.log(JSON.stringify(results))
+  // console.log(JSON.stringify(results))
   return (
     <div>
       <div className='space-y-4'>

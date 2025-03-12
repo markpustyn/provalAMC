@@ -40,7 +40,7 @@ const authConfig: NextAuthConfig = {
         return {
           id: user[0].id.toString(),
           email: user[0].email,
-          name: user[0].name,
+          name: user[0].fname + " " + user[0].lname,
         } as User;
       },
     }),
