@@ -8,8 +8,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
-import { SampleOrder } from '@/constants';
-import { Product } from '@/constants/data';
 import { OpenOrder } from "types"
 import { Edit, MoreHorizontal, Trash } from 'lucide-react';
 import { useRouter } from 'next/navigation';

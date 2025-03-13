@@ -130,7 +130,7 @@ export function FileUploader(props: FileUploaderProps) {
         })
       );
 
-      const updatedFiles = files ? [...files, ...newFiles] : newFiles;
+      const updatedFiles = files ? [...newFiles] : newFiles;
 
       setFiles(updatedFiles);
 
@@ -162,25 +162,25 @@ export function FileUploader(props: FileUploaderProps) {
     [files, maxFiles, multiple, onUpload, setFiles]
   );
 
-  function onRemove(index: number) {
-    if (!files) return;
-    const newFiles = files.filter((_, i) => i !== index);
-    setFiles(newFiles);
-    onValueChange?.(newFiles);
-  }
+  // function onRemove(index: number) {
+  //   if (!files) return;
+  //   const newFiles = files.filter((_, i) => i !== index);
+  //   setFiles(newFiles);
+  //   onValueChange?.(newFiles);
+  // }
 
   // Revoke preview url when component unmounts
-  React.useEffect(() => {
-    return () => {
-      if (!files) return;
-      files.forEach((file) => {
-        if (isFileWithPreview(file)) {
-          URL.revokeObjectURL(file.preview);
-        }
-      });
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // React.useEffect(() => {
+  //   return () => {
+  //     if (!files) return;
+  //     files.forEach((file) => {
+  //       if (isFileWithPreview(file)) {
+  //         URL.revokeObjectURL(file.preview);
+  //       }
+  //     });
+  //   };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const isDisabled = disabled || (files?.length ?? 0) >= maxFiles;
 
@@ -247,14 +247,14 @@ export function FileUploader(props: FileUploaderProps) {
       {files?.length ? (
         <ScrollArea className='h-fit w-full px-3'>
           <div className='max-h-48 space-y-4'>
-            {files?.map((file, index) => (
+            {/* {files?.map((file, index) => (
               <FileCard
                 key={index}
                 file={file}
                 onRemove={() => onRemove(index)}
                 progress={progresses?.[file.name]}
               />
-            ))}
+            ))} */}
           </div>
         </ScrollArea>
       ) : null}

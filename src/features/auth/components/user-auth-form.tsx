@@ -23,12 +23,6 @@ import { signIn } from 'next-auth/react';
 import { useTransition } from "react"
 
 
-const formSchema = z.object({
-  email: z.string().email({ message: 'Enter a valid email address' })
-});
-
-type UserFormValue = z.infer<typeof formSchema>;
-
 export default function UserAuthForm({
   setIsOpened,
 }: {
@@ -38,16 +32,13 @@ export default function UserAuthForm({
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
   const [loading, startTransition] = useTransition();
-  const defaultValues = {
-    email: 'demo@gmail.com'
-  };
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    // defaultValues: {
+    //   email: "",
+    //   password: "",
+    // },
   })
 
   async function onSubmit(data: z.infer<typeof LoginSchema>) {

@@ -28,7 +28,6 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-  useSidebar
 } from '@/components/ui/sidebar';
 import { navItems } from '@/constants/data';
 import {
@@ -42,7 +41,7 @@ import {
 } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { getInitials } from '@/lib/utils';
@@ -57,7 +56,6 @@ export const company = {
 export default function AppSidebar() {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const { state, isMobile } = useSidebar();
 
   return (
     <Sidebar collapsible='icon'>

@@ -4,7 +4,6 @@ import {
   CardHeader,
   CardContent,
   CardTitle,
-  CardDescription
 } from '@/components/ui/card';
 
 export function RecentSales() {

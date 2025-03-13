@@ -19,7 +19,6 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { Product } from '@/constants/mock-api';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -106,8 +105,8 @@ export default function ProductForm({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form submitted");
-    console.log(values);
+    // console.log("Form submitted");
+    // console.log(values);
   }
 
   return (

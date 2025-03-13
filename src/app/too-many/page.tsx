@@ -9,7 +9,7 @@ export default function Page() {
         <CardContent className="flex flex-col items-center space-y-4">
           <AlertTriangle className="w-12 h-12 text-red-500" />
           <h1 className="text-2xl font-bold">Too Many Requests</h1>
-          <p className="text-gray-600 text-xl">You've sent too many requests. Please try again later.</p>
+          <p className="text-gray-600 text-xl">You have sent too many requests. Please try again later.</p>
         </CardContent>
       </Card>
     </div>

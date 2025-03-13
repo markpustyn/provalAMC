@@ -1,8 +1,6 @@
 'use client';
-import { Product } from '@/constants/data';
 import { OpenOrder } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import Image from 'next/image';
 import { CellAction } from './cell-action';
 
 

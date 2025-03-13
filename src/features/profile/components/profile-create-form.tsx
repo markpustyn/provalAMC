@@ -44,7 +44,7 @@ const ProfileCreateForm: React.FC<ProfileFormType> = ({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imgLoading, setImgLoading] = useState(false);
+  // const [imgLoading, setImgLoading] = useState(false);
   const title = initialData ? 'Edit product' : 'Create Your Profile';
   const description = initialData
     ? 'Edit a product.'
@@ -102,22 +102,22 @@ const ProfileCreateForm: React.FC<ProfileFormType> = ({
     }
   };
 
-  const onDelete = async () => {
-    try {
-      setLoading(true);
-      //   await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
-      router.refresh();
-      router.push(`/${params.storeId}/products`);
-    } catch (error: any) {
-    } finally {
-      setLoading(false);
-      setOpen(false);
-    }
-  };
+  // const onDelete = async () => {
+  //   try {
+  //     setLoading(true);
+  //     //   await axios.delete(`/api/${params.storeId}/products/${params.productId}`);
+  //     router.refresh();
+  //     router.push(`/${params.storeId}/products`);
+  //   } catch (error: any) {
+  //   } finally {
+  //     setLoading(false);
+  //     setOpen(false);
+  //   }
+  // };
 
   const processForm: SubmitHandler<ProfileFormValues> = (data) => {
-    console.log('data ==>', data);
-    setData(data);
+    // console.log('data ==>', data);
+    // setData(data);
     // api call and reset
     // form.reset();
   };
@@ -243,7 +243,7 @@ const ProfileCreateForm: React.FC<ProfileFormType> = ({
               <>
                 <FormField
                   control={form.control}
-                  name='firstname'
+                  name='fname'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First Name</FormLabel>
@@ -260,7 +260,7 @@ const ProfileCreateForm: React.FC<ProfileFormType> = ({
                 />
                 <FormField
                   control={form.control}
-                  name='lastname'
+                  name='lname'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Last Name</FormLabel>

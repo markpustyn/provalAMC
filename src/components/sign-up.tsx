@@ -19,7 +19,6 @@ import { toast } from 'sonner';
 import { RegisterSchema } from "@/lib/schema/signup_schema"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
-import { AuthCredentials } from "types";
 
 export default function SignUpForm({
   setIsOpened,
