@@ -146,7 +146,7 @@ export async function register(params: AuthCredentials) {
       })
       const fullName = fname + lname
       await workflowClient.trigger({
-        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/`,
+        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
         body: {
           email, 
           fullName
