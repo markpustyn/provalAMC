@@ -6,7 +6,7 @@ export const workflowClient = new WorkflowClient({
     token: process.env.QSTASH_TOKEN
 })
 
-const client = new Client({ token: process.env.RESEND_TOKEN });
+const client = new Client({ token: process.env.QSTASH_TOKEN });
 
 export const sendEmail  = async({email, subject, message}: {email:string, subject:string, message: string}) =>{
     await client.publishJSON({
