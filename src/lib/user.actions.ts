@@ -13,6 +13,7 @@ import  {db}  from "@/db/drizzle"
 import { headers } from "next/headers"
 import ratelimit from "./ratelimit"
 import { redirect } from "next/navigation"
+import { workflowClient } from "./workflow"
 
 
 // export async function getUserFromDb(email: string, password: string) {
@@ -152,9 +153,20 @@ export async function register(params: AuthCredentials) {
         state,
         zip,
       })
+      const fullName = fname + lname
+      await workflowClient.trigger({
+        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
+        body: {
+          email, 
+          fullName
+        },
+  })
       await login({email, password});
 
       return{success: true}
+
+      
+
   } catch (error: any) {
     return {
       success: false,
