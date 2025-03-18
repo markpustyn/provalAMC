@@ -15,11 +15,12 @@ export const sendEmail  = async({email, subject, message}: {email:string, subjec
           provider: resend({ token: process.env.RESEND_TOKEN! }),
         },
         body: {
-          from: "Evalua Cloud <hello.evaluacloud.tech>",
+          from: "Evalua Cloud <info@evaluacloud.tech>",
           to: [email],
           subject: subject,
           html: message,
         },
       });
 }
+
 
