@@ -16,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { toast } from 'sonner';
-import { RegisterSchema } from "@/lib/schema/signup_schema"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 
@@ -27,8 +26,7 @@ export default function SignUpForm({
 }) {
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm({
     defaultValues: {
       fname: "",
       lname: "",
@@ -45,7 +43,7 @@ export default function SignUpForm({
     },
   })
 
-  async function onSubmit(data: z.infer<typeof RegisterSchema>) {
+  async function onSubmit(data) {
     const res = await register(data)
     if (res.success) {
       if (setIsOpened) {

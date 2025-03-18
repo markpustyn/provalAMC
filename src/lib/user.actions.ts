@@ -2,7 +2,6 @@
 import { signIn, signOut } from "./auth"
 // import { usersTable } from "./schema/schema"
 import { LoginSchema } from "./schema/login_schema"
-import { RegisterSchema } from "./schema/signup_schema"
 import { eq } from "drizzle-orm"
 import bcryptjs from "bcryptjs"
 
@@ -126,18 +125,10 @@ export async function register(params: AuthCredentials) {
       message: "User already exists.",
     }
   }
-  RegisterSchema.parse({
-    email,
-    password,
-  })
 
   const hash = await bcryptjs.hash(password, 10)
 
   try {
-    RegisterSchema.parse({
-      email,
-      password,
-    })
     await db
       .insert(users) 
       .values({
@@ -155,7 +146,7 @@ export async function register(params: AuthCredentials) {
       })
       const fullName = fname + lname
       await workflowClient.trigger({
-        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
+        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/`,
         body: {
           email, 
           fullName
