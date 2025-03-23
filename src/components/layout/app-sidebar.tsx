@@ -48,7 +48,7 @@ import { getInitials } from '@/lib/utils';
 
 
 export const company = {
-  name: 'Acme Inc',
+  name: 'AMC SAAS',
   logo: GalleryVerticalEnd,
   plan: 'Enterprise'
 };

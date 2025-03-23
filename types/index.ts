@@ -14,28 +14,46 @@ export interface NavItem {
 }
 
 export interface OpenOrder {
-  id: number;
-  PropAddress: string;
-  PropCity:string;
-  PropOwner: string;
-  PropState: string;
-  PropZip: string;
-  Services: string;
-  UserID: number;
-  PONumber: string;
-  dbaName: string;
-  PropDesc: string;
-  AccContact: string;
-  AccMobile: string;
-  AccHome: string;
-  AccWork: string;
-  AccEmail: string;
-  CallbackReference:string;
-  Notes: string;
-  ReportHTML:string;
-  Status: string;
-  isDone: boolean;
+  id?: string; // Made optional to match OrderSchema
+  propertyAddress?: string;
+  propertyCity?: string;
+  propertyState?: string;
+  propertyZip?: string;
+  propertyType?: string;
+  presentOccupancy?: string;
+  orderType?: string;
+  loanPurpose?: string;
+  loanType?: string;
+  mainProduct?: string;
+  requestedDueDate?: string;
+
+  loanNumber?: string;
+  loanOfficer?: string;
+  loanOfficerEmail?: string;
+  lender?: string;
+  lenderAddress?: string;
+  lenderCity?: string;
+  lenderZip?: string;
+  borrowerName?: string;
+  borrowerEmail?: string;
+  borrowerPhoneType?: string;
+  borrowerPhoneNumber?: string;
+
+  services?: string;
+  dbaName?: string;
+  accContact?: string;
+  accMobile?: string;
+  accHome?: string;
+  accWork?: string;
+  accEmail?: string;
+  callbackReference?: string;
+  notes?: string;
+  reportHtml?: string;
+  status?: string;
+  isDone?: boolean;
+  description?: string;
 }
+
 
 export interface AuthCredentials{
   // id:string,

@@ -19,54 +19,18 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 import { Product } from '@/constants/mock-api';
+import { createOrder } from '@/lib/admin/order';
+import { OrderSchema } from '@/lib/schema/order_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
-const MAX_FILE_SIZE = 5000000;
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp'
-];
 
-const formSchema = z.object({
-  image: z
-    .any()
-    .optional() // Make image optional
-    .refine(
-      (files) => !files || files?.[0]?.size <= MAX_FILE_SIZE,
-      `Max file size is 5MB.`
-    )
-    .refine(
-      (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
-      '.jpg, .jpeg, .png and .webp files are accepted.'
-    ),
-  loanNumber: z.string().optional(), // Make loanNumber optional
-  loanOfficer: z.string().optional(), // Make loanOfficer optional
-  loanOfficerEmail: z.string().email().optional(), // Make loanOfficerEmail optional
-  lender: z.string().optional(), // Make lender optional
-  lenderAddress: z.string().optional(), // Make lenderAddress optional
-  lenderCity: z.string().optional(), // Make lenderCity optional
-  lenderZip: z.string().optional(), // Make lenderZip optional
-  borrowerName: z.string().optional(), // Make borrowerName optional
-  borrowerEmail: z.string().email().optional(), // Make borrowerEmail optional
-  borrowerPhoneType: z.string().optional(), // Make borrowerPhoneType optional
-  borrowerPhoneNumber: z.string().optional(), // Make borrowerPhoneNumber optional
-  propertyAddress: z.string().optional(), // Make propertyAddress optional
-  propertyCity: z.string().optional(), // Make propertyCity optional
-  propertyZip: z.string().optional(), // Make propertyZip optional
-  orderType: z.string().optional(), // Make orderType optional
-  propertyType: z.string().optional(), // Make propertyType optional
-  presentOccupancy: z.string().optional(), // Make presentOccupancy optional
-  loanPurpose: z.string().optional(), // Make loanPurpose optional
-  loanType: z.string().optional(), // Make loanType optional
-  mainProduct: z.string().optional(), // Make mainProduct optional
-  requestedDueDate: z.string().optional(), // Make requestedDueDate optional
-});
-  
+
 
 export default function ProductForm({
   initialData,
@@ -89,25 +53,53 @@ export default function ProductForm({
     borrowerPhoneNumber: '',
     propertyAddress: '',
     propertyCity: '',
+    propertyState: '', // ✅ Added missing field
     propertyZip: '',
     orderType: '',
     propertyType: '',
-    presentOccupancy:'',
+    presentOccupancy: '',
     loanPurpose: '',
     loanType: '',
     mainProduct: '',
-    requestedDueDate: '',
+    requestedDueDate: '', // ✅ Ensure correct format if needed
+    description: '',
+  
+    // // ✅ Added missing fields
+    // userId: '',
+    // services: '',
+    // dbaName: '',
+    // accContact: '',
+    // accMobile: '',
+    // accHome: '',
+    // accWork: '',
+    // accEmail: '',
+    // callbackReference: '',
+    // notes: '',
+    // reportHtml: '',
+    // status: '',
+    // isDone: false, // ✅ Boolean, should not be a string
   };
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    values: defaultValues
+  
+  const form = useForm<z.infer<typeof OrderSchema>>({
+    resolver: zodResolver(OrderSchema),
+    defaultValues, // Default values for form fields
   });
+  
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // console.log("Form submitted");
-    // console.log(values);
-  }
+  const onSubmit = async (values: z.infer<typeof OrderSchema>) => {
+    // const router = useRouter()
+    try {
+      const result = await createOrder(values);
+      if (result.success) {
+        toast.success("Order created successfully!");
+        // router.push('/dashboard/orders')
+      } else {
+        toast.error("Failed to create order. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while submitting the form.");
+    }
+  };
 
   return (
     <Card className='mx-auto w-3/4'>
@@ -119,7 +111,7 @@ export default function ProductForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-            <FormField
+            {/* <FormField
               control={form.control}
               name='image'
               render={({ field }) => (
@@ -143,7 +135,7 @@ export default function ProductForm({
                   </FormItem>
                 </div>
               )}
-            />
+            /> */}
             <CardDescription className='text-xl font-bold'>Client Information</CardDescription>
             <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
               <FormField name='loanNumber' control={form.control} render={({ field }) => (
@@ -233,7 +225,7 @@ export default function ProductForm({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder='Select Order Type' />
+                          <SelectValue placeholder='Order Type' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -257,7 +249,7 @@ export default function ProductForm({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder='Select Property Type' />
+                          <SelectValue placeholder='Property Type' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -282,7 +274,7 @@ export default function ProductForm({
                     >
                       <FormControl>
                         <SelectTrigger>
-                          <SelectValue placeholder='Select Present Occupancy' />
+                          <SelectValue placeholder='Occupancy' />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
@@ -298,30 +290,13 @@ export default function ProductForm({
             </div>
             <CardDescription className='text-xl font-bold'>Subject Property</CardDescription>
             <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-              <FormField control={form.control} name='orderType' render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Order Type</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder='Select order type' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='residential'>Residential</SelectItem>
-                      <SelectItem value='commercial'>Commercial</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )} />
               <FormField control={form.control} name='loanPurpose' render={({ field }) => (
                 <FormItem>
                   <FormLabel>Loan Purpose</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select loan purpose' />
+                        <SelectValue placeholder='Loan purpose' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -341,7 +316,7 @@ export default function ProductForm({
                   <Select onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select loan type' />
+                        <SelectValue placeholder='Loan type' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -359,7 +334,7 @@ export default function ProductForm({
                   <Select onValueChange={field.onChange} value={field.value || ""}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select main product' />
+                        <SelectValue placeholder='Main product' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -390,7 +365,27 @@ export default function ProductForm({
                   )}
                 />
             </div>
-            <Button type='submit'>Next</Button>
+            <CardDescription className='text-xl font-bold'>Additional Info</CardDescription>
+            <div className='grid grid-cols-4 items-center gap-4'>
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="col-span-4">
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter description"
+                      className="col-span-4"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+            <Button type='submit'>Submit</Button>
           </form>
         </Form>
       </CardContent>

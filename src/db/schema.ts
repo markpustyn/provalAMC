@@ -22,3 +22,31 @@ export const users = pgTable("users", {
   lastActivityDate: date('last_activity_date').defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
+
+
+export const order = pgTable("order", {
+  orderId: uuid('id').notNull().primaryKey().defaultRandom(),
+  loanNumber: varchar('loan_number', { length: 50 }),
+  loanOfficer: varchar('loan_officer', { length: 255 }),
+  loanOfficerEmail: varchar('loan_officer_email', { length: 255 }),
+  lender: varchar('lender', { length: 255 }),
+  lenderAddress: varchar('lender_address', { length: 255 }),
+  lenderCity: varchar('lender_city', { length: 255 }),
+  lenderZip: varchar('lender_zip', { length: 10 }),
+  borrowerName: varchar('borrower_name', { length: 255 }),
+  borrowerEmail: varchar('borrower_email', { length: 255 }),
+  borrowerPhoneType: varchar('borrower_phone_type', { length: 50 }),
+  borrowerPhoneNumber: varchar('borrower_phone_number', { length: 30 }),
+  propertyAddress: varchar('property_address', { length: 255 }),
+  propertyCity: varchar('property_city', { length: 255 }),
+  propertyState: varchar('property_state', { length: 50 }),
+  propertyZip: varchar('property_zip', { length: 10 }),
+  orderType: varchar('order_type', { length: 255 }),
+  propertyType: varchar('property_type', { length: 255 }),
+  presentOccupancy: varchar('present_occupancy', { length: 255 }),
+  loanPurpose: varchar('loan_purpose', { length: 255 }),
+  loanType: varchar('loan_type', { length: 255 }),
+  mainProduct: varchar('main_product', { length: 255 }),
+  requestedDueDate: varchar('requested_due_date', { length: 50 }),
+  description: text('description'),
+});
