@@ -22,29 +22,29 @@ export const columns: ColumnDef<OpenOrder>[] = [
   //   }
   // },
   {
-    accessorKey: "id",
-    header: "Order Number",
+    accessorKey: "loanNumber",
+    header: "Loan Number",
   },
   {
-    accessorKey: "PropAddress",
-    header: "PropAddress",
+    accessorKey: "propertyAddress",
+    header: "Address",
   },
   {
-    accessorKey: "PropCity",
-    header: "PropCity",
+    accessorKey: "propertyCity",
+    header: "City",
   },
   {
-    accessorKey: "PropZip",
-    header: "PropZip",
+    accessorKey: "propertyZip",
+    header: "Zip",
   },
   {
-    accessorKey: "PropState",
-    header: "PropState",
+    accessorKey: "propertyState",
+    header: "State",
   },
-  {
-    accessorKey: "Status",
-    header: "Status",
-  },
+  // {
+  //   accessorKey: "Status",
+  //   header: "Status",
+  // },
   {
     id: 'actions',
     cell: ({ row }) => <CellAction data={row.original} />

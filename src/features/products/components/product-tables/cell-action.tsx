@@ -20,8 +20,10 @@ interface CellActionProps {
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const router = useRouter();
 
+  console.log(data.loanNumber)
   const onConfirm = async () => {};
 
   return (
@@ -31,6 +33,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
+        orderId={data.loanNumber!}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -47,7 +50,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpen(true)}>
+          <DropdownMenuItem 
+              onClick={() => {
+                setOpen(true);
+              }}>
             <Trash className='mr-2 h-4 w-4' /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>

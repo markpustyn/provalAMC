@@ -1,8 +1,11 @@
 import { fakeProducts } from '@/constants/mock-api';
 import { searchParamsCache } from '@/lib/searchparams';
 import { DataTable as ProductTable } from '@/components/ui/table/data-table';
-import { SampleOrder } from '@/constants';
 import { columns } from './product-tables/columns';
+import { db } from '@/db/drizzle';
+import { desc } from 'drizzle-orm';
+import { order } from '@/db/schema';
+import { OpenOrder } from 'types';
 
 type ProductListingPage = {};
 
@@ -23,10 +26,12 @@ export default async function ProductListingPage({}: ProductListingPage) {
   const data = await fakeProducts.getProducts(filters);
   const totalProducts = data.total_products;
 
+  const orders = (await db.select().from(order)) as OpenOrder[]
+
   return (
     <ProductTable
       columns={columns}
-      data={SampleOrder}
+      data={orders}
       totalItems={totalProducts}
     />
   );

@@ -28,8 +28,9 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-
-
+import Autocomplete from "react-google-autocomplete";
+import { useLoadScript } from "@react-google-maps/api";
+import { useEffect, useRef, useState } from 'react';
 
 
 export default function ProductForm({
@@ -63,21 +64,6 @@ export default function ProductForm({
     mainProduct: '',
     requestedDueDate: '', // ✅ Ensure correct format if needed
     description: '',
-  
-    // // ✅ Added missing fields
-    // userId: '',
-    // services: '',
-    // dbaName: '',
-    // accContact: '',
-    // accMobile: '',
-    // accHome: '',
-    // accWork: '',
-    // accEmail: '',
-    // callbackReference: '',
-    // notes: '',
-    // reportHtml: '',
-    // status: '',
-    // isDone: false, // ✅ Boolean, should not be a string
   };
   
   const form = useForm<z.infer<typeof OrderSchema>>({
@@ -100,7 +86,35 @@ export default function ProductForm({
       toast.error("An error occurred while submitting the form.");
     }
   };
+  const addressRef = useRef(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
+    libraries: ['places'],
+  });
 
+  useEffect(() => {
+    if (isLoaded && !isGoogleLoaded) {
+      const autocomplete = new google.maps.places.Autocomplete(addressRef.current!, {
+        types: ['geocode'],
+        componentRestrictions: { country: 'us' },
+      });
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+        const addressComponents = place.address_components;
+
+        const getComponent = (type) =>
+          addressComponents!.find((comp) => comp.types.includes(type))?.long_name || '';
+
+        form.setValue('propertyAddress', getComponent('street_number') + ' ' + getComponent('route'));
+        form.setValue('propertyCity', getComponent('locality'));
+        form.setValue('propertyState', getComponent('administrative_area_level_1'));
+        form.setValue('propertyZip', getComponent('postal_code'));
+      });
+      setIsGoogleLoaded(true);
+    }
+  }, [isLoaded]);
   return (
     <Card className='mx-auto w-3/4'>
       <CardHeader>
@@ -204,15 +218,42 @@ export default function ProductForm({
 
             <CardDescription className='text-xl font-bold'>Subject Property</CardDescription>
             <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-              <FormField name='propertyAddress' control={form.control} render={({ field }) => (
-                <FormItem><FormLabel>Street Address</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField name='propertyCity' control={form.control} render={({ field }) => (
-                <FormItem><FormLabel>City</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField name='propertyZip' control={form.control} render={({ field }) => (
-                <FormItem><FormLabel>Zip Code</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-              )} />
+            <FormField name='propertyAddress' control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Street Address</FormLabel>
+                <FormControl>
+                  <Input {...field} ref={addressRef} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField name='propertyCity' control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>City</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField name='propertyState' control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>State</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField name='propertyZip' control={form.control} render={({ field }) => (
+              <FormItem>
+                <FormLabel>Zip Code</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
                 <FormField
                 control={form.control}
                 name='orderType'

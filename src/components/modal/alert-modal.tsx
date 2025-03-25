@@ -2,25 +2,48 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
+import { toast } from 'sonner';
+import { deleteOrder } from '@/lib/admin/order';
+import { OrderSchema } from '@/lib/schema/order_schema';
+import { z } from 'zod';
+import router from 'next/router';
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   loading: boolean;
+  orderId: string;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
   isOpen,
   onClose,
-  onConfirm,
-  loading
+  loading, 
+  orderId
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  const onConfirm = async () => {
+    const defaultValues: z.infer<typeof OrderSchema> = {
+      isDone: false
+    };
+    try {
+      const result = await deleteOrder(defaultValues, orderId);
+      if (result.success) {
+        toast.success("Order deleted successfully!");
+        // router.push('/dashboard/orders')
+      } else {
+        toast.error("Failed to create order. Please try again.");
+      }
+    } catch (error) {
+      toast.error("An error occurred while submitting the form.");
+    }
+  }
 
   if (!isMounted) {
     return null;

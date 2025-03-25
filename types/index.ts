@@ -14,19 +14,7 @@ export interface NavItem {
 }
 
 export interface OpenOrder {
-  id?: string; // Made optional to match OrderSchema
-  propertyAddress?: string;
-  propertyCity?: string;
-  propertyState?: string;
-  propertyZip?: string;
-  propertyType?: string;
-  presentOccupancy?: string;
-  orderType?: string;
-  loanPurpose?: string;
-  loanType?: string;
-  mainProduct?: string;
-  requestedDueDate?: string;
-
+  id?: string;
   loanNumber?: string;
   loanOfficer?: string;
   loanOfficerEmail?: string;
@@ -38,6 +26,19 @@ export interface OpenOrder {
   borrowerEmail?: string;
   borrowerPhoneType?: string;
   borrowerPhoneNumber?: string;
+  propertyAddress?: string;
+  propertyCity?: string;
+  propertyState?: string;
+  propertyZip?: string;
+  propertyType?: string;
+  orderType?: string;
+  presentOccupancy?: string;
+  loanPurpose?: string;
+  loanType?: string;
+  mainProduct?: string;
+  requestedDueDate?: string;
+  description?: string;
+
 
   services?: string;
   dbaName?: string;
@@ -51,7 +52,6 @@ export interface OpenOrder {
   reportHtml?: string;
   status?: string;
   isDone?: boolean;
-  description?: string;
 }
 
 
