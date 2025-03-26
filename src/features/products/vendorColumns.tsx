@@ -1,10 +1,10 @@
 'use client';
-import { OpenOrder } from 'types';
+import { AuthCredentials } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './cell-action';
+import { CellAction } from './components/product-tables/cell-action';
 
 
-export const columns: ColumnDef<OpenOrder>[] = [
+export const vendorColumns: ColumnDef<AuthCredentials>[] = [
   // {
   //   accessorKey: 'photo_url',
   //   header: 'IMAGE',
@@ -22,29 +22,29 @@ export const columns: ColumnDef<OpenOrder>[] = [
   //   }
   // },
   {
-    accessorKey: "loanNumber",
-    header: "Loan Number",
+    accessorKey: "fname",
+    header: "Name",
   },
   {
-    accessorKey: "propertyAddress",
-    header: "Address",
+    accessorKey: "lname",
+    header: "",
   },
   {
-    accessorKey: "propertyCity",
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "city",
     header: "City",
   },
   {
-    accessorKey: "propertyZip",
-    header: "Zip",
+    accessorKey: "companyName",
+    header: "Company Name",
   },
-  {
-    accessorKey: "propertyState",
-    header: "State",
-  },
-  {
-    accessorKey: "requestedDueDate",
-    header: "Due Date",
-  },
+  // {
+  //   accessorKey: "Status",
+  //   header: "Status",
+  // },
   {
     id: 'actions',
     cell: ({ row }) => <CellAction data={row.original} />

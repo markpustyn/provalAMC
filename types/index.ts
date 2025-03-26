@@ -56,22 +56,22 @@ export interface OpenOrder {
 
 
 export interface AuthCredentials{
-  // id:string,
-	fname:string,
-	lname:string,
-	email:string,
-	phone:string,
-	password:string,
-	companyName:string,
-	licenseNum:string,
-	street:string,
-	city:string,
-	state:string,
-  // role:string,
-	zip:string,
-  // statued: string,
-	// lastActivityDate:string,
-	// createdAt:string,
+  id?:string,
+	fname?:string,
+	lname?:string,
+	email?:string,
+	phone?:string,
+	password?:string,
+	companyName?:string,
+	licenseNum?:string,
+	street?:string,
+	city?:string,
+	state?:string,
+  zip?:string,
+  role?:string,
+  statued?: string,
+	// lastActivityDate?:string,
+	// createdAt?:string,
 }
 
 

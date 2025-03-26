@@ -20,20 +20,15 @@ type pageProps = {
   searchParams: Promise<SearchParams>;
 };
 
-export default async function Page(props: pageProps) {
-  const searchParams = await props.searchParams;
-  // Allow nested RSCs to access the search params (in a type-safe way)
-  searchParamsCache.parse(searchParams);
-
-  // This key is used for invoke suspense if any of the search params changed (used for filters).
-  const key = serialize({ ...searchParams });
+export default async function Page({params}: {params:Promise<{id:string}>}) {
+  const id = (await params).id
 
   return (
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Products'
+            title='Open Orders'
             description='Manage products (Server side table functionalities.)'
           />
           <Link
@@ -46,7 +41,7 @@ export default async function Page(props: pageProps) {
         <Separator />
         <ProductTableAction />
         <Suspense
-          key={key}
+          // key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
           <ProductListingPage />

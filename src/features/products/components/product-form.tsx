@@ -24,11 +24,10 @@ import { Product } from '@/constants/mock-api';
 import { createOrder } from '@/lib/admin/order';
 import { OrderSchema } from '@/lib/schema/order_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-import Autocomplete from "react-google-autocomplete";
 import { useLoadScript } from "@react-google-maps/api";
 import { useEffect, useRef, useState } from 'react';
 
@@ -70,15 +69,15 @@ export default function ProductForm({
     resolver: zodResolver(OrderSchema),
     defaultValues, // Default values for form fields
   });
-  
+  const router = useRouter()
 
   const onSubmit = async (values: z.infer<typeof OrderSchema>) => {
-    // const router = useRouter()
+    
     try {
       const result = await createOrder(values);
       if (result.success) {
         toast.success("Order created successfully!");
-        // router.push('/dashboard/orders')
+        router.push(`/dashboard/productId/${result.data.id}`);
       } else {
         toast.error("Failed to create order. Please try again.");
       }
@@ -86,6 +85,8 @@ export default function ProductForm({
       toast.error("An error occurred while submitting the form.");
     }
   };
+
+  
   const addressRef = useRef(null);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
   const { isLoaded } = useLoadScript({

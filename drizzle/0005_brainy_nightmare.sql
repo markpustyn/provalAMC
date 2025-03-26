@@ -1,0 +1,1 @@
+ALTER TABLE "users" ALTER COLUMN "state" SET DATA TYPE varchar(15);

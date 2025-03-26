@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { deleteOrder } from '@/lib/admin/order';
 import { OrderSchema } from '@/lib/schema/order_schema';
 import { z } from 'zod';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -27,7 +27,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-
+  const router = useRouter()
   const onConfirm = async () => {
     const defaultValues: z.infer<typeof OrderSchema> = {
       isDone: false
@@ -36,7 +36,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
       const result = await deleteOrder(defaultValues, orderId);
       if (result.success) {
         toast.success("Order deleted successfully!");
-        // router.push('/dashboard/orders')
+        router.push('/dashboard/product')
       } else {
         toast.error("Failed to create order. Please try again.");
       }

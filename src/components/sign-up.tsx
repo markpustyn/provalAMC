@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,6 +18,9 @@ import {
 import { toast } from 'sonner';
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { useEffect, useRef, useState } from "react"
+import { useLoadScript } from "@react-google-maps/api"
+import { AuthCredentials } from "types"
 
 export default function SignUpForm({
   setIsOpened,
@@ -43,38 +46,64 @@ export default function SignUpForm({
     },
   })
 
-  async function onSubmit(data) {
-    const res = await register(data)
-    if (res.success) {
-      if (setIsOpened) {
-        setIsOpened(false)
+  const onSubmit = async (data: AuthCredentials) => {
+    try{
+      const result = await register(data)
+      if (result.success) {
+        toast.success("Account Created!");
+        router.replace("/dashboard/overview")
       }
-
-      router.replace("/dashboard/overview")
-    } else {
-      toast.error(res.message)
+      else {
+        toast.error("Failed to create account. Please try again.");
+      }
+    } catch(error){
+      toast.error("An error occurred while signing up")
     }
   }
+  const addressRef = useRef(null);
+  const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
+    libraries: ['places'],
+  });
+
+  useEffect(() => {
+    if (isLoaded && !isGoogleLoaded) {
+      const autocomplete = new google.maps.places.Autocomplete(addressRef.current!, {
+        types: ['geocode'],
+        componentRestrictions: { country: 'us' },
+      });
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+        const addressComponents = place.address_components;
+
+        const getComponent = (type) =>
+          addressComponents!.find((comp) => comp.types.includes(type))?.long_name || '';
+
+        form.setValue('street', getComponent('street_number') + ' ' + getComponent('route'));
+        form.setValue('city', getComponent('locality'));
+        form.setValue('state', getComponent('administrative_area_level_1'));
+        form.setValue('zip', getComponent('postal_code'));
+      });
+      setIsGoogleLoaded(true);
+    }
+  }, [isLoaded]);
+    
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-2xl">Signup</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-        </div>
-        <div className="flex gap-2 items-center justify-center my-2">
-          <div className="w-full h-[0.5px] bg-primary " />
-          <span className="text-sm text-gray-500">OR</span>
-          <div className="w-full h-[0.5px] bg-primary " />
-        </div>
-        <p className="text-sm text-center text-gray-500 my-2">
-          Sign up with your email and password
-        </p>
+    <div className="flex justify-center p-4">
+      <Card className="w-full max-w-3xl p-6 shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">Signup</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-center text-gray-500 my-2">
+            Sign up with your email and password
+          </p>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="fname"
@@ -103,19 +132,6 @@ export default function SignUpForm({
             />
             <FormField
               control={form.control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Company Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -127,6 +143,20 @@ export default function SignUpForm({
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Phone Number</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="password"
@@ -155,25 +185,12 @@ export default function SignUpForm({
             />
             <FormField
               control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="street"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Street</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input {...field} ref={addressRef}/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -210,7 +227,20 @@ export default function SignUpForm({
               name="zip"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>Zip</FormLabel>
+                  <FormControl>
+                    <Input placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="companyName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Company Name</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
                   </FormControl>
@@ -253,5 +283,6 @@ export default function SignUpForm({
         </Form>
       </CardContent>
     </Card>
+    </div>
   )
 }

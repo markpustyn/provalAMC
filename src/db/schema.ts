@@ -15,7 +15,7 @@ export const users = pgTable("users", {
   licenseNum: varchar('license_number', { length: 50 }).notNull(),
   street: varchar('street', { length: 255 }).notNull(),
   city: varchar('city', { length: 255 }).notNull(),
-  state: varchar('state', { length: 2 }).notNull(),
+  state: varchar('state', { length: 15 }).notNull(),
   zip: varchar('zip_code', { length: 10 }).notNull(),
   role: rolesEnum().default("guest"),
   statued: statusEnum().default("active"),

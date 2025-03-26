@@ -1,32 +1,20 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { OpenOrder } from "types";
+import { AuthCredentials } from "types";
 
-export const columns: ColumnDef<OpenOrder>[] = [
+export const columns: ColumnDef<AuthCredentials>[] = [
   {
-    accessorKey: "id",
-    header: "Order Number",
+    accessorKey: "fname",
+    header: "fname",
   },
   {
-    accessorKey: "PropAddress",
-    header: "PropAddress",
+    accessorKey: "lname",
+    header: "lname",
   },
   {
-    accessorKey: "PropCity",
-    header: "PropCity",
-  },
-  {
-    accessorKey: "PropZip",
-    header: "PropZip",
-  },
-  {
-    accessorKey: "PropState",
-    header: "PropState",
-  },
-  {
-    accessorKey: "Status",
-    header: "Status",
+    accessorKey: "phone",
+    header: "phone",
   },
 
 ]

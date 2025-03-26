@@ -22,6 +22,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const router = useRouter();
+  
 
   console.log(data.loanNumber)
   const onConfirm = async () => {};
@@ -46,7 +47,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/product/${data.id}`)}
+            onClick={() => router.push(`/dashboard/product/${data.loanNumber}`)}
           >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
