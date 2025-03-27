@@ -5,24 +5,20 @@ import ProductViewPage from '@/features/products/components/product-view-page';
 import { db } from '@/db/drizzle';
 import { order } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import Details from './details';
-import { OpenOrder } from 'types';
+import ProductForm from '@/features/products/components/product-form';
 
 
 
-const Page = async ({params}: {
-  params:Promise<{product: string}>
-}) => {
-  const id = (await params).product
+const Page = async ({params}: {params:Promise<{product: string}>}) => {
+    console.log("this page")
+      let product = null;
+      let pageTitle = 'New Order';
 
-  const [orderDetails] = await db.select().from(order).where(eq(order.loanNumber, id)).limit(1)
-
-    console.log(orderDetails)
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
-        <Details orderDetails={orderDetails as OpenOrder}></Details>
+        <ProductForm initialData={product} pageTitle={pageTitle} />;
         </Suspense>
       </div>
     </PageContainer>

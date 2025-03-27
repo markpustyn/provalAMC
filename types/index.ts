@@ -12,6 +12,18 @@ export interface NavItem {
   isActive?: boolean;
   items?: NavItem[];
 }
+export interface BrokerNavItem {
+  title: string;
+  url: string;
+  disabled?: boolean;
+  external?: boolean;
+  shortcut?: [string, string];
+  icon?: keyof typeof Icons;
+  label?: string;
+  description?: string;
+  isActive?: boolean;
+  items?: NavItem[];
+}
 
 export interface OpenOrder {
   id?: string;
@@ -56,21 +68,21 @@ export interface OpenOrder {
 
 
 export interface AuthCredentials{
-  id?:string,
-	fname?:string,
-	lname?:string,
-	email?:string,
-	phone?:string,
-	password?:string,
-	companyName?:string,
-	licenseNum?:string,
-	street?:string,
-	city?:string,
-	state?:string,
-  zip?:string,
-  role?:string,
-  statued?: string,
-	// lastActivityDate?:string,
+  // id?:string,
+	fname:string,
+	lname:string,
+	email:string,
+	phone:string,
+	password:string,
+	companyName:string,
+	licenseNum:string,
+	street:string,
+	city:string,
+	state:string,
+  zip:string,
+  role:string,
+  statued: string,
+	lastActivityDate?:string,
 	// createdAt?:string,
 }
 

@@ -1,7 +1,7 @@
 'use client';
 import { AuthCredentials } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './components/product-tables/cell-action';
+import { VendorActions } from './components/product-tables/vendor-actions';
 
 
 export const vendorColumns: ColumnDef<AuthCredentials>[] = [
@@ -47,6 +47,6 @@ export const vendorColumns: ColumnDef<AuthCredentials>[] = [
   // },
   {
     id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
+    cell: ({ row }) => <VendorActions data={row.original} />
   }
 ];

@@ -1,8 +1,14 @@
+
 import PageContainer from '@/components/layout/page-container';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { db } from '@/db/drizzle';
+import { users } from '@/db/schema';
+import { auth } from '@/lib/auth';
+import { eq } from 'drizzle-orm';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-export default function OverViewLayout({
+export default async function OverViewLayout({
   sales,
   pie_stats,
   bar_stats,
@@ -13,6 +19,17 @@ export default function OverViewLayout({
   bar_stats: React.ReactNode;
   area_stats: React.ReactNode;
 }) {
+const session = await auth()
+    if (!session?.user?.id) redirect("/sign-in");
+    
+    const isAdmin = await db
+      .select({ role: users.role })
+      .from(users)
+      .where(eq(users.id, session.user.id))
+      .limit(1)
+      .then((res) => res[0]?.role === "admin");
+  
+    if (!isAdmin) redirect("/broker");
   return (
     <PageContainer>
       <div className='flex flex-1 flex-col space-y-2'>

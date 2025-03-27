@@ -16,12 +16,9 @@ export const metadata = {
   title: 'My Orders: Products'
 };
 
-type pageProps = {
-  searchParams: Promise<SearchParams>;
-};
 
-export default async function Page({params}: {params:Promise<{id:string}>}) {
-  const id = (await params).id
+export default async function Page() {
+
 
   return (
     <PageContainer scrollable={false}>

@@ -3,7 +3,7 @@ import { DataTable } from './table/data-table';
 import { columns } from './table/column';
 import { db } from '@/db/drizzle';
 import {  users } from '@/db/schema';
-import { OpenOrder } from 'types';
+import { AuthCredentials, OpenOrder } from 'types';
 
 
 
@@ -11,7 +11,7 @@ import { OpenOrder } from 'types';
 
 export default async function KanbanViewPage() {
 
-  const vendors = (await db.select().from(users)) as OpenOrder[]
+  const vendors = (await db.select().from(users)) as AuthCredentials[]
   const totalProducts = vendors.length
   console.log(totalProducts)
 

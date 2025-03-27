@@ -3,29 +3,28 @@ import PageContainer from '@/components/layout/page-container';
 import { Suspense } from 'react';
 import ProductViewPage from '@/features/products/components/product-view-page';
 import { db } from '@/db/drizzle';
-import { order } from '@/db/schema';
+import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import Details from './details';
-import { OpenOrder } from 'types';
+import Details from '../details';
+import { AuthCredentials } from 'types';
 
 
 
 const Page = async ({params}: {
-  params:Promise<{product: string}>
+  params:Promise<{id: string}>
 }) => {
-  const id = (await params).product
+  const id = (await params).id
 
-  const [orderDetails] = await db.select().from(order).where(eq(order.loanNumber, id)).limit(1)
+  const [vendorDetails] = await db.select().from(users).where(eq(users.id, id)).limit(1)
 
-    console.log(orderDetails)
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
-        <Details orderDetails={orderDetails as OpenOrder}></Details>
+        <Details vendorDetails={vendorDetails as AuthCredentials}></Details>
         </Suspense>
       </div>
     </PageContainer>
   );
 }
-export default Page
+export default Page 

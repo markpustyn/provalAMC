@@ -77,7 +77,7 @@ export default function ProductForm({
       const result = await createOrder(values);
       if (result.success) {
         toast.success("Order created successfully!");
-        router.push(`/dashboard/productId/${result.data.id}`);
+        router.push(`/dashboard/product/${result.data.loanNumber}`);
       } else {
         toast.error("Failed to create order. Please try again.");
       }

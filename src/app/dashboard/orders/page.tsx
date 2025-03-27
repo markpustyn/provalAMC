@@ -12,6 +12,12 @@ import { Suspense } from 'react';
 import ProductListingPage from '@/features/products/components/product-listing';
 import ProductTableAction from '@/features/products/components/product-tables/product-table-action';
 import VendorListingPage from '@/features/products/components/vendorListingPage';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import { db } from '@/db/drizzle';
+import { users } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+
 
 export const metadata = {
   title: 'Vendors Page'
@@ -28,6 +34,17 @@ export default async function Page(props: pageProps) {
 
   // This key is used for invoke suspense if any of the search params changed (used for filters).
   const key = serialize({ ...searchParams });
+  const session = await auth()
+      if (!session?.user?.id) redirect("/sign-in");
+      
+      const isAdmin = await db
+        .select({ role: users.role })
+        .from(users)
+        .where(eq(users.id, session.user.id))
+        .limit(1)
+        .then((res) => res[0]?.role === "admin");
+    
+      if (!isAdmin) redirect("/broker");
 
   return (
     <PageContainer scrollable={false}>

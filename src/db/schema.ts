@@ -1,7 +1,7 @@
 import { pgTable, text, uuid, varchar, date, timestamp, pgEnum } from "drizzle-orm/pg-core";
 
 export const statusEnum = pgEnum("status", ["active", "disabled"]);
-export const rolesEnum = pgEnum("roles", ["guest", "user", "admin"]);
+export const rolesEnum = pgEnum("roles", ["broker", "client", "admin"]);
 
 
 export const users = pgTable("users", {
@@ -17,7 +17,7 @@ export const users = pgTable("users", {
   city: varchar('city', { length: 255 }).notNull(),
   state: varchar('state', { length: 15 }).notNull(),
   zip: varchar('zip_code', { length: 10 }).notNull(),
-  role: rolesEnum().default("guest"),
+  role: rolesEnum().default("broker"),
   statued: statusEnum().default("active"),
   lastActivityDate: date('last_activity_date').defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),

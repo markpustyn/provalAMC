@@ -1,4 +1,4 @@
-import { NavItem } from 'types';
+import { NavItem, BrokerNavItem } from 'types';
 
 export type Product = {
   photo_url: string;
@@ -66,6 +66,53 @@ export const navItems: NavItem[] = [
     isActive: false,
     items: []
   }
+];
+export const brokerNav: BrokerNavItem[] = [
+  {
+    title: 'Dashboard',
+    url: '/broker/dashboard',
+    icon: 'dashboard',
+    isActive: false,
+    shortcut: ['d', 'd'],
+    items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Support',
+    url: '/broker/dashboard/support',
+    icon: 'kanban',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'My Profile',
+    url: '/broker/dashboard/profile',
+    icon: 'product',
+    shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Account',
+    url: '#', // Placeholder as there is no direct link for the parent
+    icon: 'billing',
+    isActive: true,
+
+    items: [
+      {
+        title: 'Profile',
+        url: '/dashboard/profile',
+        icon: 'userPen',
+        shortcut: ['m', 'm']
+      },
+      {
+        title: 'Login',
+        shortcut: ['l', 'l'],
+        url: '/',
+        icon: 'login'
+      }
+    ]
+  },
 ];
 
 export interface SaleUser {
