@@ -26,7 +26,7 @@ export interface BrokerNavItem {
 }
 
 export interface OpenOrder {
-  // id: string;
+  orderId?: string;
   loanNumber?: string;
   loanOfficer?: string;
   loanOfficerEmail?: string;
@@ -86,10 +86,10 @@ export interface AuthCredentials{
 }
 
 export interface StatusOrder {
-  id: string;
-  orderId:string;
-  vendorId:string;
-  orderStatus: string;
+  id?: string;
+  propOrderId?:string;
+  vendorId?:string;
+  orderStatus?: string;
 }
 
 

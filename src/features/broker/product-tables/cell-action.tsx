@@ -24,13 +24,13 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         isOpen={open}
         onClose={() => setOpen(false)} 
         loading={loading}
-        orderId={data.loanNumber!}
+        orderId={data.orderId!}
       />
       
       <div className="flex space-x-2">
         <Button
           variant="outline"
-          onClick={() => router.push(`/broker/dashboard/product/${data.loanNumber}`)}
+          onClick={() => router.push(`/broker/dashboard/product/${data.orderId}`)}
           className="h-8 bg-green-500 hover:bg-green-600"
         >
           Accept Order

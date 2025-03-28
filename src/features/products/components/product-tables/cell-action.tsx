@@ -32,7 +32,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
         onClose={() => setOpen(false)}
         onConfirm={onConfirm}
         loading={loading}
-        orderId={data.loanNumber!}
+        orderId={data.orderId!}
       />
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
@@ -45,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/dashboard/product/${data.loanNumber}`)}
+            onClick={() => router.push(`/dashboard/product/${data.orderId}`)}
           >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>

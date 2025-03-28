@@ -19,7 +19,7 @@ export const createOrder = async (params: OpenOrder) => {
 };
 export const deleteOrder = async (__params: OpenOrder, id: any) => {
     try {
-        const deleteOrder = await db.delete(order).where(eq(order.loanNumber, id))
+        const deleteOrder = await db.delete(order).where(eq(order.orderId, id))
         return {
             success: true,
         };
@@ -27,12 +27,10 @@ export const deleteOrder = async (__params: OpenOrder, id: any) => {
         return { success: false, error: "Failed tp delete order" };
     }
 };
-export const acceptOrder = async (orderId: string, vendorId: string) => {
+export const acceptOrder = async (values) => {
     try {
-      await db.insert(statusOrder).values({
-        orderId,
-        vendorId,
-      });
+        const acceptOrder = await db.insert(statusOrder).values(values);
+        console.log("Inserted:", acceptOrder);
       return { success: true };
     } catch (error) {
       return { success: false, error: "Failed to process order" };

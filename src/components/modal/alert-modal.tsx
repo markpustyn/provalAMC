@@ -30,7 +30,6 @@ export const AlertModal: React.FC<AlertModalProps> = ({
   const router = useRouter()
   const onConfirm = async () => {
     const defaultValues: z.infer<typeof OrderSchema> = {
-      isDone: false
     };
     try {
       const result = await deleteOrder(defaultValues, orderId);

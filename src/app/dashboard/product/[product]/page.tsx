@@ -15,7 +15,7 @@ const Page = async ({params}: {
 }) => {
   const id = (await params).product
 
-  const [orderDetails] = await db.select().from(order).where(eq(order.loanNumber, id)).limit(1)
+  const [orderDetails] = await db.select().from(order).where(eq(order.orderId, id)).limit(1)
 
   return (
     <PageContainer scrollable>
