@@ -23,8 +23,6 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const router = useRouter();
   
-
-  console.log(data.loanNumber)
   const onConfirm = async () => {};
 
   return (

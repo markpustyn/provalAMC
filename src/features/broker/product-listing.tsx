@@ -7,9 +7,9 @@ import { desc } from 'drizzle-orm';
 import { order } from '@/db/schema';
 import { OpenOrder } from 'types';
 
-type ProductListingPage = {};
+type BrokerListingPage = {};
 
-export default async function ProductListingPage({}: ProductListingPage) {
+export default async function BrokerListingPage({}: BrokerListingPage) {
   // Showcasing the use of search params cache in nested RSCs
   // const page = searchParamsCache.get('page');
   // const search = searchParamsCache.get('q');
@@ -25,7 +25,6 @@ export default async function ProductListingPage({}: ProductListingPage) {
 
   const orders = (await db.select().from(order)) as OpenOrder[]
   const totalProducts = orders.length
-
   return (
     <ProductTable
       columns={columns}

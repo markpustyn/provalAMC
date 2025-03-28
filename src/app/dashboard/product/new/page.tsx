@@ -10,7 +10,6 @@ import ProductForm from '@/features/products/components/product-form';
 
 
 const Page = async ({params}: {params:Promise<{product: string}>}) => {
-    console.log("this page")
       let product = null;
       let pageTitle = 'New Order';
 

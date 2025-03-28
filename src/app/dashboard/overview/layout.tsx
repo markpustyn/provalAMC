@@ -29,7 +29,7 @@ const session = await auth()
       .limit(1)
       .then((res) => res[0]?.role === "admin");
   
-    if (!isAdmin) redirect("/broker");
+    if (!isAdmin) redirect("/broker/dashboard");
   return (
     <PageContainer>
       <div className='flex flex-1 flex-col space-y-2'>

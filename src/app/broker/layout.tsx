@@ -2,9 +2,10 @@ import KBar from '@/components/kbar';
 import BrokerSideBar from '@/components/layout/broker-sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-// import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 
 export const metadata: Metadata = {
@@ -22,6 +23,9 @@ export default async function DashboardLayout({
   // const session = await auth()
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';  
+   const session = await auth()
+    if (!session?.user?.id) redirect("/sign-in");
+  
 
   return (
     <KBar>

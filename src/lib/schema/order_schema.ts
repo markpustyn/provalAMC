@@ -21,6 +21,7 @@ export const OrderSchema = z.object({
   //     (files) => !files || ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
   //     '.jpg, .jpeg, .png and .webp files are accepted.'
   //   ),
+  id: z.string().optional(),
   loanNumber: z.string().optional(),
   loanOfficer: z.string().optional(),
   loanOfficerEmail: z.string().email().optional(),

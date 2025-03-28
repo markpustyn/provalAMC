@@ -2,6 +2,7 @@ import { pgTable, text, uuid, varchar, date, timestamp, pgEnum } from "drizzle-o
 
 export const statusEnum = pgEnum("status", ["active", "disabled"]);
 export const rolesEnum = pgEnum("roles", ["broker", "client", "admin"]);
+export const orderEnum = pgEnum("orderStaus", ["pending", "assigned", "completed", "canceled"]);
 
 
 export const users = pgTable("users", {
@@ -50,3 +51,10 @@ export const order = pgTable("order", {
   requestedDueDate: varchar('requested_due_date', { length: 50 }),
   description: text('description'),
 });
+
+export const statusOrder = pgTable("statusOrder", {
+  statusId: uuid('id').notNull().primaryKey().defaultRandom(),
+  orderId: uuid().references(() => order.orderId).notNull(),
+  vendorId: uuid().references(() => users.id),
+  orderStatus: orderEnum().default('pending'),
+})

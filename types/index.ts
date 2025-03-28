@@ -26,7 +26,7 @@ export interface BrokerNavItem {
 }
 
 export interface OpenOrder {
-  id?: string;
+  // id: string;
   loanNumber?: string;
   loanOfficer?: string;
   loanOfficerEmail?: string;
@@ -51,7 +51,6 @@ export interface OpenOrder {
   requestedDueDate?: string;
   description?: string;
 
-
   services?: string;
   dbaName?: string;
   accContact?: string;
@@ -63,12 +62,12 @@ export interface OpenOrder {
   notes?: string;
   reportHtml?: string;
   status?: string;
-  isDone?: boolean;
+  isDone?: string;
 }
 
 
 export interface AuthCredentials{
-  // id?:string,
+  id:string,
 	fname:string,
 	lname:string,
 	email:string,
@@ -85,6 +84,17 @@ export interface AuthCredentials{
 	lastActivityDate?:string,
 	// createdAt?:string,
 }
+
+export interface StatusOrder {
+  id: string;
+  orderId:string;
+  vendorId:string;
+  orderStatus: string;
+}
+
+
+
+
 
 
 

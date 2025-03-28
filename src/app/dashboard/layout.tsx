@@ -38,7 +38,7 @@ export default async function DashboardLayout({
     .limit(1)
     .then((res) => res[0]?.role === "admin");
 
-  if (!isAdmin) redirect("/broker");
+  if (!isAdmin) redirect("/broker/dashboard");
 
   // if(users[0].lastActivityDate == new Date().toISOString().slice(0,10))
   //   return;

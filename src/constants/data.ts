@@ -69,7 +69,7 @@ export const navItems: NavItem[] = [
 ];
 export const brokerNav: BrokerNavItem[] = [
   {
-    title: 'Dashboard',
+    title: 'New Orders',
     url: '/broker/dashboard',
     icon: 'dashboard',
     isActive: false,
@@ -77,7 +77,15 @@ export const brokerNav: BrokerNavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Support',
+    title: 'Orders In Progress',
+    url: '/broker/dashboard/order',
+    icon: 'dashboard',
+    isActive: false,
+    shortcut: ['f', 'f'],
+    items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Corrections',
     url: '/broker/dashboard/support',
     icon: 'kanban',
     shortcut: ['p', 'p'],

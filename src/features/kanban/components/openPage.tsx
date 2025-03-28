@@ -13,8 +13,6 @@ export default async function KanbanViewPage() {
 
   const vendors = (await db.select().from(users)) as AuthCredentials[]
   const totalProducts = vendors.length
-  console.log(totalProducts)
-
 
   return (
     <div>

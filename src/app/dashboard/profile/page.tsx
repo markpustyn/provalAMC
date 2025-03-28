@@ -25,6 +25,6 @@ export default async function Page({ searchParams }: pageProps) {
         .limit(1)
         .then((res) => res[0]?.role === "admin");
     
-      if (!isAdmin) redirect("/broker");
+      if (!isAdmin) redirect("/broker/dashboard");
   return <ProfileViewPage />;
 }

@@ -17,7 +17,6 @@ const Page = async ({params}: {
 
   const [orderDetails] = await db.select().from(order).where(eq(order.loanNumber, id)).limit(1)
 
-    console.log(orderDetails)
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>

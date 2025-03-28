@@ -271,8 +271,8 @@ export default function ProductForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value='residential'>Residential</SelectItem>
-                        <SelectItem value='commercial'>Commercial</SelectItem>
+                        <SelectItem value='Residential'>Residential</SelectItem>
+                        <SelectItem value='Commercial'>Commercial</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -295,9 +295,9 @@ export default function ProductForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value='sfr'>SFR</SelectItem>
-                        <SelectItem value='condo'>Condo</SelectItem>
-                        <SelectItem value='multifamily'>Multifamily</SelectItem>
+                        <SelectItem value='SFR'>SFR</SelectItem>
+                        <SelectItem value='Condo'>Condo</SelectItem>
+                        <SelectItem value='Multifamily'>Multifamily</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -320,9 +320,9 @@ export default function ProductForm({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value='occupied'>Occupied</SelectItem>
-                        <SelectItem value='vacant'>Vacant</SelectItem>
-                        <SelectItem value='tenants'>Tenants</SelectItem>
+                        <SelectItem value='Occupied'>Occupied</SelectItem>
+                        <SelectItem value='Vacant'>Vacant</SelectItem>
+                        <SelectItem value='Tenants'>Tenants</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -342,11 +342,11 @@ export default function ProductForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='home-equity'>Home Equity</SelectItem>
-                      <SelectItem value='heloc'>HELOC</SelectItem>
-                      <SelectItem value='purchase'>Purchase</SelectItem>
-                      <SelectItem value='refinance'>Refinance</SelectItem>
-                      <SelectItem value='other'>Other</SelectItem>
+                      <SelectItem value='Home-Equity'>Home Equity</SelectItem>
+                      <SelectItem value='HELOC'>HELOC</SelectItem>
+                      <SelectItem value='Purchase'>Purchase</SelectItem>
+                      <SelectItem value='Refinance'>Refinance</SelectItem>
+                      <SelectItem value='Other'>Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -362,9 +362,9 @@ export default function ProductForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='fha'>FHA</SelectItem>
-                      <SelectItem value='conventional'>Conventional</SelectItem>
-                      <SelectItem value='other'>Other</SelectItem>
+                      <SelectItem value='FHA'>FHA</SelectItem>
+                      <SelectItem value='Conventional'>Conventional</SelectItem>
+                      <SelectItem value='Other'>Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -380,9 +380,9 @@ export default function ProductForm({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value='1004-sfr'>1004 SFR</SelectItem>
-                      <SelectItem value='bpo'>BPO</SelectItem>
-                      <SelectItem value='pcr'>PCR</SelectItem>
+                      <SelectItem value='1004-SFR'>1004 SFR</SelectItem>
+                      <SelectItem value='BPO'>BPO</SelectItem>
+                      <SelectItem value='PCR'>PCR</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

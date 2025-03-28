@@ -78,6 +78,13 @@
       "when": 1743028157918,
       "tag": "0010_yummy_king_cobra",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1743184890999,
+      "tag": "0011_chilly_moon_knight",
+      "breakpoints": true
     }
   ]
 }
