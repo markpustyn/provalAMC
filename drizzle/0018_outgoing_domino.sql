@@ -1,0 +1,1 @@
+ALTER TABLE "order" ALTER COLUMN "order_status" SET DEFAULT 'open';

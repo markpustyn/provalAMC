@@ -63,6 +63,7 @@ export default function ProductForm({
     mainProduct: '',
     requestedDueDate: '', // ✅ Ensure correct format if needed
     description: '',
+    status: 'open',
   };
   
   const form = useForm<z.infer<typeof OrderSchema>>({

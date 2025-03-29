@@ -50,6 +50,7 @@ export interface OpenOrder {
   mainProduct?: string;
   requestedDueDate?: string;
   description?: string;
+  status?: string;
 
   services?: string;
   dbaName?: string;
@@ -61,7 +62,6 @@ export interface OpenOrder {
   callbackReference?: string;
   notes?: string;
   reportHtml?: string;
-  status?: string;
   isDone?: string;
 }
 
@@ -86,13 +86,12 @@ export interface AuthCredentials{
 }
 
 export interface StatusOrder {
-  id?: string;
-  propOrderId?:string;
-  vendorId?:string;
-  orderStatus?: string;
+  // id?: string;
+  propStatus: string;
+  propOrderId: string;
+  vendorId: string;
+  // status:string;
 }
-
-
 
 
 

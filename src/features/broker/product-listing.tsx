@@ -3,7 +3,7 @@ import { searchParamsCache } from '@/lib/searchparams';
 import { DataTable as ProductTable } from '@/components/ui/table/data-table';
 import { columns } from './product-tables/columns';
 import { db } from '@/db/drizzle';
-import { desc } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { order } from '@/db/schema';
 import { OpenOrder } from 'types';
 
@@ -23,7 +23,7 @@ export default async function BrokerListingPage({}: BrokerListingPage) {
   //   ...(categories && { categories: categories })
   // };
 
-  const orders = (await db.select().from(order)) as OpenOrder[]
+  const orders = (await db.select().from(order).where(eq(order.status, "open"))) as OpenOrder[]
   const totalProducts = orders.length
   return (
     <ProductTable

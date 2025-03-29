@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { order, statusOrder } from "@/db/schema";
+import { order, orderEnum, statusOrder } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { OpenOrder, StatusOrder } from "types";
 
@@ -27,12 +27,26 @@ export const deleteOrder = async (__params: OpenOrder, id: any) => {
         return { success: false, error: "Failed tp delete order" };
     }
 };
-export const acceptOrder = async (values) => {
+export const acceptOrder = async (params: StatusOrder) => {
     try {
-        const acceptOrder = await db.insert(statusOrder).values(values);
-        console.log("Inserted:", acceptOrder);
-      return { success: true };
+        console.log("Trying to insert statusOrder");
+
+        // Insert new status entry
+        const acceptOrder = await db.insert(statusOrder).values(params);
+
+        console.log("Inserted statusOrder:", acceptOrder);
+
+        // Update the related order status
+        await db
+            .update(order)
+            .set({ status: params.propStatus })
+            .where(eq(order.orderId, params.propOrderId));
+
+        console.log("Updated order status");
+
+        return { success: true };
     } catch (error) {
-      return { success: false, error: "Failed to process order" };
+        console.log("Error:", error);
+        return { success: false, error: "Failed to process order" };
     }
-  };
+};

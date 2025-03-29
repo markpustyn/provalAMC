@@ -9,19 +9,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
 import { useSession } from 'next-auth/react';
+import { OpenOrder, StatusOrder } from 'types';
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   loading: boolean;
-  orderId: string;
+  order: OpenOrder;
 }
 
 export const DeclineAlertModal: React.FC<AlertModalProps> = ({
   isOpen,
   onClose,
   loading, 
-  orderId
+  order
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [reason, setReason] = useState('');
@@ -35,26 +36,28 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
   const router = useRouter();
   const session = useSession();
 
+
   const onConfirm = async () => {
     if (!session.data?.user?.id) {
       toast.error("User session not found.");
       return;
     }
-    console.log(orderId, session.data.user.id)
-
+    const params: StatusOrder = {
+        propStatus:  `${reason}`,
+        propOrderId: order.orderId!,
+        vendorId: session.data?.user?.id!,
+      };
     try {
-      const result = await acceptOrder(orderId, session.data.user.id);
+        console.log(params)
+      const result = await acceptOrder(params);
       if (result.success) {
-        toast.success("Order updated successfully!");
-        router.push('/broker/dashboard');
-      } else {
-        toast.error("Failed to update order. Please try again.");
+        toast.success("Order declined!");
+        router.push('/broker/dashboard/order');
       }
     } catch (error) {
-      toast.error("An error occurred while submitting the form.");
+      toast.error("An error occurred while declining the order.");
     }
   };
-
   if (!isMounted) {
     return null;
   }
