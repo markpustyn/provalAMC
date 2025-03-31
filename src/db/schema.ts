@@ -1,8 +1,8 @@
-import { pgTable, text, uuid, varchar, date, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, varchar, date, timestamp, pgEnum, bigserial, smallserial,  } from "drizzle-orm/pg-core";
 
 export const statusEnum = pgEnum("status", ["active", "disabled"]);
 export const rolesEnum = pgEnum("roles", ["broker", "client", "admin"]);
-export const orderEnum = pgEnum("propStatus", ["open", "pending", "assigned", "completed", "canceled"]);
+export const orderEnum = pgEnum("propStatus", ["open", "pending", "assigned", "completed", "canceled", "correction"]);
 
 
 export const users = pgTable("users", {

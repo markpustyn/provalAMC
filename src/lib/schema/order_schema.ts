@@ -45,6 +45,10 @@ export const OrderSchema = z.object({
   mainProduct: z.string().optional(),
   requestedDueDate: z.string().optional(), // ✅ Matches SQL Date
   description: z.string().optional(),
+  propStatus: z.string().optional(),
+  propOrderId: z.string().optional(),
+  vendorId: z.string().optional(),
+  status: z.string().optional(),
 
   // services: z.string().optional(),
   // dbaName: z.string().optional(),

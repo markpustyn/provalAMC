@@ -134,6 +134,48 @@
       "when": 1743282711628,
       "tag": "0018_outgoing_domino",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1743288472589,
+      "tag": "0019_worried_zarek",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1743288912831,
+      "tag": "0020_first_toro",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1743289335321,
+      "tag": "0021_oval_bucky",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1743289450343,
+      "tag": "0022_silky_bloodaxe",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1743289567265,
+      "tag": "0023_dizzy_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1743372845716,
+      "tag": "0024_jazzy_squadron_supreme",
+      "breakpoints": true
     }
   ]
 }

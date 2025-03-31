@@ -5,7 +5,8 @@ import { db } from '@/db/drizzle';
 import { desc } from 'drizzle-orm';
 import { order, users } from '@/db/schema';
 import { AuthCredentials } from 'types';
-import { vendorColumns } from '../vendorColumns';
+import { vendorColumns } from '@/features/products/vendorColumns'
+vendorColumns
 
 type VendorListingPage = {};
 

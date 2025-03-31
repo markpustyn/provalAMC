@@ -16,12 +16,12 @@ import { redirect } from 'next/navigation';
 import { db } from '@/db/drizzle';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import BrokerListingPage from '@/features/broker/product-listing';
+import BrokerListingPage from '@/features/broker/open-orders';
 
 
 
 export const metadata = {
-  title: 'Vendors Page'
+  title: 'Avalible Orders'
 };
 
 type pageProps = {

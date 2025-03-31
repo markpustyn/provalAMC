@@ -1,0 +1,1 @@
+ALTER TYPE "public"."propStatus" ADD VALUE 'correction';

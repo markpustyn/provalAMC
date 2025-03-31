@@ -24,7 +24,7 @@ export const navItems: NavItem[] = [
   {
     title: 'Vendors',
     url: '/dashboard/orders',
-    icon: 'kanban',
+    icon: 'user2',
     shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items
@@ -34,6 +34,14 @@ export const navItems: NavItem[] = [
     url: '/dashboard/product',
     icon: 'product',
     shortcut: ['p', 'p'],
+    isActive: false,
+    items: [] // No child items
+  },
+  {
+    title: 'Billing',
+    url: '/dashboard/billing',
+    icon: 'orderbilling',
+    shortcut: ['z', 'z'],
     isActive: false,
     items: [] // No child items
   },
@@ -69,7 +77,7 @@ export const navItems: NavItem[] = [
 ];
 export const brokerNav: BrokerNavItem[] = [
   {
-    title: 'New Orders',
+    title: 'Avalible Orders',
     url: '/broker/dashboard',
     icon: 'dashboard',
     isActive: false,
@@ -79,14 +87,14 @@ export const brokerNav: BrokerNavItem[] = [
   {
     title: 'Orders In Progress',
     url: '/broker/dashboard/order',
-    icon: 'dashboard',
+    icon: 'folder',
     isActive: false,
     shortcut: ['f', 'f'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
     title: 'Corrections',
-    url: '/broker/dashboard/support',
+    url: '/broker/dashboard/corrections',
     icon: 'kanban',
     shortcut: ['p', 'p'],
     isActive: false,

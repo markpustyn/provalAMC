@@ -9,17 +9,14 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
-import ProductTableAction from '@/features/products/components/product-tables/product-table-action';
-import VendorListingPage from '@/features/products/components/vendorListingPage';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { db } from '@/db/drizzle';
-import { users } from '@/db/schema';
-import { eq } from 'drizzle-orm';
+import BrokerProgress from '@/features/broker/progress-order';
+import Corrections from '@/features/broker/corrections';
 
 
 export const metadata = {
-  title: 'Vendors Page'
+  title: 'Corrections'
 };
 
 type pageProps = {
@@ -28,40 +25,29 @@ type pageProps = {
 
 export default async function Page(props: pageProps) {
   const searchParams = await props.searchParams;
+  // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
+
+  // This key is used for invoke suspense if any of the search params changed (used for filters).
   const key = serialize({ ...searchParams });
   const session = await auth()
   if (!session?.user?.id) redirect("/sign-in");
-  const isAdmin = await db
-    .select({ role: users.role })
-    .from(users)
-    .where(eq(users.id, session.user.id))
-    .limit(1)
-    .then((res) => res[0]?.role === "admin");
 
-  if (!isAdmin) redirect("/broker/dashboard");
   return (
     <PageContainer scrollable={false}>
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Vendors'
-            description='Manage vendors'
+            title='Corrections'
+            description=''
           />
-          <Link
-            href='/dashboard/product/new'
-            className={cn(buttonVariants(), 'text-xs md:text-sm')}
-          >
-            <Plus className='mr-2 h-4 w-4' /> Add New
-          </Link>
         </div>
-        <Separator />
-        <ProductTableAction />
         <Suspense
-          key={key}
+          // key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <VendorListingPage />
+          {/* <Corrections/> */}
+          <h1>corrections page</h1>
         </Suspense>
       </div>
     </PageContainer>

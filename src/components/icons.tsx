@@ -30,8 +30,11 @@ import {
   UserCircle2Icon,
   UserPen,
   UserX2Icon,
-  X
+  CircleDollarSign,
+  X,
+  FolderKanban 
 } from 'lucide-react';
+
 
 export type Icon = LucideIcon;
 
@@ -40,6 +43,7 @@ export const Icons = {
   logo: Command,
   login: LogIn,
   close: X,
+  orderbilling:   CircleDollarSign,
   product: LucideShoppingBag,
   spinner: Loader2,
   kanban: CircuitBoardIcon,
@@ -63,6 +67,7 @@ export const Icons = {
   pizza: Pizza,
   sun: SunMedium,
   moon: Moon,
+  folder: FolderKanban,
   laptop: Laptop,
   gitHub: ({ ...props }: LucideProps) => (
     <svg

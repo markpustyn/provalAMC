@@ -24,7 +24,7 @@ export const deleteOrder = async (__params: OpenOrder, id: any) => {
             success: true,
         };
     } catch (error) {
-        return { success: false, error: "Failed tp delete order" };
+        return { success: false, error: "Failed to delete order" };
     }
 };
 export const acceptOrder = async (params: StatusOrder) => {
