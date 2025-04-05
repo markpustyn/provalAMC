@@ -48,7 +48,6 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
         vendorId: session.data?.user?.id!,
       };
     try {
-        console.log(params)
       const result = await acceptOrder(params);
       if (result.success) {
         toast.success("Order declined!");

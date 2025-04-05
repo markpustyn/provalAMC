@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { toast } from 'sonner';
-import { acceptOrder } from '@/lib/admin/order';
+import { acceptOrder, billOrder } from '@/lib/admin/order';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { OpenOrder, StatusOrder } from 'types';
-
+import { BillingStatus, OpenOrder, StatusOrder } from 'types';
+import { paymentEnum } from '@/db/schema';
 interface AcceptAlertModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -19,7 +19,7 @@ interface AcceptAlertModalProps {
 export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
   isOpen,
   onClose,
-  loading,
+  // loading,
   order
 }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -41,13 +41,22 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
         propOrderId: order.orderId!,
         vendorId: session.data?.user?.id,
       };
+    const bill: BillingStatus = {
+      vendorId:  session.data?.user?.id,
+      propOrderId:  order.orderId!,
+      amount: "60",
+      vendorFee: "40",
+
+      };
     try {
-        console.log(params)
-      const result = await acceptOrder(params);
-      if (result.success) {
-        toast.success("Order accepted successfully!");
-        router.push('/broker/dashboard/order');
-      }
+        console.log(bill)
+        const result = await acceptOrder(params);
+        const billOrders = await billOrder(bill);
+        
+        if (result.success && billOrders.success) { 
+          toast.success("Order accepted successfully!");
+          router.push('/broker/dashboard/order');
+        }
     } catch (error) {
       toast.error("An error occurred while accepting the order.");
     }
@@ -73,10 +82,10 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
 
         {/* Buttons */}
         <div className="flex w-full items-center justify-end space-x-2 pt-6">
-          <Button disabled={loading} variant="outline" onClick={onClose}>
+          <Button variant="outline" onClick={onClose}>
             Cancel
           </Button>
-          <Button disabled={loading} variant="default" className='bg-green-500' onClick={onConfirm}>
+          <Button variant="default" className='bg-green-500' onClick={onConfirm}>
             Confirm Acceptance
           </Button>
         </div>

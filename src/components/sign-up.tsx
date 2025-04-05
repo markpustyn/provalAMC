@@ -51,7 +51,7 @@ export default function SignUpForm({
       const result = await register(data)
       if (result.success) {
         toast.success("Account Created!");
-        router.replace("/dashboard/overview")
+        router.replace("/broker/dashboard")
       }
       else {
         toast.error("Failed to create account. Please try again.");

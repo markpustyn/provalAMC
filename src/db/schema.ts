@@ -3,7 +3,7 @@ import { pgTable, text, uuid, varchar, date, timestamp, pgEnum, bigserial, small
 export const statusEnum = pgEnum("status", ["active", "disabled"]);
 export const rolesEnum = pgEnum("roles", ["broker", "client", "admin"]);
 export const orderEnum = pgEnum("propStatus", ["open", "pending", "assigned", "completed", "canceled", "correction"]);
-
+export const paymentEnum = pgEnum("propStatus", ["pending", "paid", "failed", "refunded"]);
 
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -54,8 +54,19 @@ export const order = pgTable("order", {
 });
 
 export const statusOrder = pgTable("statusOrder", {
-  statusId: uuid('id').notNull().primaryKey().defaultRandom(),
+  statusId: uuid('status_id').notNull().primaryKey().defaultRandom(),
   propStatus: varchar('prop_status', {length: 25}),
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   vendorId: uuid('vendor_id').references(() => users.id),
 })
+
+
+export const billing = pgTable("billing", {
+  statusId: uuid('id').notNull().primaryKey().defaultRandom(),
+  vendorId: uuid('vendor_id').references(() => users.id),
+  propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
+  amount: varchar('amount', { length: 25 }),
+  vendorFee: varchar('vendor_fee', { length: 25 }),
+  billingStatus: paymentEnum("billing_status").default("pending"),
+  paymentDate: timestamp('payment_date').defaultNow(),
+});

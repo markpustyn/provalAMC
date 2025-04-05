@@ -1,9 +1,9 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { order, orderEnum, statusOrder } from "@/db/schema";
+import { billing, order, orderEnum, statusOrder } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { OpenOrder, StatusOrder } from "types";
+import { BillingStatus, OpenOrder, StatusOrder } from "types";
 
 export const createOrder = async (params: OpenOrder) => {
     try {
@@ -29,12 +29,7 @@ export const deleteOrder = async (__params: OpenOrder, id: any) => {
 };
 export const acceptOrder = async (params: StatusOrder) => {
     try {
-        console.log("Trying to insert statusOrder");
-
-        // Insert new status entry
         const acceptOrder = await db.insert(statusOrder).values(params);
-
-        console.log("Inserted statusOrder:", acceptOrder);
 
         // Update the related order status
         await db
@@ -42,11 +37,21 @@ export const acceptOrder = async (params: StatusOrder) => {
             .set({ status: params.propStatus })
             .where(eq(order.orderId, params.propOrderId));
 
-        console.log("Updated order status");
-
         return { success: true };
     } catch (error) {
         console.log("Error:", error);
         return { success: false, error: "Failed to process order" };
+    }
+};
+export const billOrder = async (bill: BillingStatus) => {
+    try {
+        console.log(bill)
+        const billOrder = await db.insert(billing).values(bill)
+        return {
+            success: true,
+        };
+    } catch (error) {
+        console.error("Error creating order:", error);
+        return { success: false, error: "Failed to create order" };
     }
 };

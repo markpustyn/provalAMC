@@ -176,6 +176,41 @@
       "when": 1743372845716,
       "tag": "0024_jazzy_squadron_supreme",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1743476231547,
+      "tag": "0025_hard_james_howlett",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1743528795427,
+      "tag": "0026_dry_turbo",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1743528862878,
+      "tag": "0027_mean_slayback",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1743531079148,
+      "tag": "0028_ordinary_king_cobra",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1743786049241,
+      "tag": "0029_workable_marvel_boy",
+      "breakpoints": true
     }
   ]
 }

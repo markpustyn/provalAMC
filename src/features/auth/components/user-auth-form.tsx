@@ -48,11 +48,11 @@ export default function UserAuthForm({
         setIsOpened(false)
         signIn('credentials', {
             email: data.email,
-            callbackUrl: callbackUrl ?? '/dashboard'
+            callbackUrl: callbackUrl ?? '/admin'
           });
       }
       toast.success('Signed In Successfully!');
-      router.push("/dashboard/overview")
+      router.push("/broker/dashboard")
     } else {
         toast.warning('Incorrect Email or Password');
     }

@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Product } from '@/constants/mock-api';
-import { createOrder } from '@/lib/admin/order';
+import { billOrder, createOrder } from '@/lib/admin/order';
 import { OrderSchema } from '@/lib/schema/order_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
@@ -72,13 +72,14 @@ export default function ProductForm({
   });
   const router = useRouter()
 
-  const onSubmit = async (values: z.infer<typeof OrderSchema>) => {
+  const onSubmit = async (values: z.infer<typeof OrderSchema>, ) => {
     
     try {
       const result = await createOrder(values);
+      
       if (result.success) {
         toast.success("Order created successfully!");
-        router.push(`/dashboard/product/${result.data.orderId}`);
+        router.push(`/admin/product/${result.data.orderId}`);
       } else {
         toast.error("Failed to create order. Please try again.");
       }

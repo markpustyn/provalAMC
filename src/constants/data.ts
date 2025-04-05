@@ -15,7 +15,7 @@ export type Product = {
 export const navItems: NavItem[] = [
   {
     title: 'My Orders',
-    url: '/dashboard/overview',
+    url: '/admin/overview',
     icon: 'dashboard',
     isActive: false,
     shortcut: ['d', 'd'],
@@ -23,7 +23,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Vendors',
-    url: '/dashboard/orders',
+    url: '/admin/orders',
     icon: 'user2',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -31,7 +31,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Orders',
-    url: '/dashboard/product',
+    url: '/admin/product',
     icon: 'product',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -39,7 +39,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Billing',
-    url: '/dashboard/billing',
+    url: '/admin/billing',
     icon: 'orderbilling',
     shortcut: ['z', 'z'],
     isActive: false,
@@ -54,7 +54,7 @@ export const navItems: NavItem[] = [
     items: [
       {
         title: 'Profile',
-        url: '/dashboard/profile',
+        url: '/admin/profile',
         icon: 'userPen',
         shortcut: ['m', 'm']
       },
@@ -68,7 +68,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Create Order',
-    url: '/dashboard/product/new',
+    url: '/admin/product/new',
     icon: 'kanban',
     shortcut: ['k', 'k'],
     isActive: false,
@@ -117,7 +117,7 @@ export const brokerNav: BrokerNavItem[] = [
     items: [
       {
         title: 'Profile',
-        url: '/dashboard/profile',
+        url: '/broker/profile',
         icon: 'userPen',
         shortcut: ['m', 'm']
       },

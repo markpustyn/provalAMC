@@ -15,4 +15,4 @@ export default auth((req) => {
 });
 
 
-export const config = { matcher: ['/dashboard/'] };
+export const config = { matcher: ['/broker/dashboard'] };

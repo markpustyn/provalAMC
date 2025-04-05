@@ -75,7 +75,7 @@ export interface OpenOrder {
 
 
 export interface AuthCredentials{
-  id:string,
+  id?:string,
 	fname:string,
 	lname:string,
 	email:string,
@@ -87,8 +87,8 @@ export interface AuthCredentials{
 	city:string,
 	state:string,
   zip:string,
-  role:string,
-  statued: string,
+  role?:string,
+  statued?: string,
 	lastActivityDate?:string,
 	// createdAt?:string,
 }
@@ -101,10 +101,21 @@ export interface StatusOrder {
   // status:string;
 }
 
-
-
-
-
+export type BillingStatus = {
+  statusId?: string,
+  vendorId: string,
+  propOrderId: string,
+  amount: string,
+  vendorFee: string,
+  billingStatus?: string,
+  paymentDate?: Date,
+  propertyAddress?: string;
+  propertyCity?: string;
+  propertyState?: string;
+  propertyZip?: string;
+  propertyType?: string;
+  orderType?: string;
+};
 
 
 

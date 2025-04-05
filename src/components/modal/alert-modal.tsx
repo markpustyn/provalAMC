@@ -35,7 +35,7 @@ export const AlertModal: React.FC<AlertModalProps> = ({
       const result = await deleteOrder(defaultValues, orderId);
       if (result.success) {
         toast.success("Order deleted successfully!");
-        router.push('/dashboard/product')
+        router.push('/admin/product')
       } else {
         toast.error("Failed to create order. Please try again.");
       }

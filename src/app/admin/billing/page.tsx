@@ -16,6 +16,7 @@ import { redirect } from 'next/navigation';
 import { db } from '@/db/drizzle';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import BillingListing from '@/features/products/components/billingListing';
 
 
 export const metadata = {
@@ -49,7 +50,7 @@ export default async function Page(props: pageProps) {
             description='Manage vendors'
           />
           <Link
-            href='/dashboard/product/new'
+            href='/admin/product/new'
             className={cn(buttonVariants(), 'text-xs md:text-sm')}
           >
             <Plus className='mr-2 h-4 w-4' /> Add New
@@ -61,7 +62,7 @@ export default async function Page(props: pageProps) {
           key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <VendorListingPage />
+          <BillingListing />
         </Suspense>
       </div>
     </PageContainer>
