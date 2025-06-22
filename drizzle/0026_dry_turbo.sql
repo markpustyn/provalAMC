@@ -1,1 +1,0 @@
-ALTER TABLE "billing" ADD COLUMN "vendor_fee" varchar(25);

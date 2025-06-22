@@ -1,9 +1,4 @@
-import { pgTable, text, uuid, varchar, date, timestamp, pgEnum, bigserial, smallserial,  } from "drizzle-orm/pg-core";
-
-export const statusEnum = pgEnum("status", ["active", "disabled"]);
-export const rolesEnum = pgEnum("roles", ["broker", "client", "admin"]);
-export const orderEnum = pgEnum("propStatus", ["open", "pending", "assigned", "completed", "canceled", "correction"]);
-export const paymentEnum = pgEnum("propStatus", ["pending", "paid", "failed", "refunded"]);
+import { pgTable, text, uuid, varchar, date, timestamp} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -18,12 +13,11 @@ export const users = pgTable("users", {
   city: varchar('city', { length: 255 }).notNull(),
   state: varchar('state', { length: 15 }).notNull(),
   zip: varchar('zip_code', { length: 10 }).notNull(),
-  role: rolesEnum().default("broker"),
-  statued: statusEnum().default("active"),
+  role: varchar('role', { length: 50 }).default('broker'),
+  statued: varchar('statued', { length: 50 }).default('active'),
   lastActivityDate: date('last_activity_date').defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
-
 
 export const order = pgTable("order", {
   orderId: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -50,16 +44,15 @@ export const order = pgTable("order", {
   mainProduct: varchar('main_product', { length: 255 }),
   requestedDueDate: varchar('requested_due_date', { length: 50 }),
   description: text('description'),
-  status: varchar('order_status').references(() => statusOrder.propStatus).default('open')
+  status: varchar('order_status'),
 });
 
 export const statusOrder = pgTable("statusOrder", {
   statusId: uuid('status_id').notNull().primaryKey().defaultRandom(),
-  propStatus: varchar('prop_status', {length: 25}),
+  propStatus: varchar('prop_status', { length: 25 }),
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   vendorId: uuid('vendor_id').references(() => users.id),
-})
-
+});
 
 export const billing = pgTable("billing", {
   statusId: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -67,6 +60,6 @@ export const billing = pgTable("billing", {
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   amount: varchar('amount', { length: 25 }),
   vendorFee: varchar('vendor_fee', { length: 25 }),
-  billingStatus: paymentEnum("billing_status").default("pending"),
+  billingStatus: varchar('billing_status', { length: 50 }).default('pending'),
   paymentDate: timestamp('payment_date').defaultNow(),
 });
