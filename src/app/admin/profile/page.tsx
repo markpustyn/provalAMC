@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { db } from '@/db/drizzle';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import OrdersList from '../orders/ordersList';
+
 
 type pageProps = {
   searchParams: Promise<SearchParams>;
@@ -26,5 +28,5 @@ export default async function Page({ searchParams }: pageProps) {
         .then((res) => res[0]?.role === "admin");
     
       if (!isAdmin) redirect("/broker/dashboard");
-  return <ProfileViewPage />;
+  return <OrdersList />;
 }

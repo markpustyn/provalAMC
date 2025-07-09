@@ -33,7 +33,6 @@ export default async function BrokerProgress() {
   
   const orders = data.map(item => item.order);
   const totalProducts = orders.length
-  console.log(orders)
   return (
     <ProductTable
       columns={columns}

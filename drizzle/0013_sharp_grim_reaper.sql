@@ -1,1 +1,0 @@
-ALTER TABLE "statusOrder" RENAME COLUMN "orderStatus" TO "order_status";

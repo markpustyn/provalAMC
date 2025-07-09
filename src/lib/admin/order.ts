@@ -43,15 +43,15 @@ export const acceptOrder = async (params: StatusOrder) => {
         return { success: false, error: "Failed to process order" };
     }
 };
-export const billOrder = async (bill: BillingStatus) => {
-    try {
-        console.log(bill)
-        const billOrder = await db.insert(billing).values(bill)
-        return {
-            success: true,
-        };
-    } catch (error) {
-        console.error("Error creating order:", error);
-        return { success: false, error: "Failed to create order" };
-    }
-};
+// export const billOrder = async (bill: BillingStatus) => {
+//     try {
+//         console.log(bill)
+//         const billOrder = await db.insert(billing).values(bill)
+//         return {
+//             success: true,
+//         };
+//     } catch (error) {
+//         console.error("Error creating order:", error);
+//         return { success: false, error: "Failed to create order" };
+//     }
+// };
