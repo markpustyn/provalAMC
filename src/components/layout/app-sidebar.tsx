@@ -1,4 +1,3 @@
-'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Collapsible,
@@ -39,13 +38,11 @@ import {
   GalleryVerticalEnd,
   LogOut
 } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import * as React from 'react';
 import { Icons } from '../icons';
 import { getInitials } from '@/lib/utils';
-
+import { Session } from 'next-auth';
 
 export const company = {
   name: 'AMC SAAS',
@@ -53,10 +50,12 @@ export const company = {
   plan: 'Enterprise'
 };
 
-export default function AppSidebar() {
-  const { data: session } = useSession();
-  const pathname = usePathname();
+interface AppSidebarProps {
+  session: Session | null;
+  pathname: string;
+}
 
+export default function AppSidebar({ session, pathname }: AppSidebarProps) {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
@@ -200,9 +199,11 @@ export default function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => signOut({redirectTo: '/'})}>
-                  <LogOut />
-                  Log out
+                <DropdownMenuItem asChild>
+                  <Link href="/api/auth/signout" className="flex items-center">
+                    <LogOut />
+                    Log out
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -1,5 +1,5 @@
 import KBar from '@/components/kbar';
-import AppSidebar from '@/components/layout/app-sidebar';
+import SidebarWrapper from '@/components/layout/sidebar-wrapper';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { db } from '@/db/drizzle';
@@ -54,7 +54,7 @@ export default async function DashboardLayout({
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
-        <AppSidebar />
+        <SidebarWrapper session={session} />
         <SidebarInset>
           <Header />
           {/* page main content */}

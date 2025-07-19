@@ -1,4 +1,3 @@
-'use client';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,12 +10,12 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
+import { auth, signOut } from '@/lib/auth';
 import { getInitials } from '@/lib/utils';
-import { signOut, useSession } from 'next-auth/react';
+export async function UserNav() {
 
 
-export function UserNav() {
-  const { data: session } = useSession();
+const session = await auth()
   if (session) {
     return (
       <DropdownMenu>
@@ -55,9 +54,15 @@ export function UserNav() {
             <DropdownMenuItem>New Team</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>
-            Log out
-            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          <DropdownMenuItem asChild>
+            <form
+              action={async () => {
+                'use server';
+                await signOut();
+              }}
+            >
+              <button className="w-full text-left">Sign Out</button>
+            </form>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

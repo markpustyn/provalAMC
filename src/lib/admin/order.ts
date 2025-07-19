@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { billing, order, orderEnum, statusOrder } from "@/db/schema";
+import { billing, order, statusOrder } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { BillingStatus, OpenOrder, StatusOrder } from "types";
 

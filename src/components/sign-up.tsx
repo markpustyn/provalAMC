@@ -57,6 +57,7 @@ export default function SignUpForm({
         toast.error("Failed to create account. Please try again.");
       }
     } catch(error){
+      throw error
       toast.error("An error occurred while signing up")
     }
   }
