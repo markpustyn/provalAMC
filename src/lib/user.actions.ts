@@ -67,11 +67,11 @@ export async function login({
   password: string
 }) {
 
-  const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
-  const {success} = await ratelimit.limit(ip)
-  if(!success) {
-    redirect('/too-many')
-  }
+  // const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
+  // const {success} = await ratelimit.limit(ip)
+  // if(!success) {
+  //   redirect('/too-many')
+  // }
 
   try {
     LoginSchema.parse({
@@ -113,7 +113,7 @@ export async function register(params: AuthCredentials) {
     
   const existedUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
 
-  const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
+  // const ip = (await headers()).get('x-forwarded-for') || "127.0.0.1"
   // const {success} = await ratelimit.limit(ip)
   // if(!success) {
   //   redirect('/too-many')
