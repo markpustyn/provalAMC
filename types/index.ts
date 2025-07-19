@@ -28,6 +28,7 @@ export interface BrokerNavItem {
 export interface OpenOrder {
   [x: string]: any;
   orderId?: string;
+  orderNumber?: string;
   loanNumber?: string;
   loanOfficer?: string;
   loanOfficerEmail?: string;
@@ -52,25 +53,7 @@ export interface OpenOrder {
   requestedDueDate?: string;
   description?: string;
   status?: string;
-  sessionUserId?:string;
-
-  // propStatus: string;
-  // propOrderId: string;
-  // vendorId: string;
-
-
-  // services?: string;
-  // dbaName?: string;
-  // accContact?: string;
-  // accMobile?: string;
-  // accHome?: string;
-  // accWork?: string;
-  // accEmail?: string;
-  // callbackReference?: string;
-  // notes?: string;
-  // reportHtml?: string;
-  // isDone?: string;
-  
+  sessionUserId?:string;  
 }
 
 

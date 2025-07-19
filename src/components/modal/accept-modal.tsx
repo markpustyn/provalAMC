@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { toast } from 'sonner';
-import { acceptOrder, billOrder } from '@/lib/admin/order';
+import { acceptOrder } from '@/lib/admin/order';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { BillingStatus, OpenOrder, StatusOrder } from 'types';
@@ -48,18 +48,18 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
       vendorFee: "40",
 
       };
-    try {
-        console.log(bill)
-        const result = await acceptOrder(params);
-        const billOrders = await billOrder(bill);
+    // try {
+    //     console.log(bill)
+    //     const result = await acceptOrder(params);
+    //     const billOrders = await billOrder(bill);
         
-        if (result.success && billOrders.success) { 
-          toast.success("Order accepted successfully!");
-          router.push('/broker/dashboard/order');
-        }
-    } catch (error) {
-      toast.error("An error occurred while accepting the order.");
-    }
+    //     if (result.success && billOrders.success) { 
+    //       toast.success("Order accepted successfully!");
+    //       router.push('/broker/dashboard/order');
+    //     }
+    // } catch (error) {
+    //   toast.error("An error occurred while accepting the order.");
+    // }
   };
   if (!isMounted) return null;
 

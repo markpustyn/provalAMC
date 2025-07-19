@@ -1,0 +1,381 @@
+'use client'
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '@/components/ui/select';
+  import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+
+const FormSchema = z.object({
+  inspector: z.string().min(1, "Inspector name is required"),
+  date: z.string().min(1, "Inspection date is required"),
+  notes: z.string().optional(),
+  items: z.array(z.string()).min(1, "Select at least one property type"),
+    subjectCondition: z.string().optional(),
+  repairsNeeded: z.string().optional(),
+});
+
+
+const items = [
+  { id: "single", label: "Single Family" },
+  { id: "mfr", label: "Multi Family" },
+  { id: "condo", label: "Condo" },
+  { id: "land", label: "Vacant Land" },
+  { id: "mixed", label: "Mixed Use" },
+];
+
+export default function PcrForm({ OrderDetails }) {
+
+    const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+        inspector: '',
+        date: '',
+        notes: '',
+        items: [],
+        subjectCondition: '',
+        repairsNeeded: '',
+    },
+  })
+
+async function onSubmit(values: z.infer<typeof FormSchema>) {
+    console.log("Submitting: ", values);
+        try {
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const result = await res.json();
+        console.log("API response:", result);
+        // Success feedback here if needed
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+  }
+
+  return (
+    <div className="max-w-5xl mx-auto p-6 space-y-6 text-black">
+      <h2 className="text-4xl font-bold text-center">Property Condition Report</h2>
+
+      <div>
+        <h3 className="text-2xl font-bold text-black border-b pb-1">Address</h3>
+        <p className="font-medium">
+          {OrderDetails.propertyAddress} {OrderDetails.propertyCity}, {OrderDetails.propertyState} {OrderDetails.propertyZip}
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-2xl font-bold text-black border-b pb-1">Other Details</h3>
+        <div className="grid grid-cols-2 gap-2 mt-1">
+          <div>
+            <p className="text-black font-bold">Property</p>
+            <p className="font-medium">{OrderDetails.orderType || "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-black font-bold">Due Date</p>
+            <p className="font-medium">{OrderDetails.requestedDueDate || "N/A"}</p>
+          </div>
+        </div>
+      </div>
+
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+            <FormField
+              control={form.control}
+              name="inspector"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Inspector Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Name" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            </div>
+            <div>
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Inspection Date</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+            </div>
+
+          <FormField
+            control={form.control}
+            name="items"
+            render={() => (
+              <FormItem>
+                <FormLabel className='font-bold text-xl'>Property Type</FormLabel>
+                <FormDescription>Select all applicable conditions</FormDescription>
+                <div className="space-y-2">
+                  {items.map((item) => (
+                    <FormField
+                      key={item.id}
+                      control={form.control}
+                      name="items"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                               checked={field.value?.includes(item.id)}
+                               onCheckedChange={(checked) => {
+                                 return checked
+                                   ? field.onChange([...field.value, item.id])
+                                   : field.onChange(
+                                       field.value?.filter( 
+                                         (value) => value !== item.id
+                                       )
+                                     )
+                               }}
+                            />
+                          </FormControl>
+                          <FormLabel className="text-sm font-normal">{item.label}</FormLabel>
+                        </FormItem>
+                      )}
+                    />
+                  ))}
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+                control={form.control}
+                name="subjectCondition"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Subject Condition</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="new" />
+                            </FormControl>
+                            <Label>New</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="likeNew" />
+                            </FormControl>
+                            <Label>Like New</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="good" />
+                            </FormControl>
+                            <Label>Good</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="Fair" />
+                            </FormControl>
+                            <Label>Fair</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="Poor" />
+                            </FormControl>
+                            <Label>Poor</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="Bad" />
+                            </FormControl>
+                            <Label>Bad</Label>
+                        </FormItem>
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                />
+          <FormField
+                control={form.control}
+                name="repairsNeeded"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Reparis Needed</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="new" />
+                            </FormControl>
+                            <Label>New</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                            <RadioGroupItem value="likeNew" />
+                            </FormControl>
+                            <Label>Like New</Label>
+                        </FormItem>
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                />
+                            <FormItem>
+              <FormLabel className='font-bold text-xl'>Occupancy</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="occupied" /></FormControl>
+                    <Label>Occupied</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="vacant" /></FormControl>
+                    <Label>Vacant</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+
+            <FormItem>
+              <FormLabel className='font-bold text-xl'>Number of Stories</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="1" /></FormControl>
+                    <Label>1</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="2" /></FormControl>
+                    <Label>2</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="3+" /></FormControl>
+                    <Label>3+</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+
+            <FormItem>
+              <FormLabel className='font-bold text-xl'>Neighborhood</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="urban" /></FormControl>
+                    <Label>Urban</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="suburban" /></FormControl>
+                    <Label>Suburban</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="rural" /></FormControl>
+                    <Label>Rural</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+
+            <FormItem>
+              <FormLabel className='font-bold text-xl'>View Factors</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="street" /></FormControl>
+                    <Label>Street</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="park" /></FormControl>
+                    <Label>Park</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="lake" /></FormControl>
+                    <Label>Lake</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+
+            <FormItem>
+              <FormLabel className='font-bold text-xl'>Common Elements</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="pool" /></FormControl>
+                    <Label>Pool</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="gym" /></FormControl>
+                    <Label>Gym</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="clubhouse" /></FormControl>
+                    <Label>Clubhouse</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+
+          <div>
+          </div>
+          </div>
+          <FormField
+            control={form.control}
+            name="notes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Additional Notes</FormLabel>
+                <FormControl>
+                  <Textarea rows={3} placeholder="Any additional notes..." {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-end gap-4 mx-auto">
+              <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm">Save</Button>
+              <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm">Submit Report</Button>
+            </div>
+        </form>
+      </Form>
+    </div>
+  );
+}

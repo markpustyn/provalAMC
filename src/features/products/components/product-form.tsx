@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Product } from '@/constants/mock-api';
-import { billOrder, createOrder } from '@/lib/admin/order';
+import { createOrder } from '@/lib/admin/order';
 import { OrderSchema } from '@/lib/schema/order_schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation'
