@@ -1,8 +1,9 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { billing, order, statusOrder } from "@/db/schema";
+import { billing, order, statusOrder, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { Session } from "next-auth";
 import { BillingStatus, OpenOrder, StatusOrder } from "types";
 
 export const createOrder = async (params: OpenOrder) => {
@@ -55,3 +56,14 @@ export const acceptOrder = async (params: StatusOrder) => {
 //         return { success: false, error: "Failed to create order" };
 //     }
 // };
+export async function getUserProfile(session: Session) {
+  if (!session.user?.email) return null;
+
+  const result = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, session.user.email))
+    .limit(1);
+
+  return result[0] || null;
+}

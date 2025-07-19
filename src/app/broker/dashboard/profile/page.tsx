@@ -1,8 +1,11 @@
-import React from 'react'
+import ProfilePage from './profileInfo'
+import { auth } from '@/lib/auth'
 
-function Profile() {
+async function Profile() {
+   const session = await auth()
+  
   return (
-    <div>Profile Page</div>
+    <div><ProfilePage session={session!}/></div>
   )
 }
 
