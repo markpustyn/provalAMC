@@ -25,35 +25,66 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
+    <div className="p-6 mx-auto w-full max-w-2xl">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
         <CardHeader className="border-b pb-4">
-          <CardTitle className="text-2xl font-bold tracking-tight">
-            User Profile
-          </CardTitle>
+          <CardTitle className="text-2xl font-bold tracking-tight">User Profile</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 gap-x-8 gap-y-3 pt-4">
-          <ProfileItem label="Name" value={`${user.fname} ${user.lname}`} />
-          <ProfileItem label="Email" value={user.email} />
-          <ProfileItem label="Phone" value={user.phone} />
-          <ProfileItem label="Company" value={user.companyName} />
-          <ProfileItem label="License #" value={user.licenseNum} />
-          <ProfileItem label="Address" value={`${user.street}, ${user.city}, ${user.state} ${user.zip}`} />
-          <ProfileItem label="Role" value={<Badge variant="outline">{user.role}</Badge>} />
-          <ProfileItem label="Status" value={user.statued} />
-          <ProfileItem label="Last Active" value={user.lastActivityDate?.toLocaleString()} />
-          <ProfileItem label="Created At" value={formatDate(user.createdAt)} />
+
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 pt-4 text-base">
+          <div>
+            <span className="text-md font-medium text-black">Name</span>
+            <p className="text-black">{user.fname} {user.lname}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Email</span>
+            <p className="text-black">{user.email}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Phone</span>
+            <p className="text-black">{user.phone}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">License #</span>
+            <p className="text-black">{user.licenseNum}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Address</span>
+            <div className="text-black">{user.street}, <br />{user.city} {user.state} {user.zip}</div>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Role</span>
+            <div className="text-black">
+              <Badge variant="secondary" className="text-md">{user.role}</Badge>
+            </div>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Company</span>
+            <p className="text-black">{user.companyName}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-black">Last Active</span>
+            <p className="text-black">{user.lastActivityDate?.toLocaleString() || "-"}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-muted-foreground">Status</span>
+            <p className="text-black">{user.statued}</p>
+          </div>
+
+          <div>
+            <span className="text-md font-medium text-muted-foreground">Created At</span>
+            <p className="text-black">{formatDate(user.createdAt)}</p>
+          </div>
         </CardContent>
       </Card>
-    </div>
-  );
-}
-
-function ProfileItem({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="flex flex-col text-base">
-      <span className="font-semibold text-black">{label}</span>
-      <span className="truncate">{value}</span>
     </div>
   );
 }

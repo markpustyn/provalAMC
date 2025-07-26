@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, varchar, date, timestamp} from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, varchar, date, timestamp, serial, char} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -62,4 +62,16 @@ export const billing = pgTable("billing", {
   vendorFee: varchar('vendor_fee', { length: 25 }),
   billingStatus: varchar('billing_status', { length: 50 }).default('pending'),
   paymentDate: timestamp('payment_date').defaultNow(),
+});
+
+export const zipCodes = pgTable('zip_codes', {
+  id: serial('id').primaryKey(),
+  zip: varchar('zip', { length: 50 }),
+  lat: varchar('lat', { length: 50 }),
+  lng: varchar('lng', { length: 50 }),
+  city: varchar('city', { length: 100 }),
+  stateId: char('state_id', { length: 2 }),
+  stateName: varchar('state_name', { length: 100 }),
+  countyFips: varchar('county_fips', { length: 100 }),
+  countyName: varchar('county_name', { length: 100 }),
 });
