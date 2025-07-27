@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { billing, order, statusOrder, users } from "@/db/schema";
+import { billing, order, statusOrder, users, vendorZipCodes } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { Session } from "next-auth";
-import { BillingStatus, OpenOrder, StatusOrder } from "types";
+import { BillingStatus, OpenOrder, StatusOrder, UpdateZip } from "types";
 
 export const createOrder = async (params: OpenOrder) => {
     try {
@@ -18,6 +18,20 @@ export const createOrder = async (params: OpenOrder) => {
         return { success: false, error: "Failed to create order" };
     }
 };
+
+// export const updateZip = async (params: UpdateZip) => {
+//   try {
+//     const update = await db.insert(vendorZipCodes).values(params).returning();
+//     return {
+//       success: true,
+//       data: JSON.parse(JSON.stringify(update)),
+//     };
+//   } catch (error) {
+//     console.error("Error updating zips:", error);
+//     return { success: false, error: "Failed to update zips" };
+//   }
+// };
+
 export const deleteOrder = async (__params: OpenOrder, id: any) => {
     try {
         const deleteOrder = await db.delete(order).where(eq(order.orderId, id))

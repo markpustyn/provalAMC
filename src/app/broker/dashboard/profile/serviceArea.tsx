@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { getUserProfile } from "@/lib/admin/order";
+import { auth } from "@/lib/auth";
 
 type Zip = { zip: string };
 
@@ -12,11 +16,12 @@ type County = {
 
 type ServiceAreaProps = {
   counties: County[];
+  sessionId: string;
 };
 
 const PAGE_SIZE = 50;
 
-export function ServiceArea({ counties }: ServiceAreaProps) {
+export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
   const [selectedCounty, setSelectedCounty] = useState<string | null>(null);
   const [zipCodes, setZipCodes] = useState<Zip[]>([]);
   const [selectedZips, setSelectedZips] = useState<string[]>([]);
@@ -46,6 +51,23 @@ export function ServiceArea({ counties }: ServiceAreaProps) {
         : [...prev, zip]
     );
   };
+  const updateZips = async (selectedZips: string[], selectedCounty: string)  => {
+    
+    try{
+      console.log("sessionId:", sessionId);
+      console.log("selectedZips:", selectedZips);
+      await fetch("/api/savezips", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId:sessionId, zipCodes: selectedZips, county: selectedCounty }),
+      });
+      
+      toast ("Updated! ");
+    }
+    catch{
+      toast("Error updating zips.")
+    }
+  }
 
   const selectAllZips = () => {
     const currentPageZips = zipCodes.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -54,7 +76,6 @@ export function ServiceArea({ counties }: ServiceAreaProps) {
       ...currentPageZips.map(z => z.zip).filter(zip => !prev.includes(zip)),
     ]);
   };
-
   const totalPages = Math.ceil(zipCodes.length / PAGE_SIZE);
   const currentPageZips = zipCodes.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
@@ -128,6 +149,11 @@ export function ServiceArea({ counties }: ServiceAreaProps) {
                   </button>
                 </div>
               )}
+              <div className="pt-6">
+              <Button variant={"outline"} onClick={() => updateZips(selectedZips, selectedCounty)}>
+                Add
+              </Button>
+              </div>
             </div>
           )}
         </CardContent>

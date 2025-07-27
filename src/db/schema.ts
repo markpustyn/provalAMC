@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, varchar, date, timestamp, serial, char} from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, varchar, date, timestamp, serial, char, unique} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -13,8 +13,8 @@ export const users = pgTable("users", {
   city: varchar('city', { length: 255 }).notNull(),
   state: varchar('state', { length: 15 }).notNull(),
   zip: varchar('zip_code', { length: 10 }).notNull(),
-  role: varchar('role', { length: 50 }).default('broker'),
-  statued: varchar('statued', { length: 50 }).default('active'),
+  role: varchar('role', { length: 50 }),
+  statued: varchar('statued', { length: 50 }),
   lastActivityDate: date('last_activity_date').defaultNow(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
 });
@@ -75,3 +75,11 @@ export const zipCodes = pgTable('zip_codes', {
   countyFips: varchar('county_fips', { length: 100 }),
   countyName: varchar('county_name', { length: 100 }),
 });
+
+export const vendorZipCodes = pgTable("user_zip_codes", {
+  userId: uuid("user_id").references(() => users.id),
+   county: varchar('county', {length: 255}),
+   zipCode: varchar("zip_code", { length: 10 }).notNull(),
+}, (table) => ({
+  uniq_user_zip: unique().on(table.userId, table.zipCode),
+}));

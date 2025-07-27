@@ -23,7 +23,7 @@ async function Profile() {
   return (
     <div className='flex'>
       <ProfilePage session={session!}/>
-      <ServiceArea counties={counties} />
+      <ServiceArea counties={counties} sessionId={session?user.id: ''} />
       
       </div>
   )

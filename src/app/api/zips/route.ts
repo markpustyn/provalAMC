@@ -1,6 +1,6 @@
 // /api/zips/route.ts
 import { db } from "@/db/drizzle";
-import { zipCodes } from "@/db/schema";
+import {  vendorZipCodes, zipCodes } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
 

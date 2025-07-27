@@ -56,6 +56,12 @@ export interface OpenOrder {
   sessionUserId?:string;  
 }
 
+export interface UpdateZip {
+  userId?: string;
+  zipCode?:string;
+  county: string;
+}
+
 
 export interface AuthCredentials{
   id?:string,
