@@ -25,9 +25,9 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
   };
 
   return (
-    <div className="p-6 mx-auto w-full max-w-2xl">
+    <div className="mx-auto w-full">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
-        <CardHeader className="border-b pb-4">
+        <CardHeader className="border-b">
           <CardTitle className="text-2xl font-bold tracking-tight">User Profile</CardTitle>
         </CardHeader>
 

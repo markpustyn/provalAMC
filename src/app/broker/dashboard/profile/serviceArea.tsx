@@ -19,7 +19,7 @@ type ServiceAreaProps = {
   sessionId: string;
 };
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 30;
 
 export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
   const [selectedCounty, setSelectedCounty] = useState<string | null>(null);
@@ -62,7 +62,7 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
         body: JSON.stringify({ userId:sessionId, zipCodes: selectedZips, county: selectedCounty }),
       });
       
-      toast ("Updated! ");
+      toast ("Zip Codes Updated! ");
     }
     catch{
       toast("Error updating zips.")
@@ -80,11 +80,11 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
   const currentPageZips = zipCodes.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
-    <div className="p-6 mx-auto w-2/3">
+    <div className="px-2 mx-auto w-full">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold tracking-tight">
-            Select Service Area
+            Add Service Area
           </CardTitle>
         </CardHeader>
 
