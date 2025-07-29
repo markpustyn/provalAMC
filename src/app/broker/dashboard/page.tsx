@@ -51,7 +51,7 @@ export default async function Page(props: pageProps) {
           // key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <BrokerListingPage />
+          <BrokerListingPage session={session}/>
         </Suspense>
       </div>
     </PageContainer>

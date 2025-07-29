@@ -8,7 +8,7 @@ import { acceptOrder } from '@/lib/admin/order';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { BillingStatus, OpenOrder, StatusOrder } from 'types';
-import { paymentEnum } from '@/db/schema';
+
 interface AcceptAlertModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -38,6 +38,7 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
     }
     const params: StatusOrder = {
         propStatus: "assigned",
+        reason: '',
         propOrderId: order.orderId!,
         vendorId: session.data?.user?.id,
       };
@@ -48,18 +49,15 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
       vendorFee: "40",
 
       };
-    // try {
-    //     console.log(bill)
-    //     const result = await acceptOrder(params);
-    //     const billOrders = await billOrder(bill);
-        
-    //     if (result.success && billOrders.success) { 
-    //       toast.success("Order accepted successfully!");
-    //       router.push('/broker/dashboard/order');
-    //     }
-    // } catch (error) {
-    //   toast.error("An error occurred while accepting the order.");
-    // }
+    try {
+      const result = await acceptOrder(params);
+      if (result.success) {
+        toast.success("Order Accepted!");
+        router.push('/broker/dashboard/order');
+      }
+    } catch (error) {
+      toast.error("An error occurred while declining the order.");
+    }
   };
   if (!isMounted) return null;
 

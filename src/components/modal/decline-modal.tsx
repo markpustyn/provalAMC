@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Modal } from '@/components/ui/modal';
 import { toast } from 'sonner';
-import { acceptOrder, deleteOrder } from '@/lib/admin/order';
+import { acceptOrder, declineOrder, deleteOrder } from '@/lib/admin/order';
 import { useRouter } from 'next/navigation';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Input } from '../ui/input';
@@ -43,15 +43,16 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
       return;
     }
     const params: StatusOrder = {
-        propStatus:  `${reason}`,
+        propStatus:  'declined',
+        reason: `${reason}, ${additionalFee}, ${message}`,
         propOrderId: order.orderId!,
         vendorId: session.data?.user?.id!,
       };
     try {
-      const result = await acceptOrder(params);
+      const result = await declineOrder(params);
       if (result.success) {
         toast.success("Order declined!");
-        router.push('/broker/dashboard/order');
+        router.push('/broker/dashboard')
       }
     } catch (error) {
       toast.error("An error occurred while declining the order.");
@@ -79,7 +80,7 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
             <SelectContent>
               <SelectItem value="out_of_area">Out of Service Area</SelectItem>
               <SelectItem value="too_busy">Too Busy</SelectItem>
-              <SelectItem value="price_issue">Pricing Issue</SelectItem>
+              <SelectItem value="additional_fee">Additional Fee</SelectItem>
               <SelectItem value="other">Other</SelectItem>
             </SelectContent>
           </Select>
@@ -87,7 +88,7 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
 
         {/* Additional Fee Request */}
         <div>
-          <label className="block text-sm font-medium">Request Additional Fee (Optional)</label>
+          <label className="block text-sm font-medium">Additional Fee</label>
           <Input 
             type="number" 
             placeholder="0" 
@@ -98,7 +99,7 @@ export const DeclineAlertModal: React.FC<AlertModalProps> = ({
 
         {/* Message Box */}
         <div>
-          <label className="block text-sm font-medium">Additional Message (Optional)</label>
+          <label className="block text-sm font-medium">Additional Message</label>
           <Textarea 
             placeholder="Provide more details if necessary..." 
             value={message} 

@@ -50,8 +50,10 @@ export const order = pgTable("order", {
 export const statusOrder = pgTable("statusOrder", {
   statusId: uuid('status_id').notNull().primaryKey().defaultRandom(),
   propStatus: varchar('prop_status', { length: 25 }),
+  reason: varchar('reason', { length: 255 }),
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   vendorId: uuid('vendor_id').references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow()
 });
 
 export const billing = pgTable("billing", {

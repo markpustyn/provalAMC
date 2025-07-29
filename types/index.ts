@@ -85,6 +85,7 @@ export interface AuthCredentials{
 export interface StatusOrder {
   // id?: string;
   propStatus: string;
+  reason:string;
   propOrderId: string;
   vendorId: string;
   // status:string;

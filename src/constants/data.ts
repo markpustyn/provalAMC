@@ -103,32 +103,32 @@ export const brokerNav: BrokerNavItem[] = [
   {
     title: 'My Profile',
     url: '/broker/dashboard/profile',
-    icon: 'product',
+    icon: 'user',
     shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items
   },
-  {
-    title: 'Account',
-    url: '#', // Placeholder as there is no direct link for the parent
-    icon: 'billing',
-    isActive: true,
+  // {
+  //   title: 'Account',
+  //   url: '#', // Placeholder as there is no direct link for the parent
+  //   icon: 'billing',
+  //   isActive: true,
 
-    items: [
-      {
-        title: 'Profile',
-        url: '/broker/profile',
-        icon: 'userPen',
-        shortcut: ['m', 'm']
-      },
-      {
-        title: 'Login',
-        shortcut: ['l', 'l'],
-        url: '/',
-        icon: 'login'
-      }
-    ]
-  },
+  //   items: [
+  //     {
+  //       title: 'Profile',
+  //       url: '/broker/profile',
+  //       icon: 'userPen',
+  //       shortcut: ['m', 'm']
+  //     },
+  //     {
+  //       title: 'Login',
+  //       shortcut: ['l', 'l'],
+  //       url: '/',
+  //       icon: 'login'
+  //     }
+  //   ]
+  // },
 ];
 
 export interface SaleUser {

@@ -12,7 +12,7 @@ type ServiceAreaProps = {
   sessionId: string;
 };
 
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 15;
 
 export function ListedZips({ sessionId }: ServiceAreaProps) {
   const [savedZips, setSavedZips] = useState<SavedZip[]>([]);

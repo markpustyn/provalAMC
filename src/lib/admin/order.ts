@@ -1,10 +1,10 @@
 "use server";
 
 import { db } from "@/db/drizzle";
-import { billing, order, statusOrder, users, vendorZipCodes } from "@/db/schema";
+import { billing, order, statusOrder, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { Session } from "next-auth";
-import { BillingStatus, OpenOrder, StatusOrder, UpdateZip } from "types";
+import { BillingStatus, OpenOrder, StatusOrder } from "types";
 
 export const createOrder = async (params: OpenOrder) => {
     try {
@@ -44,13 +44,27 @@ export const deleteOrder = async (__params: OpenOrder, id: any) => {
 };
 export const acceptOrder = async (params: StatusOrder) => {
     try {
-        const acceptOrder = await db.insert(statusOrder).values(params);
+        
 
         // Update the related order status
         await db
             .update(order)
             .set({ status: params.propStatus })
             .where(eq(order.orderId, params.propOrderId));
+        await db.insert(statusOrder).values(params)
+        return { success: true };
+        
+    } catch (error) {
+        console.log("Error:", error);
+        return { success: false, error: "Failed to process order" };
+    }
+};
+export const declineOrder = async (params: StatusOrder) => {
+    try {
+        // Update the related order status
+        await db
+            .insert(statusOrder)
+            .values(params)
 
         return { success: true };
     } catch (error) {

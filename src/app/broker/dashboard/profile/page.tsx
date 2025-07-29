@@ -5,7 +5,9 @@ import { getUserProfile } from '@/lib/admin/order';
 import { db } from '@/db/drizzle';
 import { zipCodes } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+
 import { ListedZips } from './listedZips';
+import UserFiles from './userFiles';
 
 async function Profile() {
   const session = await auth();
@@ -30,6 +32,7 @@ async function Profile() {
 
         {/* Right side: Listed Zips */}
         <div className="w-full lg:w-1/2">
+          <UserFiles session={session!} />
           <ListedZips sessionId={user?.id ?? ''} />
         </div>
       </div>
