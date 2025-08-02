@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       const arrayBuffer = await file.arrayBuffer();
       const Body = (await file.arrayBuffer()) as unknown as Buffer;
 
-      const objectKey = `${userId}/${Date.now()}-${file.name}`;
+      const objectKey = `${propertyId}/${Date.now()}-${file.name}`;
 
       // Upload to S3
       await s3.send(

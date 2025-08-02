@@ -9,7 +9,6 @@ import OrderDetails from '@/features/broker/order-details';
 import PcrForm from '@/components/forms/pcrForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ImagePicker } from '../upload/img';
 import { FetchImages } from '../upload/fetchImg';
 import { auth } from '@/lib/auth';
 
@@ -28,8 +27,7 @@ const Page = async ({params}: {
         <Suspense fallback={<FormCardSkeleton />}>
         {/* <OrderDetails OrderDetails={orderDetails as OpenOrder}></OrderDetails> */}
         <PcrForm OrderDetails={orderDetails as OpenOrder}/>
-        <ImagePicker userId={session?.user?.id!} propId={orderDetails.orderId} />
-        <FetchImages/>
+        <FetchImages userId={session?.user?.id!} propId={orderDetails.orderId} />
         </Suspense>
       </div>
     </PageContainer>

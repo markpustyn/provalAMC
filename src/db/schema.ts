@@ -90,6 +90,7 @@ export const s3AmcUploads = pgTable("s3_amc_uploads", {
   uploadId: uuid('upload_id').primaryKey().defaultRandom(),
   propertyId: uuid("property_id").references(() => order.orderId),
   objectKey: varchar("object_key"),
+  imgTag: varchar("image_tag", {length: 100}),
   fileUrl: text("file_url"),
   userId: uuid("user_id").references(() => users.id),
   uploadTimestamp: timestamp("upload_timestamp", { withTimezone: true }).defaultNow()
