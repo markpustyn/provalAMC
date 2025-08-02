@@ -8,7 +8,6 @@ import Dropzone, {
   type FileRejection
 } from 'react-dropzone';
 import { toast } from 'sonner';
-
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';

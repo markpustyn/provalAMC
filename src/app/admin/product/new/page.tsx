@@ -5,7 +5,7 @@ import ProductViewPage from '@/features/products/components/product-view-page';
 import { db } from '@/db/drizzle';
 import { order } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import ProductForm from '@/features/products/components/product-form';
+import ProductForm from '@/components/forms/product-form';
 
 
 

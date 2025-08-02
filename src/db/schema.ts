@@ -85,3 +85,12 @@ export const vendorZipCodes = pgTable("user_zip_codes", {
 }, (table) => ({
   uniq_user_zip: unique().on(table.userId, table.zipCode),
 }));
+
+export const s3AmcUploads = pgTable("s3_amc_uploads", {
+  uploadId: uuid('upload_id').primaryKey().defaultRandom(),
+  propertyId: uuid("property_id").references(() => order.orderId),
+  objectKey: varchar("object_key"),
+  fileUrl: text("file_url"),
+  userId: uuid("user_id").references(() => users.id),
+  uploadTimestamp: timestamp("upload_timestamp", { withTimezone: true }).defaultNow()
+});

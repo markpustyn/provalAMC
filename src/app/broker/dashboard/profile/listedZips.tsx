@@ -38,7 +38,7 @@ export function ListedZips({ sessionId }: ServiceAreaProps) {
   const currentPageZips = savedZips.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
-    <div className="p-6 mx-auto w-full">
+    <div className="py-4 mx-auto w-full">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold tracking-tight">

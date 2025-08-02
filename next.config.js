@@ -11,7 +11,12 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'api.slingacademy.com',
         port: ''
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'amc-app-uploads.s3.us-east-2.amazonaws.com',
+        port: '',
+      },
     ]
   },
   typescript: {

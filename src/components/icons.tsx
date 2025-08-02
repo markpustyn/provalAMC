@@ -32,6 +32,9 @@ import {
   UserX2Icon,
   CircleDollarSign,
   X,
+  ClipboardList,
+  FolderClock,
+  SquarePen,
   FolderKanban 
 } from 'lucide-react';
 
@@ -66,6 +69,9 @@ export const Icons = {
   help: HelpCircle,
   pizza: Pizza,
   sun: SunMedium,
+  progress: FolderClock,
+  correction: SquarePen,
+  avaliable: ClipboardList,
   moon: Moon,
   folder: FolderKanban,
   laptop: Laptop,
