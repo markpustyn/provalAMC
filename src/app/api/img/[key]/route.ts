@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const Bucket = process.env.S3_BUCKET_NAME;
@@ -12,8 +12,27 @@ const s3 = new S3Client({
 });
 
 export async function GET(_: Request, { params }: { params: { key : string } }) {
-  const command = new GetObjectCommand({ Bucket, Key: params.key });
+  const paramsKey = await params
+  const command = new GetObjectCommand({ Bucket, Key: paramsKey.key });
   const src = await getSignedUrl(s3, command, { expiresIn: 3600 });
 
   return NextResponse.json({ src });
+}
+
+
+export async function DELETE(_: Request, { params }: { params: { key: string } }) {
+  try {
+    const paramsKey = await params
+    const command = new DeleteObjectCommand({
+      Bucket,
+      Key: paramsKey.key,
+    });
+
+    await s3.send(command);
+
+    return NextResponse.json({ success: true, key: paramsKey.key });
+  } catch (error) {
+    console.error("Failed to delete image:", error);
+    return NextResponse.json({ error: "Failed to delete image" }, { status: 500 });
+  }
 }

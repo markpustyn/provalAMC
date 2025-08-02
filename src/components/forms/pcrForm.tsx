@@ -41,7 +41,6 @@ const items = [
   { id: "mfr", label: "Multi Family" },
   { id: "condo", label: "Condo" },
   { id: "land", label: "Vacant Land" },
-  { id: "mixed", label: "Mixed Use" },
 ];
 
 export default function PcrForm({ OrderDetails }) {
@@ -259,7 +258,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     </FormItem> 
                 )}
                 />
-                            <FormItem>
+                <FormItem>
               <FormLabel className='font-bold text-xl'>Occupancy</FormLabel>
               <FormControl>
                 <RadioGroup className="space-y-2">
@@ -270,6 +269,33 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="vacant" /></FormControl>
                     <Label>Vacant</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
+                <FormItem>
+              <FormLabel className='font-bold text-xl'>Zoning</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="residential" /></FormControl>
+                    <Label>Residential</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="commercial" /></FormControl>
+                    <Label>Commercial</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="industrial" /></FormControl>
+                    <Label>Industrial</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="agricultural" /></FormControl>
+                    <Label>Agricultural</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="mixed" /></FormControl>
+                    <Label>Mixed Use</Label>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -314,7 +340,29 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                 </RadioGroup>
               </FormControl>
             </FormItem>
-
+            <FormItem>
+              <FormLabel className='font-bold text-xl'>Neighborhood Conformity</FormLabel>
+              <FormControl>
+                <RadioGroup className="space-y-2">
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="good" /></FormControl>
+                    <Label>Good</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="average" /></FormControl>
+                    <Label>Average</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="fair" /></FormControl>
+                    <Label>Fair</Label>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2">
+                    <FormControl><RadioGroupItem value="poor" /></FormControl>
+                    <Label>Poor</Label>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
+            </FormItem>
             <FormItem>
               <FormLabel className='font-bold text-xl'>View Factors</FormLabel>
               <FormControl>

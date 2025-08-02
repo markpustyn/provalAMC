@@ -228,7 +228,7 @@ export function FileUploader(props: FileUploaderProps) {
                 </div>
                 <div className='space-y-px'>
                   <p className='font-medium text-muted-foreground'>
-                    Drag {`'n'`} drop files here, or click to select files
+                    Drag and drop photos here
                   </p>
                   <p className='text-sm text-muted-foreground/70'>
                     You can upload
@@ -267,7 +267,7 @@ interface FileCardProps {
   progress?: number;
 }
 
-function FileCard({ file, progress, onRemove }: FileCardProps) {
+export function FileCard({ file, progress, onRemove }: FileCardProps) {
   return (
     <div className='relative flex items-center space-x-4'>
       <div className='flex flex-1 space-x-4'>
