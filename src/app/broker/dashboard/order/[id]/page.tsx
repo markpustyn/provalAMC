@@ -26,8 +26,7 @@ const Page = async ({params}: {
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
         {/* <OrderDetails OrderDetails={orderDetails as OpenOrder}></OrderDetails> */}
-        <PcrForm OrderDetails={orderDetails as OpenOrder}/>
-        <FetchImages userId={session?.user?.id!} propId={orderDetails.orderId} />
+        <PcrForm OrderDetails={orderDetails as OpenOrder} session={session}/>
         </Suspense>
       </div>
     </PageContainer>

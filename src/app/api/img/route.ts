@@ -12,9 +12,25 @@ const s3 = new S3Client({
   },
 });
 
-export async function GET() {
-  const response = await s3.send(new ListObjectsCommand({ Bucket }));
-  return NextResponse.json(response?.Contents ?? []);
+export async function GET(req: Request) {
+  try {
+
+    const { searchParams } = new URL(req.url);
+    const propId = searchParams.get("propId");
+
+    const response = await s3.send(
+      new ListObjectsCommand({
+        Bucket,
+        Prefix: `${propId}/`,
+      })
+    );
+
+    // return only array of objects
+    return NextResponse.json(response.Contents ?? []);
+  } catch (error) {
+    console.error("Failed to fetch images:", error);
+    return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
+  }
 }
 
 export async function POST(request: NextRequest) {

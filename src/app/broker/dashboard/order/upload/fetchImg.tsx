@@ -47,7 +47,7 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
       body.append("file", file, file.name);
     });
 
-    const response = await fetch("/api/img", {
+    const response = await fetch(`/api/img/`, {
       method: "POST",
       body,
     });
@@ -68,8 +68,8 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
   const fetchKeys = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/img/`);
-      const data: ImageKey[] = await res.json();
+      const res = await fetch(`/api/img?propId=${propId}`);
+      const data = await res.json();
       setImages(data);
     } catch (err) {
       console.error("Failed to fetch image keys", err);
@@ -95,6 +95,7 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
       console.error("Error deleting file:", err);
     }
   };
+  
 
   if (loading) return <p>Loading...</p>;
 

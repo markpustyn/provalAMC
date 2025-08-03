@@ -25,17 +25,23 @@ import {
   SelectValue
 } from '@/components/ui/select';
   import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { FetchImages } from "@/app/broker/dashboard/order/upload/fetchImg";
 
 const FormSchema = z.object({
   inspector: z.string().min(1, "Inspector name is required"),
   date: z.string().min(1, "Inspection date is required"),
   notes: z.string().optional(),
   items: z.array(z.string()).min(1, "Select at least one property type"),
-    subjectCondition: z.string().optional(),
+  subjectCondition: z.string().optional(),
   repairsNeeded: z.string().optional(),
+  occupancy: z.string().optional(),
+  propertyType: z.string().optional(),
+  stories: z.string().optional(),
+  neighborhood: z.string().optional(),
+  neighborhoodConformity: z.string().optional(),
+  viewFactors: z.string().optional(),
+  commonElements: z.string().optional(),
 });
-
-
 const items = [
   { id: "single", label: "Single Family" },
   { id: "mfr", label: "Multi Family" },
@@ -43,18 +49,26 @@ const items = [
   { id: "land", label: "Vacant Land" },
 ];
 
-export default function PcrForm({ OrderDetails }) {
+export default function PcrForm({ OrderDetails, session }) {
 
     const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
+      defaultValues: {
         inspector: '',
         date: '',
         notes: '',
         items: [],
         subjectCondition: '',
         repairsNeeded: '',
-    },
+        occupancy: '',
+        propertyType: '',
+        stories: '',
+        neighborhood: '',
+        neighborhoodConformity: '',
+        viewFactors: '',
+        commonElements: '',
+      },
+
   })
 
 async function onSubmit(values: z.infer<typeof FormSchema>) {
@@ -149,7 +163,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                       control={form.control}
                       name="items"
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormItem className="flex flex-row items-start space-x-3">
                           <FormControl>
                             <Checkbox
                                checked={field.value?.includes(item.id)}
@@ -186,37 +200,37 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                         value={field.value}
                         className="flex flex-col space-y-1"
                         >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="new" />
                             </FormControl>
                             <Label>New</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="likeNew" />
                             </FormControl>
                             <Label>Like New</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="good" />
                             </FormControl>
                             <Label>Good</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="Fair" />
                             </FormControl>
                             <Label>Fair</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="Poor" />
                             </FormControl>
                             <Label>Poor</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="Bad" />
                             </FormControl>
@@ -228,41 +242,68 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     </FormItem> 
                 )}
                 />
-          <FormField
+              <FormField
                 control={form.control}
                 name="repairsNeeded"
                 render={({ field }) => (
                     <FormItem className="space-y-3">
-                    <FormLabel className='font-bold text-xl'>Reparis Needed</FormLabel>
+                    <FormLabel className='font-bold text-xl'>Repairs Needed</FormLabel>
                     <FormControl>
                         <RadioGroup
                         onValueChange={field.onChange}
                         value={field.value}
                         className="flex flex-col space-y-1"
                         >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="new" />
                             </FormControl>
                             <Label>New</Label>
                         </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormItem className="flex items-center space-x-3">
                             <FormControl>
                             <RadioGroupItem value="likeNew" />
                             </FormControl>
                             <Label>Like New</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3">
+                            <FormControl>
+                            <RadioGroupItem value="none" />
+                            </FormControl>
+                            <Label>None Required</Label>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3">
+                            <FormControl>
+                            <RadioGroupItem value="minor" />
+                            </FormControl>
+                            <Label>Minor Repairs</Label>
+                        </FormItem>
+                        <RadioGroupItem value="Major" />
+                        <FormItem className="flex items-center space-x-3">
+                            <FormControl>
+                            <RadioGroupItem value="minor" />
+                            </FormControl>
+                            <Label>Major Repairs</Label>
                         </FormItem>
                         </RadioGroup>
                     </FormControl>
                     <FormMessage />
                     </FormItem> 
                 )}
-                />
-                <FormItem>
-              <FormLabel className='font-bold text-xl'>Occupancy</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
-                  <FormItem className="flex items-center space-x-2">
+                /> 
+                <FormField
+                control={form.control}
+                name="occupancy"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Occupancy</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
+                        <FormItem className="flex items-center space-x-3">
                     <FormControl><RadioGroupItem value="occupied" /></FormControl>
                     <Label>Occupied</Label>
                   </FormItem>
@@ -272,11 +313,22 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-            </FormItem>
-                <FormItem>
-              <FormLabel className='font-bold text-xl'>Zoning</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="propertyType"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Property Type</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="residential" /></FormControl>
                     <Label>Residential</Label>
@@ -299,12 +351,22 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                   </FormItem>
                 </RadioGroup>
               </FormControl>
-            </FormItem>
-
-            <FormItem>
-              <FormLabel className='font-bold text-xl'>Number of Stories</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="stories"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Number of Stories</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="1" /></FormControl>
                     <Label>1</Label>
@@ -317,14 +379,24 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     <FormControl><RadioGroupItem value="3+" /></FormControl>
                     <Label>3+</Label>
                   </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-
-            <FormItem>
-              <FormLabel className='font-bold text-xl'>Neighborhood</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                /> 
+              <FormField
+                control={form.control}
+                name="neighborhood"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Neighborhood</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="urban" /></FormControl>
                     <Label>Urban</Label>
@@ -337,13 +409,24 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     <FormControl><RadioGroupItem value="rural" /></FormControl>
                     <Label>Rural</Label>
                   </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-            <FormItem>
-              <FormLabel className='font-bold text-xl'>Neighborhood Conformity</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                /> 
+                <FormField
+                control={form.control}
+                name="neighborhoodConformity"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Neighborhood Conformity</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="good" /></FormControl>
                     <Label>Good</Label>
@@ -360,13 +443,24 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     <FormControl><RadioGroupItem value="poor" /></FormControl>
                     <Label>Poor</Label>
                   </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-            <FormItem>
-              <FormLabel className='font-bold text-xl'>View Factors</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                /> 
+                <FormField
+                control={form.control}
+                name="viewFactors"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>View Factors</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="street" /></FormControl>
                     <Label>Street</Label>
@@ -379,14 +473,24 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     <FormControl><RadioGroupItem value="lake" /></FormControl>
                     <Label>Lake</Label>
                   </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-
-            <FormItem>
-              <FormLabel className='font-bold text-xl'>Common Elements</FormLabel>
-              <FormControl>
-                <RadioGroup className="space-y-2">
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                /> 
+                <FormField
+                control={form.control}
+                name="commonElements"
+                render={({ field }) => (
+                    <FormItem className="space-y-3">
+                    <FormLabel className='font-bold text-xl'>Common Elements</FormLabel>
+                    <FormControl>
+                        <RadioGroup
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        className="flex flex-col space-y-1"
+                        >
                   <FormItem className="flex items-center space-x-2">
                     <FormControl><RadioGroupItem value="pool" /></FormControl>
                     <Label>Pool</Label>
@@ -399,10 +503,12 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                     <FormControl><RadioGroupItem value="clubhouse" /></FormControl>
                     <Label>Clubhouse</Label>
                   </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-
+                        </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem> 
+                )}
+                /> 
           <div>
           </div>
           </div>
@@ -418,6 +524,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
               </FormItem>
             )}
           />
+          <FetchImages userId={session?.user?.id!} propId={OrderDetails.orderId} />
           <div className="flex justify-end gap-4 mx-auto">
               <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm">Save</Button>
               <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm">Submit Report</Button>
