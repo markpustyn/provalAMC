@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { S3Client, PutObjectCommand, ListObjectsCommand } from "@aws-sdk/client-s3";
 import { db } from "@/db/drizzle";
 import { s3AmcUploads } from "@/db/schema";
+import crypto from "crypto";
+import { eq } from "drizzle-orm";
 
 const Bucket = process.env.S3_BUCKET_NAME!;
 const s3 = new S3Client({
@@ -25,8 +27,30 @@ export async function GET(req: Request) {
       })
     );
 
-    // return only array of objects
-    return NextResponse.json(response.Contents ?? []);
+    if(!propId){
+      return NextResponse.json({error: 'Missing Data'}, {status: 400})
+    }
+
+    const data = 
+      await db 
+      .select()
+      .from(s3AmcUploads)
+      .where(eq(s3AmcUploads.propertyId, propId))
+    
+
+      const s3Objects = response.Contents ?? [];
+
+      // Merge DB rows into S3 objects
+      const merged = s3Objects.map((obj) => {
+        const match = data.find((row) => row.objectKey === obj.Key);
+        return {
+          Key: obj.Key,
+          imgTag: match?.imgTag ?? "", // default empty if none
+        };
+      });
+
+      return NextResponse.json(merged);
+
   } catch (error) {
     console.error("Failed to fetch images:", error);
     return NextResponse.json({ error: "Failed to fetch images" }, { status: 500 });
@@ -50,7 +74,7 @@ export async function POST(request: NextRequest) {
       const arrayBuffer = await file.arrayBuffer();
       const Body = (await file.arrayBuffer()) as unknown as Buffer;
 
-      const objectKey = `${propertyId}/${Date.now()}-${file.name}`;
+      const objectKey = `${propertyId}/${Date.now()}-${crypto.randomUUID()}-${file.name}`;
 
       // Upload to S3
       await s3.send(

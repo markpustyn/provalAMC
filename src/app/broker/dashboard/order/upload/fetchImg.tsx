@@ -18,14 +18,17 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FileUploader } from "@/components/file-uploader";
+import { Textarea } from "@/components/ui/textarea";
 
-type ImageKey = { Key: string };
+
+type ImageKey = { Key: string; imgTag?: string };
 type SignedUrlResponse = { src: string };
 
 interface FileCardProps {
   fileKey: string;
   onRemove: () => void;
   progress?: number;
+  imgTag?: string;
 }
 
 const formSchema = z.object({
@@ -37,6 +40,7 @@ const formSchema = z.object({
 export function FetchImages({ userId, propId }: { userId: string; propId: string }) {
   const [images, setImages] = useState<ImageKey[]>([]);
   const [loading, setLoading] = useState(true);
+  
 
   async function handleUpload(files: File[]) {
     const body = new FormData();
@@ -117,23 +121,35 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
           <FileCard
             key={image.Key}
             fileKey={image.Key}
-            onRemove={() => handleRemove(image.Key)}
-          />
+            imgTag={image.imgTag}
+            onRemove={() => handleRemove(image.Key)} />
         ))}
       </div>
     </div>
   );
 }
 
-function FileCard({ fileKey, progress, onRemove }: FileCardProps) {
+function FileCard({ fileKey, progress, onRemove, imgTag }: FileCardProps) {
   const [src, setSrc] = useState<string | null>(null);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-  });
+const predefinedTags = [
+  "streetSign",
+  "leftSide",
+  "rightSide",
+  "front",
+  "address",
+  "streetleft",
+  "streetright",
+  "across",
+];
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+const [selectedValue, setSelectedValue] = useState(
+  imgTag && !predefinedTags.includes(imgTag) ? "other" : imgTag || ""
+);
+
+const [customValue, setCustomValue] = useState(
+  imgTag && !predefinedTags.includes(imgTag) ? imgTag : ""
+);
+
 
   useEffect(() => {
     async function fetchSignedUrl() {
@@ -145,22 +161,19 @@ function FileCard({ fileKey, progress, onRemove }: FileCardProps) {
         console.error(`Failed to fetch signed URL for ${fileKey}`, err);
       }
     }
-
     fetchSignedUrl();
   }, [fileKey]);
+
+  
+
 
   if (!src) return <p>Loading image...</p>;
 
   return (
     <div className="relative flex items-center space-x-4 border p-4 rounded-md shadow-sm">
+      {/* image */}
       <div className="relative">
-        <Image
-          src={src}
-          alt={fileKey}
-          width={550}
-          height={550}
-          className="rounded-md object-cover"
-        />
+        <Image src={src} alt={fileKey} width={550} height={550} className="rounded-md object-cover" />
         <Button
           type="button"
           variant="destructive"
@@ -173,41 +186,78 @@ function FileCard({ fileKey, progress, onRemove }: FileCardProps) {
         </Button>
       </div>
 
+      {/* tag selector */}
       <div className="flex-1">
         {progress ? <Progress value={progress} className="mt-1" /> : null}
+        <Select
+          value={selectedValue}
+          onValueChange={async (value) => {
+            setSelectedValue(value);
+            const finalTag = value === "other" ? customValue : value;
+            try {
+              const res = await fetch("/api/img/tags", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ fileKey, tag: finalTag }),
+              });
+              
+              if (!res.ok) throw new Error("Failed to update");
+              // toast.success("Tag updated!");
+            } catch (err) {
+              console.error("Failed to update tag", err);
+              toast.error("Failed to update tag");
+            }
+          }}
+        >
+          <SelectTrigger className="mt-2">
+            <SelectValue placeholder="Select Image Tag" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="streetSign">Street Sign</SelectItem>
+            <SelectItem value="leftSide">Left Side</SelectItem>
+            <SelectItem value="rightSide">Right Side</SelectItem>
+            <SelectItem value="front">Front</SelectItem>
+            <SelectItem value="address">Address</SelectItem>
+            <SelectItem value="streetleft">Street Left</SelectItem>
+            <SelectItem value="streetright">Street Right</SelectItem>
+            <SelectItem value="across">Across the Street</SelectItem>
+            <SelectItem value="other">Other</SelectItem>
+          </SelectContent>
+        </Select>
+        <div className="my-2">
+            {selectedValue === "other" && (
+              <div>
+                <Textarea
+                  placeholder="Comments"
+                  value={customValue}
+                  onChange={(e) => setCustomValue(e.target.value)}
+                />
+                <Button
+                  className="mt-2"
+                  onClick={async () => {
+                    try {
+                      const res = await fetch("/api/img/tags", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          fileKey,
+                          tag: customValue, // use the textarea value
+                        }),
+                      });
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <FormField
-              control={form.control}
-              name="tag"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <SelectTrigger className="mt-2">
-                        <SelectValue placeholder="Select Image Tag" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="streetSign">Street Sign</SelectItem>
-                        <SelectItem value="leftSide">Left Side</SelectItem>
-                        <SelectItem value="rightSide">Right Side</SelectItem>
-                        <SelectItem value="front">Front</SelectItem>
-                        <SelectItem value="address">Address</SelectItem>
-                        <SelectItem value="streetleft">Street Left</SelectItem>
-                        <SelectItem value="streetright">Street Right</SelectItem>
-                        <SelectItem value="across">Across the Street</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </form>
-        </Form>
+                      if (!res.ok) throw new Error("Failed to update");
+                      toast.success("Custom tag updated!");
+                    } catch (err) {
+                      console.error("Failed to update tag", err);
+                      toast.error("Failed to update tag");
+                    }
+                  }}
+                >
+                  Update
+                </Button>
+              </div>
+            )}
+        </div>
       </div>
     </div>
   );

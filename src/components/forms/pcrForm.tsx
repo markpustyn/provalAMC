@@ -120,7 +120,6 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
             <FormField
               control={form.control}
               name="inspector"
@@ -133,7 +132,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                 </FormItem>
               )}
             />
-            </div>
+
             <div>
           <FormField
             control={form.control}
@@ -278,10 +277,9 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
                             </FormControl>
                             <Label>Minor Repairs</Label>
                         </FormItem>
-                        <RadioGroupItem value="Major" />
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="minor" />
+                            <RadioGroupItem value="major" />
                             </FormControl>
                             <Label>Major Repairs</Label>
                         </FormItem>
@@ -524,13 +522,13 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
               </FormItem>
             )}
           />
-          <FetchImages userId={session?.user?.id!} propId={OrderDetails.orderId} />
           <div className="flex justify-end gap-4 mx-auto">
               <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm">Save</Button>
               <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm">Submit Report</Button>
             </div>
         </form>
       </Form>
+      <FetchImages userId={session?.user?.id!} propId={OrderDetails.orderId} />
     </div>
   );
 }
