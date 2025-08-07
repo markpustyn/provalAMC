@@ -9,25 +9,26 @@ import { OpenOrder } from 'types';
 import PcrForm from '@/components/forms/pcrForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { FetchImages } from '../upload/fetchImg';
 import { auth } from '@/lib/auth';
-import { PropertyDetails } from './propertyDetails';
 
 
-const Page = async ({params}: {
-  params:Promise<{id: string}>
-}) => {
-  const id = (await params).id
+const Page = async ({params}: { params: {id: string}}) => {
   const session = await auth()
+  const id = (await params).id
+
 
   const [orderDetails] = await db.select().from(order).where(eq(order.orderId, id)).limit(1)
+
+    if (!orderDetails) {
+    return <div className="p-6 text-xl text-red-500">Order not found.</div>;
+  }
 
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
-        <PropertyDetails OrderDetails={orderDetails as OpenOrder}></PropertyDetails>
-        {/* <PcrForm OrderDetails={orderDetails as OpenOrder} session={session}/> */}
+        {/* <PropertyDetails OrderDetails={orderDetails as OpenOrder}></PropertyDetails> */}
+        <PcrForm OrderDetails={orderDetails as OpenOrder} session={session}/>
         </Suspense>
       </div>
     </PageContainer>

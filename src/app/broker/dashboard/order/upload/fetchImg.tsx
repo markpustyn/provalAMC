@@ -173,7 +173,7 @@ const [customValue, setCustomValue] = useState(
     <div className="relative flex items-center space-x-4 border p-4 rounded-md shadow-sm">
       {/* image */}
       <div className="relative">
-        <Image src={src} alt={fileKey} width={550} height={550} className="rounded-md object-cover" />
+        <Image src={src} alt={fileKey} width={550} height={550} className="rounded-md object-cover h-auto" />
         <Button
           type="button"
           variant="destructive"

@@ -16,16 +16,11 @@ import {
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-  import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FetchImages } from "@/app/broker/dashboard/order/upload/fetchImg";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   inspector: z.string().min(1, "Inspector name is required"),
@@ -50,6 +45,19 @@ const items = [
 ];
 
 export default function PcrForm({ OrderDetails, session }) {
+  
+  useEffect(() => {
+  async function loadFormData() {
+    const res = await fetch(`/api/order/${OrderDetails.orderId}`);
+    if (res.ok) {
+      const { data } = await res.json();
+      form.reset(data);
+    }
+  }
+
+  loadFormData();
+}, [OrderDetails.orderId]);
+const router = useRouter();
 
     const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -74,8 +82,8 @@ export default function PcrForm({ OrderDetails, session }) {
 async function onSubmit(values: z.infer<typeof FormSchema>) {
     console.log("Submitting: ", values);
         try {
-        const res = await fetch('/api/order', {
-          method: 'POST',
+        const res = await fetch(`/api/order/${OrderDetails.orderId}`, {
+          method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(values),
         });
@@ -85,8 +93,31 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
         }
 
         const result = await res.json();
-        console.log("API response:", result);
-        // Success feedback here if needed
+        toast.success("Order Submitted! ");
+        await fetch(`/api/order/${OrderDetails.orderId}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+        });
+        router.push('/broker/dashboard/order')
+      } catch (error) {
+        console.error("Error submitting form:", error);
+      }
+  }
+async function onSave() {
+    const values = form.getValues()
+        try {
+        const res = await fetch(`/api/order/${OrderDetails.orderId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
+
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+
+        const result = await res.json();
+        toast.success("Order Saved! ");
       } catch (error) {
         console.error("Error submitting form:", error);
       }
@@ -94,7 +125,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6 text-black">
-      <h2 className="text-4xl font-bold text-center">Property Condition Report</h2>
+      <h2 className="text-4xl font-bold text-center py-12">Property Condition Report</h2>
 
       <div>
         <h3 className="text-2xl font-bold text-black border-b pb-1">Address</h3>
@@ -118,14 +149,14 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form id="reportForm" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField
               control={form.control}
               name="inspector"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Inspector Name</FormLabel>
+                  <FormLabel className='font-bold text-xl'>Inspector Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name" {...field} />
                   </FormControl>
@@ -139,7 +170,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
             name="date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Inspection Date</FormLabel>
+                <FormLabel className='font-bold text-xl'>Inspection Date</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -522,13 +553,15 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
               </FormItem>
             )}
           />
-          <div className="flex justify-end gap-4 mx-auto">
-              <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm">Save</Button>
-              <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm">Submit Report</Button>
-            </div>
         </form>
       </Form>
       <FetchImages userId={session?.user?.id!} propId={OrderDetails.orderId} />
+                <div className="flex justify-end gap-4 mx-auto">
+              <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm" onClick={()=> onSave()}>Save</Button>
+              <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm" form="reportForm">Submit Report</Button>
+            </div>
     </div>
   );
 }
+
+

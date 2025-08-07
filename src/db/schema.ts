@@ -1,4 +1,4 @@
-import { pgTable, text, uuid, varchar, date, timestamp, serial, char, unique} from "drizzle-orm/pg-core";
+import { pgTable, text, uuid, varchar, date, timestamp, serial, char, unique, jsonb} from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid('id').notNull().primaryKey().defaultRandom(),
@@ -94,4 +94,10 @@ export const s3AmcUploads = pgTable("s3_amc_uploads", {
   fileUrl: text("file_url"),
   userId: uuid("user_id").references(() => users.id),
   uploadTimestamp: timestamp("upload_timestamp", { withTimezone: true }).defaultNow()
+});
+
+export const pcrForms = pgTable("pcr_forms", {
+  orderId: uuid('order_id').references(() => order.orderId).notNull(),
+  data: jsonb("data").notNull(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
