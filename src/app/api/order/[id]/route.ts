@@ -38,10 +38,13 @@ export async function GET(_:Request, {params}: {params: {id:string}}) {
     .select()
     .from(pcrForms)
     .where(eq(pcrForms.orderId, id))
-    .limit(1);
+    .limit(1)
 
+    if(!existing || !existing.data){
+      return NextResponse.json({data: null})
+    }
 
-  return NextResponse.json({ data: existing.data ?? "" });
+  return NextResponse.json({ data: existing.data});
 }
 
 export async function POST(_:Request, {params}: {params: {id:string}}) {
