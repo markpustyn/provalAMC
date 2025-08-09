@@ -50,7 +50,7 @@ export default async function Page(props: pageProps) {
             description='Manage vendors'
           />
           <Link
-            href='/admin/product/new'
+            href='/admin/order/new'
             className={cn(buttonVariants(), 'text-xs md:text-sm')}
           >
             <Plus className='mr-2 h-4 w-4' /> Add New

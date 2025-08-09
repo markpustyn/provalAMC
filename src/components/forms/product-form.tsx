@@ -79,7 +79,7 @@ export default function ProductForm({
       
       if (result.success) {
         toast.success("Order created successfully!");
-        router.push(`/admin/product/${result.data.orderId}`);
+        router.push(`/admin/order/${result.data.orderId}`);
       } else {
         toast.error("Failed to create order. Please try again.");
       }

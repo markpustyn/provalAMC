@@ -23,7 +23,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Vendors',
-    url: '/admin/orders',
+    url: '/admin/vendors',
     icon: 'user2',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -31,7 +31,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Orders',
-    url: '/admin/product',
+    url: '/admin/order',
     icon: 'product',
     shortcut: ['p', 'p'],
     isActive: false,
@@ -68,7 +68,7 @@ export const navItems: NavItem[] = [
   },
   {
     title: 'Create Order',
-    url: '/admin/product/new',
+    url: '/admin/order/new',
     icon: 'kanban',
     shortcut: ['k', 'k'],
     isActive: false,

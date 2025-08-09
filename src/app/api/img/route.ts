@@ -48,6 +48,9 @@ export async function GET(req: Request) {
           imgTag: match?.imgTag ?? "", // default empty if none
         };
       });
+      if (!response.Contents || response.Contents.length === 0) {
+          return NextResponse.json([]);
+        }
 
       return NextResponse.json(merged);
 

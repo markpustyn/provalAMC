@@ -22,6 +22,10 @@ export const columns: ColumnDef<OpenOrder>[] = [
   //   }
   // },
   {
+    accessorKey: "status",
+    header: "Order Status",
+  },
+  {
     accessorKey: "loanNumber",
     header: "Loan Number",
   },

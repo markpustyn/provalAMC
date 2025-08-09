@@ -95,7 +95,7 @@ const ProfileCreateForm: React.FC<ProfileFormType> = ({
         // console.log("product", res);
       }
       router.refresh();
-      router.push(`/admin/products`);
+      router.push(`/admin/order`);
     } catch (error: any) {
     } finally {
       setLoading(false);

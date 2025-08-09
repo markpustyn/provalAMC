@@ -107,6 +107,22 @@ export type BillingStatus = {
   orderType?: string;
 };
 
+export type InspectionForm = {
+  date: string; // ISO date string, e.g., "2025-08-13"
+  items: string[]; // array of selected features or attributes
+  notes: string;
+  stories: string;
+  inspector: string;
+  occupancy: "occupied" | "vacant" | string;
+  viewFactors: string;
+  neighborhood: string;
+  propertyType: string;
+  repairsNeeded: string;
+  commonElements: string;
+  subjectCondition: string;
+  neighborhoodConformity: string;
+};
+
 
 
 export interface NavItemWithChildren extends NavItem {

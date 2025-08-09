@@ -41,6 +41,7 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
   const [images, setImages] = useState<ImageKey[]>([]);
   const [loading, setLoading] = useState(true);
   
+  
 
   async function handleUpload(files: File[]) {
     const body = new FormData();
@@ -65,22 +66,29 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
     console.log("Uploaded:", result);
     toast.success("Upload successful!");
 
-    // 👇 refresh immediately
+
     await fetchKeys();
   }
 
-  const fetchKeys = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/img?propId=${propId}`);
-      const data = await res.json();
-      setImages(data);
-    } catch (err) {
-      console.error("Failed to fetch image keys", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchKeys = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/img?propId=${propId}`);
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error("Server error:", res.status, errorText);
+          toast.error("Server error fetching images.");
+          return;
+        }
+        const data = await res.json();
+        setImages(data);
+      } catch (err) {
+        console.error("Network error fetching image keys", err);
+        toast.error("Network error fetching images.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
   useEffect(() => {
     fetchKeys();

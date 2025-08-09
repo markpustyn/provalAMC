@@ -1,6 +1,6 @@
+import ProductForm from '@/components/forms/product-form';
 import { fakeProducts, Product } from '@/constants/mock-api';
 import { notFound } from 'next/navigation';
-import ProductForm from './product-form';
 
 type TProductViewPageProps = {
   productId: string;

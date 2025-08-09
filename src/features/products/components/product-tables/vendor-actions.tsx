@@ -45,7 +45,7 @@ export const VendorActions: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/orders/${data.id}`)}
+            onClick={() => router.push(`/admin/order/${data.id!}`)}
           >
             <Edit className='mr-2 h-4 w-4' /> Update
           </DropdownMenuItem>
