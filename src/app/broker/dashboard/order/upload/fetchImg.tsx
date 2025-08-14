@@ -13,9 +13,6 @@ import {
   SelectValue
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { FileUploader } from "@/components/file-uploader";
 import { Textarea } from "@/components/ui/textarea";
@@ -140,18 +137,18 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
 function FileCard({ fileKey, progress, onRemove, imgTag }: FileCardProps) {
   const [src, setSrc] = useState<string | null>(null);
 const predefinedTags = [
-  "streetSign",
-  "leftSide",
-  "rightSide",
-  "front",
-  "address",
-  "streetleft",
-  "streetright",
-  "across",
+  "Street Sign",
+  "Left Side",
+  "Right Side",
+  "Front",
+  "Address",
+  "Street Left",
+  "Street Right",
+  "Across the Street",
 ];
 
 const [selectedValue, setSelectedValue] = useState(
-  imgTag && !predefinedTags.includes(imgTag) ? "other" : imgTag || ""
+  imgTag && !predefinedTags.includes(imgTag) ? "Other" : imgTag || ""
 );
 
 const [customValue, setCustomValue] = useState(
@@ -201,7 +198,7 @@ const [customValue, setCustomValue] = useState(
           value={selectedValue}
           onValueChange={async (value) => {
             setSelectedValue(value);
-            const finalTag = value === "other" ? customValue : value;
+            const finalTag = value === "Other" ? customValue : value;
             try {
               const res = await fetch("/api/img/tags", {
                 method: "POST",
@@ -221,19 +218,19 @@ const [customValue, setCustomValue] = useState(
             <SelectValue placeholder="Select Image Tag" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="streetSign">Street Sign</SelectItem>
-            <SelectItem value="leftSide">Left Side</SelectItem>
-            <SelectItem value="rightSide">Right Side</SelectItem>
-            <SelectItem value="front">Front</SelectItem>
-            <SelectItem value="address">Address</SelectItem>
-            <SelectItem value="streetleft">Street Left</SelectItem>
-            <SelectItem value="streetright">Street Right</SelectItem>
-            <SelectItem value="across">Across the Street</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            <SelectItem value="Street Sign">Street Sign</SelectItem>
+            <SelectItem value="Left Side">Left Side</SelectItem>
+            <SelectItem value="Right Side">Right Side</SelectItem>
+            <SelectItem value="Front">Front</SelectItem>
+            <SelectItem value="Address">Address</SelectItem>
+            <SelectItem value="Street Left">Street Left</SelectItem>
+            <SelectItem value="Street Right">Street Right</SelectItem>
+            <SelectItem value="Across the Street">Across the Street</SelectItem>
+            <SelectItem value="Other">Other</SelectItem>
           </SelectContent>
         </Select>
         <div className="my-2">
-            {selectedValue === "other" && (
+            {selectedValue === "Other" && (
               <div>
                 <Textarea
                   placeholder="Comments"

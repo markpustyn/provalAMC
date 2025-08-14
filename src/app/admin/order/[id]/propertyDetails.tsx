@@ -56,10 +56,12 @@ const generateReport = async (id: string) => {
     const imageUrls = imageRecords
       .map(r => r.fileUrl)
       .filter((u): u is string => !!u)
-      .map(u => encodeURI(u)); // avoid spaces/unsafe chars
+      .map(u => encodeURI(u));
+
+    const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
     
     const images = await Promise.all(imageUrls.map(toDataUrl));
-    const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={OrderDetails} orderData={orderRecord} images={images}/>).toBlob();
+    const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={OrderDetails} orderData={orderRecord} images={images} tags={tags}/>).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

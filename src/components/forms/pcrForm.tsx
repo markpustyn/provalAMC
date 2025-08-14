@@ -232,19 +232,19 @@ async function onSave() {
                         >
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="new" />
+                            <RadioGroupItem value="New" />
                             </FormControl>
                             <Label>New</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="likeNew" />
+                            <RadioGroupItem value="Like New" />
                             </FormControl>
                             <Label>Like New</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="good" />
+                            <RadioGroupItem value="Good" />
                             </FormControl>
                             <Label>Good</Label>
                         </FormItem>
@@ -286,31 +286,31 @@ async function onSave() {
                         >
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="new" />
+                            <RadioGroupItem value="New" />
                             </FormControl>
                             <Label>New</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="likeNew" />
+                            <RadioGroupItem value="Like New" />
                             </FormControl>
                             <Label>Like New</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="none" />
+                            <RadioGroupItem value="None" />
                             </FormControl>
                             <Label>None Required</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="minor" />
+                            <RadioGroupItem value="Minor Reparis Needed" />
                             </FormControl>
                             <Label>Minor Repairs</Label>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3">
                             <FormControl>
-                            <RadioGroupItem value="major" />
+                            <RadioGroupItem value="Major Reparis Needed" />
                             </FormControl>
                             <Label>Major Repairs</Label>
                         </FormItem>
@@ -333,11 +333,11 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                         <FormItem className="flex items-center space-x-3">
-                    <FormControl><RadioGroupItem value="occupied" /></FormControl>
+                    <FormControl><RadioGroupItem value="Occupied" /></FormControl>
                     <Label>Occupied</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="vacant" /></FormControl>
+                    <FormControl><RadioGroupItem value="Vacant" /></FormControl>
                     <Label>Vacant</Label>
                   </FormItem>
                 </RadioGroup>
@@ -359,23 +359,23 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="residential" /></FormControl>
+                    <FormControl><RadioGroupItem value="Residential" /></FormControl>
                     <Label>Residential</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="commercial" /></FormControl>
+                    <FormControl><RadioGroupItem value="Commercial" /></FormControl>
                     <Label>Commercial</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="industrial" /></FormControl>
+                    <FormControl><RadioGroupItem value="Industrial" /></FormControl>
                     <Label>Industrial</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="agricultural" /></FormControl>
+                    <FormControl><RadioGroupItem value="Agricultural" /></FormControl>
                     <Label>Agricultural</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="mixed" /></FormControl>
+                    <FormControl><RadioGroupItem value="Mixed Use" /></FormControl>
                     <Label>Mixed Use</Label>
                   </FormItem>
                 </RadioGroup>
@@ -427,15 +427,15 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="urban" /></FormControl>
+                    <FormControl><RadioGroupItem value="Urban" /></FormControl>
                     <Label>Urban</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="suburban" /></FormControl>
+                    <FormControl><RadioGroupItem value="Suburban" /></FormControl>
                     <Label>Suburban</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="rural" /></FormControl>
+                    <FormControl><RadioGroupItem value="Rural" /></FormControl>
                     <Label>Rural</Label>
                   </FormItem>
                         </RadioGroup>
@@ -457,19 +457,19 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="good" /></FormControl>
+                    <FormControl><RadioGroupItem value="Good" /></FormControl>
                     <Label>Good</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="average" /></FormControl>
+                    <FormControl><RadioGroupItem value="Average" /></FormControl>
                     <Label>Average</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="fair" /></FormControl>
+                    <FormControl><RadioGroupItem value="Fair" /></FormControl>
                     <Label>Fair</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="poor" /></FormControl>
+                    <FormControl><RadioGroupItem value="Poor" /></FormControl>
                     <Label>Poor</Label>
                   </FormItem>
                         </RadioGroup>
@@ -491,15 +491,15 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="street" /></FormControl>
+                    <FormControl><RadioGroupItem value="Street" /></FormControl>
                     <Label>Street</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="park" /></FormControl>
+                    <FormControl><RadioGroupItem value="Park" /></FormControl>
                     <Label>Park</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="lake" /></FormControl>
+                    <FormControl><RadioGroupItem value="Lake" /></FormControl>
                     <Label>Lake</Label>
                   </FormItem>
                         </RadioGroup>
@@ -521,15 +521,15 @@ async function onSave() {
                         className="flex flex-col space-y-1"
                         >
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="pool" /></FormControl>
+                    <FormControl><RadioGroupItem value="Pool" /></FormControl>
                     <Label>Pool</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="gym" /></FormControl>
+                    <FormControl><RadioGroupItem value="Gym" /></FormControl>
                     <Label>Gym</Label>
                   </FormItem>
                   <FormItem className="flex items-center space-x-2">
-                    <FormControl><RadioGroupItem value="clubhouse" /></FormControl>
+                    <FormControl><RadioGroupItem value="Clubhouse" /></FormControl>
                     <Label>Clubhouse</Label>
                   </FormItem>
                         </RadioGroup>
