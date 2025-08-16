@@ -1,7 +1,9 @@
 import { db } from '@/db/drizzle';
 import { order, pcrForms } from '@/db/schema';
+import { auth } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
+
 
 
 let orders: any[] = [];
@@ -9,6 +11,8 @@ let orders: any[] = [];
 export async function PUT(req: Request, {params}: {params: {id:string}}) {
   const body = await req.json();
   const { id } = await params
+  const session = await auth()
+  if (!session?.user?.id) return new Response("Unauthorized", { status: 401 });
 
  const [existing] = await db
     .select()
@@ -19,12 +23,13 @@ export async function PUT(req: Request, {params}: {params: {id:string}}) {
   if (existing) {
     await db
       .update(pcrForms)
-      .set({ data: body })
+      .set({ data: body , vendorId: session.user.id})
       .where(eq(pcrForms.orderId, id));
   } else {
     await db.insert(pcrForms).values({
       orderId: id,
       data: body,
+      vendorId: session.user.id
     });
   }
   

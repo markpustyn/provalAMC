@@ -85,7 +85,7 @@ async function onSubmit(values: z.infer<typeof FormSchema>) {
         const res = await fetch(`/api/order/${OrderDetails.orderId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(values),
+          body: JSON.stringify(values, ),
         });
 
         if (!res.ok) {

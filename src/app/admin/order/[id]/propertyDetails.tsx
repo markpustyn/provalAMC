@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import { InspectionForm, OpenOrder } from "types";
 import { db } from "@/db/drizzle";
-import { order, pcrForms, s3AmcUploads } from "@/db/schema";
+import { order, pcrForms, s3AmcUploads, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { GeneratePdf } from "@/components/pdf/generatePdf";
 import { renderToStream } from "@react-pdf/renderer";
 import ReactPDF from '@react-pdf/renderer';
 import { toast } from "sonner";
+
 
 export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
   const router = useRouter();
@@ -44,26 +45,32 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
 const generateReport = async (id: string) => {
   try {
     const [orderRecord] = await db
-      .select()
+      .select({ form: pcrForms, vendor: users })
       .from(pcrForms)
+      .leftJoin(users, eq(users.id, pcrForms.vendorId))
       .where(eq(pcrForms.orderId, id))
       .limit(1)
+      
+      const form = orderRecord?.form;
+      const vendor = orderRecord?.vendor || null;
       
     const imageRecords = await db
       .select()
       .from(s3AmcUploads)
       .where(eq(s3AmcUploads.propertyId, id));
 
+
     const imageUrls = imageRecords
       .map(r => r.fileUrl)
       .filter((u): u is string => !!u)
       .map(u => encodeURI(u));
 
+
     const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
-    console.log(tags)
+    console.log(orderRecord)
     
     const images = await Promise.all(imageUrls.map(toDataUrl));
-    const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={OrderDetails} orderData={orderRecord} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+    const blob = await ReactPDF.pdf(<GeneratePdf vendorDetails={orderRecord.vendor} orderDetails={OrderDetails} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

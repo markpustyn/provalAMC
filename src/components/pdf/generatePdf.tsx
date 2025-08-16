@@ -85,13 +85,15 @@ const styles = StyleSheet.create({
 
 export const GeneratePdf = ({
   orderDetails,
+  vendorDetails,
   orderData,
   images,
   tags,
-  logoSrc, // <-- optional: pass your logo URL/data here
+  logoSrc,
 }: {
   orderDetails: any;
   orderData: any;
+  vendorDetails: any;
   images: string[];
   tags: string[];
   logoSrc?: string;
@@ -153,7 +155,7 @@ export const GeneratePdf = ({
             <Text style={styles.detailValue}>{orderDetails?.propertyAddress || 'N/A'}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}></Text>
+            <Text style={styles.detailLabel}>City/State/Zip:</Text>
             <Text style={styles.detailValue}>
               {(orderDetails?.propertyCity || 'N/A') + ', ' + (orderDetails?.propertyState || 'N/A') + ' ' + (orderDetails?.propertyZip || 'N/A')}
             </Text>
@@ -165,7 +167,7 @@ export const GeneratePdf = ({
             </Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Property Type:</Text>
+            <Text style={styles.detailLabel}>Property:</Text>
             <Text style={styles.detailValue}>
               {(orderDetails?.propertyType)}
             </Text>
@@ -186,6 +188,8 @@ export const GeneratePdf = ({
             ['Neighborhood Conformity', gv('neighborhoodConformity')],
             ['Common Elements', gv('commonElements')],
             ['Repairs Needed', gv('repairsNeeded')],
+            ['Items', gv('items')],
+            ['Date Assigned', gv('date')],
           ].map(([label, value], i) => (
             <View style={styles.detailRow} key={i}>
               <Text style={styles.detailLabel}>{label}:</Text>
@@ -194,20 +198,21 @@ export const GeneratePdf = ({
           ))}
         </View>
 
-        {/* ===== REPORT ===== */}
+
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Report</Text>
-          {[
-            ['Date', gv('date')],
-            ['Items', gv('items')],
-            ['Inspector', gv('inspector')],
-            ['Notes', gv('notes')],
-          ].map(([label, value], i) => (
-            <View style={styles.detailRow} key={i}>
-              <Text style={styles.detailLabel}>{label}:</Text>
-              <Text style={styles.detailValue}>{String(value)}</Text>
+          <Text style={styles.sectionTitle}>Vendor</Text>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Name</Text>
+              <Text style={styles.detailValue}>{vendorDetails.fname} {vendorDetails.lname}</Text>
             </View>
-          ))}
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Company</Text>
+              <Text style={styles.detailValue}>{vendorDetails.companyName}</Text>
+            </View>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>License</Text>
+              <Text style={styles.detailValue}>{vendorDetails.licenseNum} {vendorDetails.state} </Text>
+            </View>
         </View>
 
         {/* ===== IMAGES ===== */}
