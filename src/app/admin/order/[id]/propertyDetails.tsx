@@ -16,6 +16,7 @@ import { eq } from "drizzle-orm";
 import { GeneratePdf } from "@/components/pdf/generatePdf";
 import { renderToStream } from "@react-pdf/renderer";
 import ReactPDF from '@react-pdf/renderer';
+import { toast } from "sonner";
 
 export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
   const router = useRouter();
@@ -59,16 +60,17 @@ const generateReport = async (id: string) => {
       .map(u => encodeURI(u));
 
     const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
+    console.log(tags)
     
     const images = await Promise.all(imageUrls.map(toDataUrl));
-    const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={OrderDetails} orderData={orderRecord} images={images} tags={tags}/>).toBlob();
+    const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={OrderDetails} orderData={orderRecord} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
     link.download = `report-${id}.pdf`;
     link.click();
     URL.revokeObjectURL(url);
-    
+    toast.success(`${OrderDetails.propertyAddress} Report Downloaded!`)
   } catch (error) {
     console.error("Error:", error);
   }

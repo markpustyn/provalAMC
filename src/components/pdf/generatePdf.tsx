@@ -6,28 +6,42 @@ const styles = StyleSheet.create({
     backgroundColor: '#fdfdfd',
     fontFamily: 'Helvetica',
   },
-  text: {
-    fontSize: 12,
-    marginBottom: 4,
-    textAlign: 'center',
+
+  /* ===== TOP BAR ===== */
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    justifyContent: 'space-between', // optional: spreads logo + title block
   },
-  header: {
-    fontSize: 22,
-    marginBottom: 10,
+  logo: { 
+    width: 180, 
+    height: 60, 
+    marginRight: 5
+},
+  titleBlock: {
+    flexGrow: 1,
+    alignItems: 'flex-end', // <- right-align children inside the block
+  },
+  reportTitle: {
+    fontSize: 18,
+    textAlign: 'right',
+    color: '#000000',
     fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#333',
   },
-  subHeader: {
-    fontSize: 14,
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#666',
+  reportSubtitle: {
+    fontSize: 12,
+    color: '#000000',
+    marginTop: 2,
+    textAlign: 'right', // <- ensure the address line is right-aligned
   },
+
+  /* ===== SECTIONS ===== */
   section: {
-    marginBottom: 20,
+    marginTop: 16,
+    marginBottom: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    borderBottomColor: '#000000',
     borderBottomStyle: 'solid',
     paddingBottom: 10,
   },
@@ -35,10 +49,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 6,
     fontWeight: 'bold',
-    color: '#444',
+    color: '#000000',
     paddingLeft: 8,
     borderLeftWidth: 4,
-    borderLeftColor: '#007ACC',
+    borderLeftColor: '#256ccb',
     borderLeftStyle: 'solid',
   },
   detailRow: {
@@ -54,12 +68,19 @@ const styles = StyleSheet.create({
   detailValue: {
     color: '#333',
   },
-    image: {
+
+  /* keep your existing text + image styles */
+  text: {
+    fontSize: 12,
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  image: {
     width: '100%',
     height: 350,
-    objectFit: 'contain',
+    objectFit: 'contain', // leaving as-is per your request
     marginBottom: 10,
-    },
+  },
 });
 
 export const GeneratePdf = ({
@@ -67,13 +88,15 @@ export const GeneratePdf = ({
   orderData,
   images,
   tags,
+  logoSrc, // <-- optional: pass your logo URL/data here
 }: {
   orderDetails: any;
   orderData: any;
   images: string[];
   tags: string[];
+  logoSrc?: string;
 }) => {
-  // Parse JSON if necessary
+  // Parse JSON safely
   let parsedData: Record<string, any> = {};
   try {
     parsedData =
@@ -86,33 +109,114 @@ export const GeneratePdf = ({
     parsedData = {};
   }
 
+  // ---- sorting unchanged except for your priority map ----
+  let sortedImgs = images.map((img, i) => ({ image: img, tag: tags?.[i] ?? '', idx: i }));
+  const priority: Record<string, number> = {
+    'Street Sign': 1,
+    'Front': 2,
+    'Left Side': 3,
+    'Right Side': 4,
+    'Street Left': 5,
+    'Street Right': 6,
+    'Address': 7,
+    'Across the Street': 8,
+  };
+  sortedImgs.sort((a, b) => {
+    const priA = priority[a.tag] ?? 99;
+    const priB = priority[b.tag] ?? 99;
+    if (priA !== priB) return priA - priB;
+    return a.idx - b.idx; // stable within same priority
+  });
+
+  // Helpers to pick fields if present
+  const gv = (k: string) => (parsedData?.[k] ?? 'N/A');
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
-        <Text style={styles.header}>{orderDetails?.propertyAddress || 'No Address'}</Text>
-        <Text style={styles.subHeader}>
-          {orderDetails?.propertyCity || ''}, {orderDetails?.propertyState || ''} {orderDetails?.propertyZip || ''}
-        </Text>
+        {/* ===== TOP BAR ===== */}
+        <View style={styles.topBar}>
+          {logoSrc ? <Image src={logoSrc} style={styles.logo} /> : <View style={styles.logo} />}
+          <View style={styles.titleBlock}>
+            <Text style={styles.reportTitle}>Property Condition Report</Text>
+            <Text style={styles.reportSubtitle}>
+              {orderDetails?.propertyAddress || 'No Address'}
+            </Text>
+          </View>
+        </View>
 
-        {/* Property Info */}
+        {/* ===== ADDRESS ===== */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Address</Text>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Street:</Text>
+            <Text style={styles.detailValue}>{orderDetails?.propertyAddress || 'N/A'}</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}></Text>
+            <Text style={styles.detailValue}>
+              {(orderDetails?.propertyCity || 'N/A') + ', ' + (orderDetails?.propertyState || 'N/A') + ' ' + (orderDetails?.propertyZip || 'N/A')}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Inspection Date:</Text>
+            <Text style={styles.detailValue}>
+              {(orderDetails?.requestedDueDate)}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Property Type:</Text>
+            <Text style={styles.detailValue}>
+              {(orderDetails?.propertyType)}
+            </Text>
+          </View>
+          {/* Add APN or other address identifiers here if you have them */}
+        </View>
+
+        {/* ===== PROPERTY INFORMATION ===== */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Property Information</Text>
-          {Object.entries(parsedData).map(([label, value], i) => (
+          {[
+            ['Property Type', gv('propertyType')],
+            ['Stories', gv('stories')],
+            ['Occupancy', gv('occupancy')],
+            ['Neighborhood', gv('neighborhood')],
+            ['View Factors', gv('viewFactors')],
+            ['Subject Condition', gv('subjectCondition')],
+            ['Neighborhood Conformity', gv('neighborhoodConformity')],
+            ['Common Elements', gv('commonElements')],
+            ['Repairs Needed', gv('repairsNeeded')],
+          ].map(([label, value], i) => (
             <View style={styles.detailRow} key={i}>
               <Text style={styles.detailLabel}>{label}:</Text>
-              <Text style={styles.detailValue}>{String(value) || 'N/A'}</Text>
+              <Text style={styles.detailValue}>{String(value)}</Text>
             </View>
           ))}
         </View>
 
-        {/* Images */}
+        {/* ===== REPORT ===== */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Report</Text>
+          {[
+            ['Date', gv('date')],
+            ['Items', gv('items')],
+            ['Inspector', gv('inspector')],
+            ['Notes', gv('notes')],
+          ].map(([label, value], i) => (
+            <View style={styles.detailRow} key={i}>
+              <Text style={styles.detailLabel}>{label}:</Text>
+              <Text style={styles.detailValue}>{String(value)}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* ===== IMAGES ===== */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Property Photos</Text>
-          {images.map((image, index) => (
-            <View key={index}>
-              <Image src={image} style={styles.image} />
-              <Text style={styles.text}>{tags?.[index] ?? ''}</Text>
+          {sortedImgs.map((it, i) => (
+            <View key={i}>
+              <Image src={it.image} style={styles.image} />
+              <Text style={{ ...styles.text }}>{it.tag ?? ''}</Text>
             </View>
           ))}
         </View>
