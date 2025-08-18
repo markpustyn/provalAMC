@@ -38,8 +38,8 @@ const styles = StyleSheet.create({
 
   /* ===== SECTIONS ===== */
   section: {
-    marginTop: 16,
-    marginBottom: 16,
+    marginTop: 10,
+    marginBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
     borderBottomStyle: 'solid',
@@ -75,16 +75,64 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     textAlign: 'center',
   },
+  imgTag: {
+    fontSize: 14,
+    fontWeight: 600,
+    marginBottom: 10,
+    marginTop: 4,
+    textAlign: 'center',
+  },
   image: {
     width: '100%',
     height: 350,
-    objectFit: 'contain', // leaving as-is per your request
+    objectFit: 'contain',
     marginBottom: 10,
+    borderRadius: 8
   },
+  frontImage: {
+    width: '100%',
+    height: 300,
+    borderRadius: 8,
+  },
+    splitRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: '#000000',
+    borderStyle: 'solid',
+    height: '175px',
+    borderRadius: 8,
+  },
+  half: { width: '48%' },
+
+  ratingHeader: { 
+    fontSize: 14,
+    fontWeight: 600,
+    color: '#000000', 
+    marginBottom: 6, 
+    marginTop: 6
+},
+  ratingBox: {
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  score: { fontSize: 36, fontWeight: 'bold', color: '#000' },
+  pill: {
+    fontSize: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 999,
+    marginTop: 8,
+  },
+  frontHeader: { fontSize: 12, color: '#555', marginBottom: 6, textAlign: 'center' },
 });
 
 export const GeneratePdf = ({
   orderDetails,
+  rating,
   vendorDetails,
   orderData,
   images,
@@ -92,6 +140,7 @@ export const GeneratePdf = ({
   logoSrc,
 }: {
   orderDetails: any;
+  rating: any;
   orderData: any;
   vendorDetails: any;
   images: string[];
@@ -114,14 +163,15 @@ export const GeneratePdf = ({
   // ---- sorting unchanged except for your priority map ----
   let sortedImgs = images.map((img, i) => ({ image: img, tag: tags?.[i] ?? '', idx: i }));
   const priority: Record<string, number> = {
-    'Street Sign': 1,
-    'Front': 2,
-    'Left Side': 3,
-    'Right Side': 4,
-    'Street Left': 5,
-    'Street Right': 6,
-    'Address': 7,
-    'Across the Street': 8,
+
+    'Front': 1,
+    'Left Side': 2,
+    'Right Side': 3,
+    'Street Left': 4,
+    'Street Right': 5,
+    'Address': 6,
+    'Across the Street': 7,
+    'Street Sign': 8,
   };
   sortedImgs.sort((a, b) => {
     const priA = priority[a.tag] ?? 99;
@@ -131,6 +181,16 @@ export const GeneratePdf = ({
   });
 
   // Helpers to pick fields if present
+  const rLabel = (rating?.rating || 'Unknown').toString();
+  const colorMap: Record<string, { bg: string; fg: string }> = {
+    Good:      { bg: '#E6F4EA', fg: '#1E7B34' },
+    Moderate:  { bg: '#FFF4E5', fg: '#8A4B00' },
+    Elevated:  { bg: '#FFF0F0', fg: '#B3261E' },
+    High:      { bg: '#FBE9E7', fg: '#C62828' },
+    Unknown:   { bg: '#EEEEEE', fg: '#555555' },
+  };
+  const palette = colorMap[rLabel] || colorMap.Unknown;
+
   const gv = (k: string) => (parsedData?.[k] ?? 'N/A');
 
   return (
@@ -172,7 +232,33 @@ export const GeneratePdf = ({
               {(orderDetails?.propertyType)}
             </Text>
           </View>
-          {/* Add APN or other address identifiers here if you have them */}
+        </View>
+        <View style={styles.splitRow}>
+          {/* Rating card */}
+          <View style={[styles.card, styles.half, {padding: 5,}]}>
+            <Text style={styles.ratingHeader}>Overall Rating</Text>
+            <View style={styles.ratingBox}>
+              <Text style={styles.score}>{Math.round(rating?.score ?? 0)}</Text>
+              <Text style={[styles.pill, { backgroundColor: palette.bg, color: palette.fg }]}>
+                {rLabel}
+              </Text>
+            </View>
+            <View style={{ marginTop: 15 }}>
+              <Text style={{ fontSize: 10, color: '#555' }}>
+                Type: {gv('propertyType')} • Stories: {gv('stories')}
+              </Text>
+              <Text style={{ fontSize: 10, color: '#555', marginTop: 2 }}>
+                Condition: {gv('subjectCondition')} • Repairs: {gv('repairsNeeded')}
+              </Text>
+            </View>
+          </View>
+
+          {/* Front photo card */}
+          <View style={[styles.card, styles.half]}>
+              <>
+                <Image src={sortedImgs[0].image} style={styles.frontImage} />
+              </>
+          </View>
         </View>
 
         {/* ===== PROPERTY INFORMATION ===== */}
@@ -200,18 +286,18 @@ export const GeneratePdf = ({
 
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Vendor</Text>
+          <Text style={styles.sectionTitle}>Vendor Information</Text>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Name</Text>
               <Text style={styles.detailValue}>{vendorDetails.fname} {vendorDetails.lname}</Text>
             </View>
             <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Company</Text>
-              <Text style={styles.detailValue}>{vendorDetails.companyName}</Text>
-            </View>
-            <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>License</Text>
               <Text style={styles.detailValue}>{vendorDetails.licenseNum} {vendorDetails.state} </Text>
+            </View>
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>Company</Text>
+              <Text style={styles.detailValue}>{vendorDetails.companyName}</Text>
             </View>
         </View>
 
@@ -221,7 +307,7 @@ export const GeneratePdf = ({
           {sortedImgs.map((it, i) => (
             <View key={i}>
               <Image src={it.image} style={styles.image} />
-              <Text style={{ ...styles.text }}>{it.tag ?? ''}</Text>
+              <Text style={{ ...styles.imgTag }}>{it.tag ?? ''}</Text>
             </View>
           ))}
         </View>

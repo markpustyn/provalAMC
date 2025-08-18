@@ -12,17 +12,20 @@ import { OpenOrder } from "types"
 import { Edit, MoreHorizontal, Trash, Download  } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { pcrForms, s3AmcUploads } from '@/db/schema';
+import { pcrForms, s3AmcUploads, users } from '@/db/schema';
 import { db } from '@/db/drizzle';
 import { eq } from 'drizzle-orm';
 import { GeneratePdf } from '@/components/pdf/generatePdf';
 import ReactPDF from '@react-pdf/renderer';
 import { toast } from 'sonner';
+import { ratingAssesment } from '@/lib/utils';
+
 
 
 interface CellActionProps {
   data: OpenOrder;
 }
+
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
@@ -49,41 +52,44 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   }
   
   
-  const generateReport = async (id: string) => {
-    try {
-      const [orderRecord] = await db
-        .select()
-        .from(pcrForms)
-        .where(eq(pcrForms.orderId, id))
-        .limit(1)
-        
-      const imageRecords = await db
-        .select()
-        .from(s3AmcUploads)
-        .where(eq(s3AmcUploads.propertyId, id));
-  
-      const imageUrls = imageRecords
-        .map(r => r.fileUrl)
-        .filter((u): u is string => !!u)
-        .map(u => encodeURI(u));
-  
-      const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
-      console.log(tags)
+const generateReport = async (id: string) => {
+  try {
+    const [orderRecord] = await db
+      .select({ form: pcrForms, vendor: users })
+      .from(pcrForms)
+      .leftJoin(users, eq(users.id, pcrForms.vendorId))
+      .where(eq(pcrForms.orderId, id))
+      .limit(1)
       
-      const images = await Promise.all(imageUrls.map(toDataUrl));
-      const blob = await ReactPDF.pdf(<GeneratePdf orderDetails={data} orderData={orderRecord} images={images} tags={tags}/>).toBlob();
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `report-${id}.pdf`;
-      link.click();
-      URL.revokeObjectURL(url);
-      toast.success(`${data.propertyAddress} Report Downloaded! `)
-      
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    const imageRecords = await db
+      .select()
+      .from(s3AmcUploads)
+      .where(eq(s3AmcUploads.propertyId, id));
+
+
+    const imageUrls = imageRecords
+      .map(r => r.fileUrl)
+      .filter((u): u is string => !!u)
+      .map(u => encodeURI(u));
+
+
+    const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
+
+    const rating = ratingAssesment(orderRecord)
+    
+    const images = await Promise.all(imageUrls.map(toDataUrl));
+    const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={orderRecord.vendor} orderDetails={data} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `report-${id}.pdf`;
+    link.click();
+    URL.revokeObjectURL(url);
+    toast.success(`${data.propertyAddress} Report Downloaded!`)
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
   
 
   return (
@@ -107,10 +113,10 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           <DropdownMenuItem
             onClick={() => generateReport(data.orderId!)}
           >
-            <Download className='mr-2 h-4 w-4' /> Report
+            <Download className='mr-2 h-4 w-4' /> Download
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/admin/order/${data.orderId}`)}
+            onClick={() => router.push(`/admin/order/${data.orderId!}`)}
           >
             <Edit className='mr-2 h-4 w-4' /> Edit
           </DropdownMenuItem>

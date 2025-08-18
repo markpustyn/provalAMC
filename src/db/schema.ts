@@ -97,7 +97,7 @@ export const s3AmcUploads = pgTable("s3_amc_uploads", {
 });
 
 export const pcrForms = pgTable("pcr_forms", {
-  orderId: uuid('order_id').references(() => order.orderId).notNull(),
+  orderId: uuid('order_id').references(() => order.orderId).notNull().primaryKey(),
   data: jsonb("data").notNull(),
   vendorId: uuid('vendor_id').references(() => users.id),
   updatedAt: timestamp("updated_at").defaultNow(),

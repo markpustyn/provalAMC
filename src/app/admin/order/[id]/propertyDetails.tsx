@@ -17,6 +17,7 @@ import { GeneratePdf } from "@/components/pdf/generatePdf";
 import { renderToStream } from "@react-pdf/renderer";
 import ReactPDF from '@react-pdf/renderer';
 import { toast } from "sonner";
+import { ratingAssesment } from "@/lib/utils";
 
 
 export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
@@ -30,7 +31,7 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
     router.push(`/broker/dashboard/order/report/${OrderDetails.orderId}`);
   };
   async function toDataUrl(url: string): Promise<string> {
-  const res = await fetch(url, { mode: "cors" }); // must succeed (check S3 CORS)
+  const res = await fetch(url, { mode: "cors" });
   if (!res.ok) throw new Error(`Image fetch failed: ${url}`);
   const blob = await res.blob();
   return await new Promise((resolve, reject) => {
@@ -50,10 +51,8 @@ const generateReport = async (id: string) => {
       .leftJoin(users, eq(users.id, pcrForms.vendorId))
       .where(eq(pcrForms.orderId, id))
       .limit(1)
-      
       const form = orderRecord?.form;
       const vendor = orderRecord?.vendor || null;
-      
     const imageRecords = await db
       .select()
       .from(s3AmcUploads)
@@ -67,10 +66,11 @@ const generateReport = async (id: string) => {
 
 
     const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
-    console.log(orderRecord)
+
+    const rating = ratingAssesment(orderRecord)
     
     const images = await Promise.all(imageUrls.map(toDataUrl));
-    const blob = await ReactPDF.pdf(<GeneratePdf vendorDetails={orderRecord.vendor} orderDetails={OrderDetails} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+    const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={vendor} orderDetails={OrderDetails} orderData={form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
