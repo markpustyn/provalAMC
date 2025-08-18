@@ -116,7 +116,7 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
       <FileUploader
         onUpload={handleUpload}
         multiple
-        maxFiles={10}
+        maxFiles={20}
         accept={{ "image/*": [] }}
       />
 
