@@ -102,3 +102,13 @@ export const pcrForms = pgTable("pcr_forms", {
   vendorId: uuid('vendor_id').references(() => users.id),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
+
+export const vendorFiles = pgTable("vendor_files", {
+  uploadId: uuid('upload_id').primaryKey().defaultRandom(),
+  userId: uuid('user_id').references(() => users.id),
+  objectKey: varchar("object_key"),
+  fileTag: varchar("file_tag", {length: 100}),
+  fileUrl: text("file_url"),
+  uploadTimestamp: timestamp("upload_timestamp", { withTimezone: true }).defaultNow()
+});
+

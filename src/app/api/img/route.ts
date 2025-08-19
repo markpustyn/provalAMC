@@ -89,7 +89,6 @@ export async function POST(request: NextRequest) {
         })
       );
 
-      // Save metadata in Neon DB
       const [row] = await db
         .insert(s3AmcUploads)
         .values({

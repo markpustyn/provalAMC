@@ -1,14 +1,12 @@
-import ProfilePage from './profileInfo';
+
 import { auth } from '@/lib/auth';
-import { ServiceArea } from './serviceArea';
 import { getUserProfile } from '@/lib/admin/order';
 import { db } from '@/db/drizzle';
 import { zipCodes } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-
-import { ListedZips } from './listedZips';
-import UserFiles from './userFiles';
 import PageContainer from '@/components/layout/page-container';
+import { ListedZips } from '../listedZips';
+import { ServiceArea } from '../serviceArea';
 
 async function Profile() {
   const session = await auth();
@@ -30,13 +28,12 @@ async function Profile() {
                   <div className="flex flex-col lg:flex-row gap-6 w-full">
                     {/* Left side: Profile + Service Area */}
                     <div className="flex flex-col w-full lg:w-1/2 gap-6">
-                      <ProfilePage session={session!} />
+                      <ServiceArea counties={counties} sessionId={user?.id ?? ''} />
                     </div>
 
                     {/* Right side: Listed Zips */}
                     <div className="w-full lg:w-1/2">
-                      <UserFiles session={session!} />
-
+                      <ListedZips sessionId={user?.id ?? ''} />
                     </div>
                   </div>
                 </div>

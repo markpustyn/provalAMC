@@ -80,7 +80,7 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
   const currentPageZips = zipCodes.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
-    <div className="mx-auto w-full">
+    <div className="mx-auto w-full h-1/2">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
         <CardHeader className="pb-4">
           <CardTitle className="text-2xl font-bold tracking-tight">
