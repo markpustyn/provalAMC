@@ -46,8 +46,7 @@ export default async function Page(props: pageProps) {
           // key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          {/* <Corrections/> */}
-          <h1>corrections page</h1>
+          <Corrections/>
         </Suspense>
       </div>
     </PageContainer>

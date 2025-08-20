@@ -5,6 +5,8 @@ import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { auth } from '@/lib/auth';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import ClientSideBar from '@/components/layout/client-sidebar';
+
 
 export const metadata: Metadata = {
   title: 'AMC Client',
@@ -27,7 +29,7 @@ export default async function DashboardLayout({
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
-        <SidebarWrapper session={session} />
+        <ClientSideBar session={session} pathname={''} />
         <SidebarInset>
           <Header />
           {/* page main content */}

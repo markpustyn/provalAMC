@@ -32,7 +32,7 @@ export default async function DashboardLayout({
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
-        <BrokerSideBar />
+        <BrokerSideBar session={session} pathname={''} />
         <SidebarInset>
           <Header />
           {/* page main content */}

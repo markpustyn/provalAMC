@@ -1,6 +1,4 @@
 'use client';
-
-import { FileUploader } from '@/components/file-uploader';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -91,6 +89,7 @@ export default function ProductForm({
   
   const addressRef = useRef(null);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
+  const [fee, setFee] = useState('0')
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
     libraries: ['places'],
@@ -409,6 +408,59 @@ export default function ProductForm({
                   )}
                 />
             </div>
+            <CardDescription className='text-xl font-bold'>Product Type</CardDescription>
+            <div className='grid grid-cols-4 items-center gap-4 w-1/2'>
+              <FormField
+                control={form.control}
+                name="mainProduct"
+                render={({ field }) => (
+                  <FormItem className="col-span-4">
+                    <FormLabel>Order Type</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Select inspection type" />
+                        </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="exterior">
+                                <div className="flex justify-between w-full">
+                                  <span>PCR Exterior Property Inspection</span>
+                                  <span className="ml-2">$30</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="interior">
+                                <div className="flex justify-between w-full">
+                                  <span>IPCR Interior Property Inspection</span>
+                                  <span className="ml-2">$65</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="bpo" disabled>
+                                <div className="flex justify-between w-full">
+                                  <span>Broker Priced Opinion</span>
+                                  <span className="ml-2">$60</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="apprasial" disabled>
+                                <div className="flex justify-between w-full">
+                                  <span>1004 Appraisal</span>
+                                  <span className="ml-2">$400</span>
+                                </div>
+                              </SelectItem>
+                              <SelectItem value="ace-pdr" disabled>
+                                <div className="flex justify-between w-full">
+                                  <span>ACE + PDR</span>
+                                  <span className="ml-2">$250</span>
+                                </div>
+                              </SelectItem>
+                            </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+          </div>
             <CardDescription className='text-xl font-bold'>Additional Info</CardDescription>
             <div className='grid grid-cols-4 items-center gap-4'>
             <FormField

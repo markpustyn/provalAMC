@@ -123,6 +123,46 @@ export const brokerNav: BrokerNavItem[] = [
     ]
   },
 ];
+export const clientNav: BrokerNavItem[] = [
+  {
+    title: 'Client Portal',
+    url: '/client',
+    icon: 'avaliable',
+    isActive: false,
+    shortcut: ['d', 'd'],
+    items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Orders In Progress',
+    url: '/client/order',
+    icon: 'progress',
+    isActive: false,
+    shortcut: ['f', 'f'],
+    items: [] // Empty array as there are no child items for Dashboard
+  },
+  {
+    title: 'Profile',
+    url: '/client/profile',
+    icon: 'user',
+    isActive: false,
+    shortcut: ['p', 'p'],
+
+    items: [
+      {
+        title: 'Profile',
+        url: '/client/profile',
+        icon: 'user',
+        shortcut: ['m', 'm']
+      },
+      {
+        title: 'Other',
+        url: '/client/profile/data',
+        icon: 'user',
+        shortcut: ['m', 'm']
+      },
+    ]
+  },
+];
 
 export interface SaleUser {
   id: number;

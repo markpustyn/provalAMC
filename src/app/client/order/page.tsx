@@ -1,17 +1,18 @@
 import PageContainer from '@/components/layout/page-container';
+import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
+import { Separator } from '@/components/ui/separator';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import { searchParamsCache, serialize } from '@/lib/searchparams';
 import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import BrokerListingPage from '@/features/broker/open-orders';
-
+import BrokerProgress from '@/features/broker/progress-order';
 
 
 export const metadata = {
-  title: 'Avalible Orders'
+  title: 'Orders In Progress'
 };
 
 type pageProps = {
@@ -20,10 +21,7 @@ type pageProps = {
 
 export default async function Page(props: pageProps) {
   const searchParams = await props.searchParams;
-  // Allow nested RSCs to access the search params (in a type-safe way)
   searchParamsCache.parse(searchParams);
-
-  // This key is used for invoke suspense if any of the search params changed (used for filters).
   const key = serialize({ ...searchParams });
   const session = await auth()
   if (!session?.user?.id) redirect("/sign-in");
@@ -33,15 +31,15 @@ export default async function Page(props: pageProps) {
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Avaliable Orders'
+            title='Orders In Progress'
             description=''
           />
         </div>
         <Suspense
-          // key={key}
+          key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <BrokerListingPage session={session}/>
+          <BrokerProgress/>
         </Suspense>
       </div>
     </PageContainer>

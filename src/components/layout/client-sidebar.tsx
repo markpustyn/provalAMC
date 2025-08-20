@@ -28,7 +28,7 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { brokerNav } from '@/constants/data';
+import { clientNav } from '@/constants/data';
 import {
   BadgeCheck,
   Bell,
@@ -44,7 +44,6 @@ import { Icons } from '../icons';
 import { getInitials } from '@/lib/utils';
 import { Session } from 'next-auth';
 import Image from 'next/image';
-
 export const company = {
   name: 'AMC SAAS',
   logo: GalleryVerticalEnd,
@@ -56,7 +55,7 @@ interface AppSidebarProps {
   pathname: string;
 }
 
-export default function BrokerSidebar({ session, pathname }: AppSidebarProps) {
+export default function ClientSideBar({ session, pathname }: AppSidebarProps) {
   return (
     <Sidebar collapsible='icon'>
       <SidebarHeader>
@@ -75,7 +74,7 @@ export default function BrokerSidebar({ session, pathname }: AppSidebarProps) {
         <SidebarGroup>
           <SidebarGroupLabel>Overview</SidebarGroupLabel>
           <SidebarMenu>
-            {brokerNav.map((item) => {
+            {clientNav.map((item) => {
               const Icon = item.icon ? Icons[item.icon] : Icons.logo;
               return item?.items && item?.items?.length > 0 ? (
                 <Collapsible
