@@ -6,6 +6,7 @@ import { auth } from '@/lib/auth';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import ClientSideBar from '@/components/layout/client-sidebar';
+import { redirect } from 'next/navigation';
 
 
 export const metadata: Metadata = {
@@ -22,7 +23,10 @@ export default async function DashboardLayout({
   // Persisting the sidebar state in the cookie.
   const session = await auth()
   const cookieStore = await cookies();
-  const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';  
+  const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';
+  if(session?.user.role !== 'client'){
+    redirect('/')
+  }
 
   return (
     <KBar>

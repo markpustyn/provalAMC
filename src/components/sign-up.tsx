@@ -268,9 +268,9 @@ export default function SignUpForm({
                 onClick={() => {
                   if (setIsOpened) {
                     setIsOpened(false)
-                    router.replace("/signin")
+                    router.replace("/")
                   } else {
-                    window.location.replace("/signin")
+                    window.location.replace("/")
                   }
                 }}
                 className="underline text-gray-500 px-0"

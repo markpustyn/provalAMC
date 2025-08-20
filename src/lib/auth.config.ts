@@ -37,6 +37,7 @@ const authConfig: NextAuthConfig = {
           id: user[0].id.toString(),
           email: user[0].email,
           name: user[0].fname + " " + user[0].lname,
+          role: user[0].role,
         } as User;
       },
     }),
@@ -46,6 +47,7 @@ const authConfig: NextAuthConfig = {
       if (user) {
         token.id = user.id;
         token.name = user.name;
+        token.role = (user as any).role
       }
       return token
     },
@@ -53,6 +55,7 @@ const authConfig: NextAuthConfig = {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.name = token.name as string;
+        session.user.role = token.role as string;
       }
 
       return session;
