@@ -4,7 +4,7 @@ import { and, eq } from 'drizzle-orm';
 import { order, statusOrder, users } from '@/db/schema';
 import { OpenOrder } from 'types';
 import { auth } from '@/lib/auth';
-import { columns } from '../products/components/product-tables/columns';
+import { clientColumns } from '../products/components/product-tables/clientColumn';
 
 export default async function ClientProgress() {
   const session = await auth();
@@ -14,23 +14,16 @@ export default async function ClientProgress() {
   const data = (await db
     .select()
     .from(order)
-    .innerJoin(statusOrder, eq(order.orderId, statusOrder.propOrderId))
-    .innerJoin(users, eq(users.id, statusOrder.vendorId))
-    .where(
-      and(
-        eq(statusOrder.vendorId, sessionUserId),
-        eq(order.status, 'assigned')
-      )
-    )
+    .where(eq(order.clientId, sessionUserId))
+    
   ) as OpenOrder[];
 
-  const orders = data.map(item => item.order);
-  const totalProducts = orders.length;
+  const totalProducts = data.length;
 
   return (
     <ProductTable
-      columns={columns}
-      data={orders}
+      columns={clientColumns}
+      data={data}
       totalItems={totalProducts}
     />
   );
