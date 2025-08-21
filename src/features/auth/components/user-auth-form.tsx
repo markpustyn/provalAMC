@@ -44,9 +44,7 @@ export default function UserAuthForm({ role, setIsOpened }: Props) {
     const session = await getSession();
     const sessionRole = session?.user?.role as "admin" | "broker" | "client" | undefined;
 
-    if (sessionRole === "admin") {
-      router.replace("/admin");
-    } else if (!sessionRole || sessionRole !== role) {
+    if (sessionRole !== role) {
       toast.error("Incorrect Email or Password");
       return;
     }

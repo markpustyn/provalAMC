@@ -6,8 +6,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Product } from "@/constants/mock-api";
-import { createOrder } from "@/lib/admin/order";
 import { OrderSchema } from "@/lib/schema/order_schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -16,6 +14,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 import { GoogleMap, StreetViewPanorama, useLoadScript } from "@react-google-maps/api";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function MainProduct() {
 const defaultValues = {
@@ -39,10 +38,17 @@ const defaultValues = {
 
   const router = useRouter();
 
+
   const onSubmit = async (values: z.infer<typeof OrderSchema>) => {
     try {
-      const result = await createOrder(values);
-      if (result.success) {
+
+        const result = await fetch("/api/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+        });
+
+      if (result) {
         toast.success("Order created successfully!");
         router.push(`/client/order/`);
       } else {

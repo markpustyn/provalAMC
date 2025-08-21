@@ -6,19 +6,6 @@ import { eq } from "drizzle-orm";
 import { Session } from "next-auth";
 import { BillingStatus, OpenOrder, StatusOrder } from "types";
 
-export const createOrder = async (params: OpenOrder) => {
-    try {
-        const newOrder = await db.insert(order).values(params).returning();
-        return {
-            success: true,
-            data: JSON.parse(JSON.stringify(newOrder[0])),
-        };
-    } catch (error) {
-        console.error("Error creating order:", error);
-        return { success: false, error: "Failed to create order" };
-    }
-};
-
 // export const updateZip = async (params: UpdateZip) => {
 //   try {
 //     const update = await db.insert(vendorZipCodes).values(params).returning();

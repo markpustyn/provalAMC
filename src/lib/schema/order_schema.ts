@@ -23,6 +23,7 @@ export const OrderSchema = z.object({
   //   ),
   // id: z.string().optional(),
   loanNumber: z.string().optional(),
+  clientId: z.string().optional(),
   loanOfficer: z.string().optional(),
   loanOfficerEmail: z.string().email().optional(),
   lender: z.string().optional(),

@@ -21,6 +21,7 @@ export const users = pgTable("users", {
 
 export const order = pgTable("order", {
   orderId: uuid('id').notNull().primaryKey().defaultRandom(),
+  clientId: uuid('client_id').references(() => users.id).notNull(),
   loanNumber: varchar('loan_number', { length: 50 }),
   loanOfficer: varchar('loan_officer', { length: 255 }),
   loanOfficerEmail: varchar('loan_officer_email', { length: 255 }),
@@ -60,6 +61,7 @@ export const billing = pgTable("billing", {
   statusId: uuid('id').notNull().primaryKey().defaultRandom(),
   vendorId: uuid('vendor_id').references(() => users.id),
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
+  clientId: uuid('client_id').references(() => users.id).notNull(),
   amount: varchar('amount', { length: 25 }),
   vendorFee: varchar('vendor_fee', { length: 25 }),
   billingStatus: varchar('billing_status', { length: 50 }).default('pending'),
