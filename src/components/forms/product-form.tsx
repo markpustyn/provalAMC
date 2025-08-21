@@ -89,7 +89,6 @@ export default function ProductForm({
   
   const addressRef = useRef(null);
   const [isGoogleLoaded, setIsGoogleLoaded] = useState(false);
-  const [fee, setFee] = useState('0')
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY!,
     libraries: ['places'],

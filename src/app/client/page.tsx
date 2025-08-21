@@ -1,36 +1,42 @@
-import { NavUser } from "@/components/nav-user"
-
-
-const user = [
-  {
-    name: 'Mark Pustynovich',
-    email: 'mark@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=3',
-  },
-  {
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=5',
-  },
-  {
-    name: 'John Smith',
-    email: 'john.smith@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=8',
-  },
-  {
-    name: 'Emily Johnson',
-    email: 'emily.j@example.com',
-    avatar: 'https://i.pravatar.cc/150?img=10',
-  },
-];
+import PageContainer from '@/components/layout/page-container';
+import { Heading } from '@/components/ui/heading';
+import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
+import { searchParamsCache, serialize } from '@/lib/searchparams';
+import { SearchParams } from 'nuqs/server';
+import { Suspense } from 'react';
+import { auth } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import BrokerListingPage from '@/features/broker/open-orders';
+import MainProduct from '@/components/forms/mainProduct';
 
 
 
+export const metadata = {
+  title: 'Evalu Cloud Portal'
+};
 
-export default function page() {
+type pageProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function Page(props: pageProps) {
+  const searchParams = await props.searchParams;
+  searchParamsCache.parse(searchParams);
+  const key = serialize({ ...searchParams });
+  const session = await auth()
+  if (!session?.user?.id) redirect("/sign-in");
+
   return (
-    <div>client page
-      <NavUser user={user[0]}/>
-    </div>
-  )
+    <PageContainer scrollable={false}>
+      <div className='flex flex-1 flex-col space-y-4 p-4'>
+        <div className='flex items-start justify-between'>
+          <Heading
+            title='Avaliable Orders'
+            description=''
+          />
+        </div>
+          <MainProduct/>
+      </div>
+    </PageContainer>
+  );
 }

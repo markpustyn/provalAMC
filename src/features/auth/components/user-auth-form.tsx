@@ -54,7 +54,7 @@ export default function UserAuthForm({ role, setIsOpened }: Props) {
     if (setIsOpened) setIsOpened(false);
 
 
-    const dest = callbackUrl ?? (role === "broker" ? "/broker/dashboard" : "/client/order");
+    const dest = callbackUrl ?? (role === "broker" ? "/broker/dashboard" : "/client");
     router.replace(dest)
   }
 

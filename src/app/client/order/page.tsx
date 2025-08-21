@@ -8,7 +8,7 @@ import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import BrokerProgress from '@/features/broker/progress-order';
+import ClientProgress from '@/features/client/clientprogress';
 
 
 export const metadata = {
@@ -39,7 +39,7 @@ export default async function Page(props: pageProps) {
           key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <BrokerProgress/>
+          <ClientProgress/>
         </Suspense>
       </div>
     </PageContainer>

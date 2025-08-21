@@ -9,8 +9,8 @@ import Image from "next/image";
 import UserAuthForm from "./user-auth-form";
 
 export const metadata: Metadata = {
-  title: "Vendor / Client Login",
-  description: "Evalu Cloud authentication",
+  title: "Login",
+  description: "Evalu Cloud Login",
 };
 
 export default function SignInViewPage() {
