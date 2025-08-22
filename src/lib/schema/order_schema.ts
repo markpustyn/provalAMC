@@ -50,6 +50,7 @@ export const OrderSchema = z.object({
   propOrderId: z.string().optional(),
   vendorId: z.string().optional(),
   status: z.string().optional(),
+  unitNumber: z.string().optional(),
 
   // services: z.string().optional(),
   // dbaName: z.string().optional(),

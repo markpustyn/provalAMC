@@ -27,14 +27,8 @@ export default async function Page(props: pageProps) {
   if (!session?.user?.id) redirect("/sign-in");
 
   return (
-    <PageContainer scrollable={false}>
+    <PageContainer scrollable={true}>
       <div className='flex flex-1 flex-col space-y-4 p-4'>
-        <div className='flex items-start justify-between'>
-          <Heading
-            title='Avaliable Orders'
-            description=''
-          />
-        </div>
           <MainProduct/>
       </div>
     </PageContainer>
