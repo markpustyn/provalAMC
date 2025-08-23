@@ -1,5 +1,4 @@
-"use client";
-
+'use client'
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +14,12 @@ import { GoogleMap, StreetViewPanorama, useLoadScript } from "@react-google-maps
 import { toast } from "sonner";
 import { OrderSchema } from "@/lib/schema/order_schema";
 import { useRouter } from "next/navigation";
+import CheckOutPage from "../checkout";
+import { Elements } from "@stripe/react-stripe-js";
+import { stripe } from "@/lib/stripe";
+import { loadStripe } from "@stripe/stripe-js";
+import CheckoutContainer from "../checkout";
+
 
 // ---------- Component ----------
 export default function MainProduct() {
@@ -132,7 +137,7 @@ export default function MainProduct() {
       const result = await fetch("/api/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, lat: panoPos?.lat, lng: panoPos?.lng }),
+        body: JSON.stringify({ ...values }),
       });
 
       if (result.ok) {
@@ -145,6 +150,13 @@ export default function MainProduct() {
       toast.error("An error occurred while submitting the form.");
     }
   };
+  const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
+  rushExterior: { label: "Rush Three Day Exterior", amountCents: 3500 },
+  exterior:     { label: "Exterior Inspection",      amountCents: 3000 },
+  interior:     { label: "Interior Inspection",      amountCents: 7500 },
+};
+const mainProduct = form.watch("mainProduct");
+const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0 : 0;
 
   return (
     <div className="mx-auto">
@@ -169,7 +181,7 @@ export default function MainProduct() {
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Start typing…"
+                        placeholder=""
                         ref={(el) => {
                           field.ref(el);
                           addressRef.current = el;
@@ -343,7 +355,9 @@ export default function MainProduct() {
                     )}
                   />
                 </div>
-                <Button type="submit">Submit</Button>
+                <div className="text-right">
+                <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700">Place Order</Button>
+                </div>
               </form>
             </Form>
           </CardContent>
@@ -390,8 +404,17 @@ export default function MainProduct() {
                 <CardHeader>
                     <CardDescription className="text-base font-medium">Payment Options</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3">
-                
+                <CardContent>
+                    {!mainProduct ? (
+                    <div className="text-sm text-gray-600">Select a product to initialize payment.</div>
+                    ) : (
+                    <>
+                        <div className="mb-2 text-sm">
+                        Selected: {PRODUCT_CATALOG[mainProduct].label} — ${(amountCents / 100).toFixed(2)}
+                        </div>
+                        <CheckoutContainer product={mainProduct} order={form.getValues()} />
+                    </>
+                    )}
                 </CardContent>
                 </Card>
         </div>
