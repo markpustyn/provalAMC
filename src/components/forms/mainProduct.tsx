@@ -355,9 +355,6 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                     )}
                   />
                 </div>
-                <div className="text-right">
-                <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700">Place Order</Button>
-                </div>
               </form>
             </Form>
           </CardContent>

@@ -9,6 +9,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { loadStripe, type StripeElementsOptions } from "@stripe/stripe-js";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -124,9 +125,11 @@ function CheckoutForm({ order }: { order: any }) {
   return (
     <form onSubmit={onSubmit}>
       <PaymentElement id="payment-element" />
-      <button disabled={!stripe || !elements || submitting} className="mt-3">
-        {submitting ? "Processing…" : "Pay"}
-      </button>
+            <div className="text-right">
+            <Button disabled={!stripe || !elements || submitting} className="bg-blue-600 text-white hover:bg-blue-700 mt-3">
+                {submitting ? "Processing…" : "Place Order"}
+                </Button>
+            </div>
       {message && <div className="mt-2 text-sm text-red-600">{message}</div>}
     </form>
   );
