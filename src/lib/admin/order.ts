@@ -21,7 +21,7 @@ import { BillingStatus, OpenOrder, StatusOrder } from "types";
 
 export const deleteOrder = async (__params: OpenOrder, id: any) => {
     try {
-        const deleteOrder = await db.delete(order).where(eq(order.orderId, id))
+        const deleteOrder = await db.update(order).set({status: 'canceled'}).where(eq(order.orderId, id))
         return {
             success: true,
         };

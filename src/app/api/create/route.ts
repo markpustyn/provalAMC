@@ -1,4 +1,3 @@
-// app/api/create/route.ts
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/db/drizzle";
@@ -17,7 +16,12 @@ export async function POST(req: Request) {
 
     const [inserted] = await db
       .insert(order)
-      .values({ ...parsed, clientId: session.user.id })
+      .values(
+        { ...parsed, 
+          clientId: session.user.id,
+          paymentIntentId: body.paymentIntentId,
+          
+        })
       .returning();
 
     return NextResponse.json({ success: true, data: inserted });

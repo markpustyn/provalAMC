@@ -25,6 +25,7 @@ import {
   Settings,
   SunMedium,
   Trash,
+  HousePlus,
   Twitter,
   User,
   UserCircle2Icon,
@@ -35,6 +36,7 @@ import {
   ClipboardList,
   FolderClock,
   SquarePen,
+  ClipboardPlus,
   FolderKanban 
 } from 'lucide-react';
 
@@ -70,8 +72,11 @@ export const Icons = {
   pizza: Pizza,
   sun: SunMedium,
   progress: FolderClock,
+  ClipboardPlus: ClipboardPlus,
   correction: SquarePen,
   avaliable: ClipboardList,
+  HousePlus: HousePlus,
+  plus: Plus,
   moon: Moon,
   folder: FolderKanban,
   laptop: Laptop,

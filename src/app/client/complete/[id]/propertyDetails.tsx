@@ -30,7 +30,7 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
           Print Page
         </Button>
         <Button className="text-lg px-6 py-3" onClick={handleReport}>
-          Open Report
+          Report Page
         </Button>
       </div>
 

@@ -5,9 +5,6 @@ import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
 
-
-let orders: any[] = [];
-
 export async function PUT(req: Request, {params}: {params: {id:string}}) {
   const body = await req.json();
   const { id } = await params
@@ -31,8 +28,7 @@ export async function PUT(req: Request, {params}: {params: {id:string}}) {
       data: body,
       vendorId: session.user.id
     });
-  }
-  
+  }  
 
   return Response.json({ ok: true });
 }

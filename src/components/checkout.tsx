@@ -84,7 +84,7 @@ function CheckoutForm({ order }: { order: any }) {
       }
 
       if (paymentIntent.status === "succeeded") {
-        // Create your order AFTER confirmed payment, use PI id for idempotency on the backend
+        console.log(paymentIntent.id)
         const res = await fetch("/api/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -126,7 +126,7 @@ function CheckoutForm({ order }: { order: any }) {
     <form onSubmit={onSubmit}>
       <PaymentElement id="payment-element" />
             <div className="text-right">
-            <Button disabled={!stripe || !elements || submitting} className="bg-blue-600 text-white hover:bg-blue-700 mt-3">
+            <Button disabled={!stripe || !elements || submitting} className="bg-blue-600 text-white hover:bg-blue-700 mt-3 w-full">
                 {submitting ? "Processing…" : "Place Order"}
                 </Button>
             </div>

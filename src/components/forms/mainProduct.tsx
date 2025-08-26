@@ -34,6 +34,7 @@ export default function MainProduct() {
     borrowerPhoneType: "",
     borrowerPhoneNumber: "",
     mainProduct: "",
+    requestedDueDate: "",
     description: "",
     unitNumber: "",
     status: "open",
@@ -131,13 +132,31 @@ export default function MainProduct() {
     d.setDate(d.getDate() + days);
     return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
   };
+  const DUE_DAYS: Record<string, number> = {
+    rushExterior: 3,
+    exterior: 5,
+    interior: 6,
+  };
+
+  const formatMMDDYYYY = (d: Date) => {
+    const mm = String(d.getMonth() + 1).padStart(2, "0");
+    const dd = String(d.getDate()).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    return `${mm}/${dd}/${yyyy}`;
+  };
+
+  const dateAfterDays = (days: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + days);
+    return formatMMDDYYYY(d);
+  };
 
   const onSubmit = async (values: z.infer<typeof OrderSchema>) => {
     try {
       const result = await fetch("/api/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values }),
+        body: JSON.stringify({ ...values,}),
       });
 
       if (result.ok) {
@@ -322,7 +341,14 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                               <button
                                 type="button"
                                 key={opt.value}
-                                onClick={() => field.onChange(opt.value)}
+                                onClick={() => {
+                                    field.onChange(opt.value);
+                                    const days = DUE_DAYS[opt.value] ?? 0;
+                                    form.setValue("requestedDueDate", dateAfterDays(days), {
+                                      shouldDirty: true,
+                                      shouldValidate: true,
+                                    });
+                                  }}
                                 className={`text-left rounded-xl border p-4 text-sm shadow-sm transition-all focus:outline-none focus:ring-2 ${
                                   field.value === opt.value ? "border-blue-600 bg-blue-50 ring-blue-200" : "border-gray-300 hover:border-blue-400"
                                 }`}
@@ -336,8 +362,11 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                         </FormControl>
                         <FormMessage />
                       </FormItem>
+                      
                     )}
+                    
                   />
+
                 </div>
 
                 {/* Additional */}
@@ -399,15 +428,15 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                 </Card>
             <Card>
                 <CardHeader>
-                    <CardDescription className="text-base font-medium">Payment Options</CardDescription>
+                    <CardDescription className="text-xl font-bold text-black">Payment Options</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {!mainProduct ? (
                     <div className="text-sm text-gray-600">Select a product to initialize payment.</div>
                     ) : (
                     <>
-                        <div className="mb-2 text-sm">
-                        Selected: {PRODUCT_CATALOG[mainProduct].label} — ${(amountCents / 100).toFixed(2)}
+                        <div className="mb-4 text-md">
+                        {PRODUCT_CATALOG[mainProduct].label} — <span className="font-bold">${(amountCents / 100).toFixed(2)}</span>
                         </div>
                         <CheckoutContainer product={mainProduct} order={form.getValues()} />
                     </>

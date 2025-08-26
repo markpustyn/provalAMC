@@ -1,10 +1,10 @@
 'use client';
 import { OpenOrder } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import { ClinentActions } from './client-action';
+import { CellAction } from './cell-action';
 
 
-export const clientColumns: ColumnDef<OpenOrder>[] = [
+export const clientCompleteColumns: ColumnDef<OpenOrder>[] = [
   // {
   //   accessorKey: 'photo_url',
   //   header: 'IMAGE',
@@ -47,6 +47,6 @@ export const clientColumns: ColumnDef<OpenOrder>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <ClinentActions data={row.original} />
+    cell: ({ row }) => <CellAction data={row.original} />
   }
 ];

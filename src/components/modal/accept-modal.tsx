@@ -61,33 +61,63 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
   };
   if (!isMounted) return null;
 
-  return (
-    <Modal
-      title="Accept This Order?"
-      description="Confirm that you want to accept this order. Review the order details below before proceeding."
-      isOpen={isOpen}
-      onClose={onClose}
-    >
+    const Fees: Record<string, number> = {
+      rushExterior: 25,
+      exterior: 20,
+      interior: 55,
+    };
+    const fee = Fees[order.mainProduct!] ?? 0
+
+
+  
+
+return (
+  <Modal
+    title="Accept This Order?"
+    description="Confirm that you want to accept this order. Review the order details below before proceeding."
+    isOpen={isOpen}
+    onClose={onClose}
+  >
+    <div className="">
+      <p className="text-xl text-gray-900">
+        {order.propertyAddress}
+      </p>
+      <p className="text-xl text-gray-900">
+         {order.propertyCity}, {order.propertyState} {order.propertyZip}
+      </p>
+
+      {/* Order Details */}
       <div className="space-y-4">
-        {/* Order Details */}
-        <div className="border p-4 rounded-md bg-gray-100">
-          <p className="text-sm font-bold">Order ID: <span className="">{order.propertyAddress} {order.propertyCity},  {order.propertyState} {order.propertyZip}</span></p>
-          <p className="text-sm font-bold">Customer: <span className="">{order.borrowerName}</span></p>
-          <p className="text-sm font-bold">Amount: $<span className="">50</span></p>
-          <p className="text-sm font-bold">Order Date: <span className="">{order.requestedDueDate}</span></p>
-          <p className="text-sm font-bold">Type: <span className="">{order.mainProduct}</span></p>
+        {/* Fee row aligned right + compact */}
+        <div className="flex justify-end">
+          <div className="inline-flex items-baseline gap-1 text-right align-middle">
+            <span className="text-sm text-gray-600">Fee</span>
+            <span className="text-lg text-gray-900 tabular-nums">
+              {new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(fee ?? 0)}
+            </span>
+          </div>
         </div>
 
-        {/* Buttons */}
-        <div className="flex w-full items-center justify-end space-x-2 pt-6">
-          <Button variant="outline" onClick={onClose}>
-            Cancel
-          </Button>
-          <Button variant="default" className='bg-green-500' onClick={onConfirm}>
-            Confirm Acceptance
-          </Button>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-500">Due Date</p>
+            <p className="text-base text-gray-900">{order.requestedDueDate || "N/A"}</p>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-wide text-gray-500">Type</p>
+            <p className="text-base text-gray-900">{order.mainProduct || "N/A"}</p>
+          </div>
         </div>
       </div>
-    </Modal>
-  );
-};
+
+      {/* Buttons */}
+      <div className="flex w-full items-center justify-end gap-2 pt-6">
+        <Button variant="outline" onClick={onClose}>Cancel</Button>
+        <Button variant="default" className="bg-green-500" onClick={onConfirm}>
+          Accept Order
+        </Button>
+      </div>
+    </div>
+  </Modal>
+);
+}
