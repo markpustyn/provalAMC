@@ -37,7 +37,7 @@ export default async function Page(props: pageProps) {
         </div>
         <Suspense
           key={key}
-          fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
+          fallback={<DataTableSkeleton columnCount={6} rowCount={10} />}
         >
           <BrokerProgress/>
         </Suspense>

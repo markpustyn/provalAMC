@@ -19,7 +19,7 @@ export default async function BrokerProgress() {
     .where(
       and(
         eq(statusOrder.vendorId, sessionUserId),
-        eq(order.status, 'assigned')
+        eq(order.status, 'Assigned')
       )
     )
   ) as OpenOrder[];

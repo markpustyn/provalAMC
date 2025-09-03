@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-type ProfileDetailsProps = { session: Session };
+type ProfileDetailsProps = { 
+  session: Session 
+  user: any;
+};
 
 type FilesPayload = {
   license?: File;
@@ -18,8 +21,7 @@ type FilesPayload = {
 };
 
 
-export default function UserFiles({ session }: ProfileDetailsProps) {
-  const [user, setUser] = useState<any>(null);
+export default function UserFiles({ session, user }: ProfileDetailsProps) {
 
   // files
   const [files, setFiles] = useState<{
@@ -40,13 +42,7 @@ export default function UserFiles({ session }: ProfileDetailsProps) {
     backgroundDate: "",
   });
 
-  useEffect(() => {
-    async function fetchUser() {
-      const profile = await getUserProfile(session);
-      setUser(profile);
-    }
-    fetchUser();
-  }, [session]);
+
 
   const handleUpload = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -57,33 +53,54 @@ export default function UserFiles({ session }: ProfileDetailsProps) {
     setFiles(prev => ({ ...prev, [key]: file }));
   };
 
+  const tagMeta = (tag: "license" | "w9" | "insurance" | "background") => {
+  switch (tag) {
+    case "license":
+      return {
+        expirationDate: meta.redate,          // Real Estate license exp
+        extras: { licenseNumber: meta.licenseNumber, state: meta.state },
+      };
+    case "insurance":
+      return {
+        expirationDate: meta.eodate,          // E&O exp
+        extras: { policyNumber: meta.policyNumber },
+      };
+    case "background":
+      return {
+        expirationDate: meta.backgroundDate,  // Background exp
+        extras: {},
+      };
+    case "w9":
+      return { expirationDate: "", extras: { ein: meta.ein } }; // typically no exp
+    default:
+      return { expirationDate: "", extras: {} };
+  }
+};
+
 const handleSubmit = async () => {
-  try {
-    // pick the first available file
+    try {
+    let file: File | undefined;
+    let tag: "license" | "w9" | "insurance" | "background" | undefined;
 
-          let file: File | undefined;
-    let tag: string | undefined;
-
-    if (files.license) {
-      file = files.license;
-      tag = "license";
-    } else if (files.w9) {
-      file = files.w9;
-      tag = "w9";
-    } else if (files.insurance) {
-      file = files.insurance;
-      tag = "insurance";
-    } else if (files.background) {
-      file = files.background;
-      tag = "background";
-    }
+    if (files.license)      { file = files.license; tag = "license"; }
+    else if (files.w9)      { file = files.w9;      tag = "w9"; }
+    else if (files.insurance){ file = files.insurance; tag = "insurance"; }
+    else if (files.background){ file = files.background; tag = "background"; }
 
     if (!file || !tag) {
       toast.error("Please select a file before uploading");
       return;
     }
+    
+    const { expirationDate, extras } = tagMeta(tag);
+
+    if ((tag === "license" || tag === "insurance" || tag === "background") && !expirationDate) {
+      toast.error("Please set the expiration date");
+      return;
+    }
 
     const body = new FormData();
+    if (expirationDate) body.append("expiration", expirationDate);
     body.append("file", file);
     body.append("fileTag", tag);
     
@@ -219,12 +236,12 @@ const handleSubmit = async () => {
               </div>
             )}
           </div>
-          <div className="md:col-span-2">
-            <span className="text-md font-medium text-black">Billing Address</span>
-            {/* <div className="text-black"> 
-              {user.},<br />
+          <div className="md:col-span-2 space-y-2">
+            <span className="text-[18px] font-medium text-black">Billing Address</span>
+            <div className="text-black"> 
+              {user.street}<br />
               {user.city} {user.state} {user.zip}
-            </div> */}
+            </div>
           </div>
 
           <div className="md:col-span-2 flex justify-end gap-3">

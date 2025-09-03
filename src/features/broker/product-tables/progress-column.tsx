@@ -22,6 +22,10 @@ export const columns: ColumnDef<OpenOrder>[] = [
   //   }
   // },
   {
+    accessorKey: "mainProduct",
+    header: "Order Type",
+  },
+  {
     id: 'actions',
     cell: ({ row }) => <OrderActions data={row.original} />
   },
@@ -45,10 +49,7 @@ export const columns: ColumnDef<OpenOrder>[] = [
     accessorKey: "requestedDueDate",
     header: "Due Date",
   },
-  {
-    accessorKey: "mainProduct",
-    header: "Order Type",
-  },
+
   {
     accessorKey: "status",
     header: "Status",

@@ -35,7 +35,7 @@ async function Profile() {
 
                     {/* Right side: Listed Zips */}
                     <div className="w-full lg:w-1/2">
-                      <UserFiles session={session!} />
+                      <UserFiles session={session!} user={user}/>
 
                     </div>
                   </div>

@@ -23,7 +23,7 @@ export default async function BrokerOpenListing({ session }: BrokerOpenListing) 
       .where(
         and(
           eq(vendorZipCodes.userId, user.id),
-          eq(order.status, 'open'),
+          eq(order.status, 'Unassigned'),
           not(
             exists(
               db

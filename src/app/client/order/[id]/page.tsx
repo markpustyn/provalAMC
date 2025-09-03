@@ -11,7 +11,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { FetchImages } from '../upload/fetchImg';
 import { auth } from '@/lib/auth';
-import { PropertyDetails } from './propertyDetails';
+import { PropertyDetails } from './clientpropertyDetails';
+
 
 
 const Page = async ({params}: {

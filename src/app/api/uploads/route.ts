@@ -65,6 +65,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
 
     const userId = (formData.get("userId") as string) || null;
+    const expiration = (formData.get("expiration") as string) || null;
     if (!userId) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 });
     }
@@ -99,6 +100,7 @@ export async function POST(request: NextRequest) {
             userId: userId,
             objectKey,
             fileTag: fileTag,
+            expiration: expiration,
             fileUrl: `https://${Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${objectKey}`,
         })
         .returning();

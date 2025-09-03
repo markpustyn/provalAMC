@@ -37,7 +37,7 @@ export default function MainProduct() {
     requestedDueDate: "",
     description: "",
     unitNumber: "",
-    status: "open",
+    status: "Unassigned",
   };
 
   const form = useForm<z.infer<typeof OrderSchema>>({
@@ -133,9 +133,9 @@ export default function MainProduct() {
     return d.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
   };
   const DUE_DAYS: Record<string, number> = {
-    rushExterior: 3,
-    exterior: 5,
-    interior: 6,
+    RushExterior: 3,
+    Exterior: 5,
+    Interior: 6,
   };
 
   const formatMMDDYYYY = (d: Date) => {
@@ -170,9 +170,9 @@ export default function MainProduct() {
     }
   };
   const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
-  rushExterior: { label: "Rush Three Day Exterior", amountCents: 3500 },
-  exterior:     { label: "Exterior Inspection",      amountCents: 3000 },
-  interior:     { label: "Interior Inspection",      amountCents: 7500 },
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 3500 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 3000 },
+  Interior:     { label: "Interior Inspection",      amountCents: 7500 },
 };
 const mainProduct = form.watch("mainProduct");
 const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0 : 0;
@@ -334,9 +334,9 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                         <FormControl>
                           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                              { value: "rushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$35", date: addDays(3) },
-                              { value: "exterior", label: "Exterior Property Inspection", price: "$30", date: addDays(5) },
-                              { value: "interior", label: "Interior Property Inspection", price: "$75", date: addDays(6) },
+                              { value: "RushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$35", date: addDays(3) },
+                              { value: "Exterior", label: "Exterior Property Inspection", price: "$30", date: addDays(5) },
+                              { value: "Interior", label: "Interior Property Inspection", price: "$75", date: addDays(6) },
                             ].map((opt) => (
                               <button
                                 type="button"

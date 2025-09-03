@@ -37,7 +37,7 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
       return;
     }
     const params: StatusOrder = {
-        propStatus: "assigned",
+        propStatus: "Assigned",
         reason: '',
         propOrderId: order.orderId!,
         vendorId: session.data?.user?.id,
@@ -62,9 +62,9 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
   if (!isMounted) return null;
 
     const Fees: Record<string, number> = {
-      rushExterior: 25,
-      exterior: 20,
-      interior: 55,
+      RushExterior: 25,
+      Exterior: 20,
+      Interior: 55,
     };
     const fee = Fees[order.mainProduct!] ?? 0
 

@@ -21,6 +21,14 @@ import {
 import { deleteOrder } from "@/lib/admin/order";
 import { OrderSchema } from "@/lib/schema/order_schema";
 import { z } from "zod";
+import { db } from "@/db/drizzle";
+import { pcrForms, s3AmcUploads, users } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { ratingAssesment } from "@/lib/utils";
+import { GeneratePdf } from "@/components/pdf/generatePdf";
+import ReactPDF from '@react-pdf/renderer';
+import { OrderProgress } from "./orderProgress";
+
 
 export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
   const router = useRouter();
@@ -28,6 +36,60 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
   const [loading, setLoading] = useState(false);
 
   const handlePrint = () => window.print();
+    const onConfirm = async () => {};
+    
+    
+      async function toDataUrl(url: string): Promise<string> {
+      const res = await fetch(url, { mode: "cors" }); // must succeed (check S3 CORS)
+      if (!res.ok) throw new Error(`Image fetch failed: ${url}`);
+      const blob = await res.blob();
+      return await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result as string);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      });
+    }
+    
+    
+  const generateReport = async (id: string) => {
+    try {
+      const [orderRecord] = await db
+        .select({ form: pcrForms, vendor: users })
+        .from(pcrForms)
+        .leftJoin(users, eq(users.id, pcrForms.vendorId))
+        .where(eq(pcrForms.orderId, id))
+        .limit(1)
+        
+      const imageRecords = await db
+        .select()
+        .from(s3AmcUploads)
+        .where(eq(s3AmcUploads.propertyId, id));
+  
+  
+      const imageUrls = imageRecords
+        .map(r => r.fileUrl)
+        .filter((u): u is string => !!u)
+        .map(u => encodeURI(u));
+  
+  
+      const tags: string[] = imageRecords.map(r => r.imgTag ?? '')
+  
+      const rating = ratingAssesment(orderRecord)
+      
+      const images = await Promise.all(imageUrls.map(toDataUrl));
+      const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={orderRecord.vendor} orderDetails={OrderDetails} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `report-${id}.pdf`;
+      link.click();
+      URL.revokeObjectURL(url);
+      toast.success(`${OrderDetails.propertyAddress} Report Downloaded!`)
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   const handleConfirmCancel = async () => {
     try {
@@ -49,10 +111,6 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
     <div className="space-y-16 w-full max-w-5xl mx-auto px-6 py-10">
       {/* Top Buttons */}
       <div className="flex justify-end gap-6 mb-6 print:hidden">
-        <Button className="text-lg px-6 py-3 bg-blue-600 text-white" variant="outline" onClick={handlePrint}>
-          Print Page
-        </Button>
-
         <AlertDialog open={open} onOpenChange={setOpen}>
           <AlertDialogTrigger asChild>
             <Button
@@ -81,6 +139,9 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+        <Button className="bg-blue-600 text-white text-md" variant={'outline'}>
+          Contact Us
+        </Button>
       </div>
 
       {/* Address */}
@@ -94,13 +155,8 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
       <Section icon={<BuildingIcon className="w-6 h-6" />} title="Order Info">
         <DetailGrid
           items={[
-            ["Order Type", OrderDetails.orderType],
+            ["Order Type", OrderDetails.mainProduct],
             ["Due Date", OrderDetails.requestedDueDate],
-            ["Property Type", OrderDetails.propertyType],
-            ["Occupancy", OrderDetails.presentOccupancy],
-            ["Loan Purpose", OrderDetails.loanPurpose],
-            ["Loan Type", OrderDetails.loanType],
-            ["Main Product", OrderDetails.mainProduct],
           ]}
         />
       </Section>
@@ -115,18 +171,7 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
           ]}
         />
       </Section>
-
-      {/* Lender */}
-      <Section icon={<MailIcon className="w-6 h-6" />} title="Lender">
-        <DetailGrid
-          items={[
-            ["Lender", OrderDetails.lender],
-            ["Lender Address", `${OrderDetails.lenderAddress}, ${OrderDetails.lenderCity}, ${OrderDetails.lenderZip}`],
-            ["Loan Officer", OrderDetails.loanOfficer],
-            ["Officer Email", OrderDetails.loanOfficerEmail],
-          ]}
-        />
-      </Section>
+        <OrderProgress currentStatus={OrderDetails.status} />
     </div>
   );
 }
@@ -140,7 +185,8 @@ function Section({ title, icon, children }: { title: string; icon?: React.ReactN
       </div>
       <Separator className="mb-6" />
       {children}
-    </div>
+
+      </div>
   );
 }
 

@@ -44,6 +44,7 @@ import { Icons } from '../icons';
 import { getInitials } from '@/lib/utils';
 import { Session } from 'next-auth';
 import Image from 'next/image';
+import { signOut } from '@/lib/auth';
 export const company = {
   name: 'AMC SAAS',
   logo: GalleryVerticalEnd,
@@ -184,28 +185,15 @@ export default function AppSidebar({ session, pathname }: AppSidebarProps) {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <CreditCard />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell />
-                    Notifications
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/api/auth/signout" className="flex items-center">
-                    <LogOut />
-                    Log out
-                  </Link>
-                </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <form
+              action={async () => {
+                await signOut();
+              }}
+            >
+              <button className="w-full text-left">Sign Out</button>
+            </form>
+          </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
