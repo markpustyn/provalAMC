@@ -6,13 +6,8 @@ import { order } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { OpenOrder } from 'types';
 
-import PcrForm from '@/components/forms/pcrForm';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { FetchImages } from '../upload/fetchImg';
 import { auth } from '@/lib/auth';
-import { PropertyDetails } from './propertyDetails';
-
+import { CompleteReport } from './completeReport';
 
 const Page = async ({params}: {
   params:Promise<{id: string}>
@@ -26,7 +21,7 @@ const Page = async ({params}: {
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
-        <PropertyDetails OrderDetails={orderDetails as OpenOrder}></PropertyDetails>
+        <CompleteReport OrderDetails={orderDetails as OpenOrder}></CompleteReport>
         {/* <PcrForm OrderDetails={orderDetails as OpenOrder} session={session}/> */}
         </Suspense>
       </div>

@@ -88,6 +88,7 @@ export interface StatusOrder {
   propStatus: string;
   reason:string;
   propOrderId: string;
+  vendorFee: number
   vendorId: string;
   // status:string;
 }

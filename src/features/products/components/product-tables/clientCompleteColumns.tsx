@@ -1,7 +1,7 @@
 'use client';
 import { OpenOrder } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import { CellAction } from './cell-action';
+import { CompleteCell } from './complete-actions';
 
 
 export const clientCompleteColumns: ColumnDef<OpenOrder>[] = [
@@ -47,6 +47,6 @@ export const clientCompleteColumns: ColumnDef<OpenOrder>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <CellAction data={row.original} />
+    cell: ({ row }) => <CompleteCell data={row.original} />
   }
 ];

@@ -39,6 +39,7 @@ export const AcceptAlertModal: React.FC<AcceptAlertModalProps> = ({
     const params: StatusOrder = {
         propStatus: "Assigned",
         reason: '',
+        vendorFee: fee,
         propOrderId: order.orderId!,
         vendorId: session.data?.user?.id,
       };

@@ -56,6 +56,7 @@ export const statusOrder = pgTable("statusOrder", {
   reason: varchar('reason', { length: 255 }),
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   vendorId: uuid('vendor_id').references(() => users.id),
+  vendorFee: varchar('vendor_fee', { length: 25 }),
   createdAt: timestamp("created_at").defaultNow()
 });
 
@@ -65,7 +66,7 @@ export const billing = pgTable("billing", {
   propOrderId: uuid('prop_id').references(() => order.orderId).notNull(),
   clientId: uuid('client_id').references(() => users.id).notNull(),
   amount: varchar('amount', { length: 25 }),
-  vendorFee: varchar('vendor_fee', { length: 25 }),
+  // vendorFee: varchar('vendor_fee', { length: 25 }),
   billingStatus: varchar('billing_status', { length: 50 }).default('pending'),
   paymentDate: timestamp('payment_date').defaultNow(),
 });

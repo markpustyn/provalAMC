@@ -5,11 +5,6 @@ import { db } from '@/db/drizzle';
 import { order } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { OpenOrder } from 'types';
-
-import PcrForm from '@/components/forms/pcrForm';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { FetchImages } from '../upload/fetchImg';
 import { auth } from '@/lib/auth';
 import { PropertyDetails } from './clientpropertyDetails';
 

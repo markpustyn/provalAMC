@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   half: { width: '48%' },
 
   ratingHeader: { 
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: 600,
     color: '#000000', 
     marginBottom: 6, 
@@ -238,7 +238,6 @@ export const GeneratePdf = ({
           <View style={[styles.card, styles.half, {padding: 5,}]}>
             <Text style={styles.ratingHeader}>Overall Rating</Text>
             <View style={styles.ratingBox}>
-              <Text style={styles.score}>{Math.round(rating?.score ?? 0)}</Text>
               <Text style={[styles.pill, { backgroundColor: palette.bg, color: palette.fg }]}>
                 {rLabel}
               </Text>
