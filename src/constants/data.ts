@@ -18,14 +18,12 @@ export const navItems: NavItem[] = [
     url: '/admin/overview',
     icon: 'dashboard',
     isActive: false,
-    shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
     title: 'Vendors',
     url: '/admin/vendors',
     icon: 'user2',
-    shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items
   },
@@ -33,7 +31,6 @@ export const navItems: NavItem[] = [
     title: 'Orders',
     url: '/admin/order',
     icon: 'product',
-    shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items
   },
@@ -41,7 +38,6 @@ export const navItems: NavItem[] = [
     title: 'Billing',
     url: '/admin/billing',
     icon: 'orderbilling',
-    shortcut: ['z', 'z'],
     isActive: false,
     items: [] // No child items
   },
@@ -56,11 +52,9 @@ export const navItems: NavItem[] = [
         title: 'Profile',
         url: '/admin/profile',
         icon: 'userPen',
-        shortcut: ['m', 'm']
       },
       {
         title: 'Login',
-        shortcut: ['l', 'l'],
         url: '/',
         icon: 'login'
       }
@@ -70,7 +64,6 @@ export const navItems: NavItem[] = [
     title: 'Create Order',
     url: '/admin/order/new',
     icon: 'kanban',
-    shortcut: ['k', 'k'],
     isActive: false,
     items: []
   }
@@ -81,7 +74,6 @@ export const brokerNav: BrokerNavItem[] = [
     url: '/broker/dashboard',
     icon: 'avaliable',
     isActive: false,
-    shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
@@ -89,14 +81,12 @@ export const brokerNav: BrokerNavItem[] = [
     url: '/broker/dashboard/order',
     icon: 'progress',
     isActive: false,
-    shortcut: ['f', 'f'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
     title: 'Corrections',
     url: '/broker/dashboard/corrections',
     icon: 'correction',
-    shortcut: ['p', 'p'],
     isActive: false,
     items: [] // No child items
   },
@@ -105,20 +95,16 @@ export const brokerNav: BrokerNavItem[] = [
     url: '/broker/dashboard/profile',
     icon: 'user',
     isActive: false,
-    shortcut: ['p', 'p'],
-
     items: [
       {
         title: 'Profile',
         url: '/broker/dashboard/profile',
         icon: 'user',
-        shortcut: ['m', 'm']
       },
       {
         title: 'Service Area',
         url: '/broker/dashboard/profile/service-area',
         icon: 'user',
-        shortcut: ['m', 'm']
       },
     ]
   },
@@ -129,7 +115,6 @@ export const clientNav: BrokerNavItem[] = [
     url: '/client',
     icon: 'HousePlus',
     isActive: false,
-    shortcut: ['d', 'd'],
     items: [] // Empty array as there are no child items for Dashboard
   },
     {
@@ -137,7 +122,6 @@ export const clientNav: BrokerNavItem[] = [
     url: '/client/complete',
     icon: 'check',
     isActive: false,
-    shortcut: ['f', 'f'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
@@ -145,7 +129,6 @@ export const clientNav: BrokerNavItem[] = [
     url: '/client/order',
     icon: 'progress',
     isActive: false,
-    shortcut: ['f', 'f'],
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
@@ -153,21 +136,6 @@ export const clientNav: BrokerNavItem[] = [
     url: '/client/profile',
     icon: 'user',
     isActive: false,
-    shortcut: ['p', 'p'],
-
-    items: [
-      {
-        title: 'Profile',
-        url: '/client/profile',
-        icon: 'user',
-        shortcut: ['m', 'm']
-      },
-      {
-        title: 'Other',
-        url: '/client/profile/data',
-        icon: 'user',
-        shortcut: ['m', 'm']
-      },
-    ]
+    items: []
   },
 ];

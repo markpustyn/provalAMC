@@ -42,7 +42,7 @@ export default function SignInViewPage() {
             className="h-auto w-auto"
           />
         </div>
-        <div className="relative z-20 mt-auto text-gray-700">
+        {/* <div className="relative z-20 mt-auto text-gray-700">
           <blockquote className="space-y-2">
             <p className="text-lg">
               &ldquo;This starter template has saved me countless hours of work
@@ -50,7 +50,7 @@ export default function SignInViewPage() {
             </p>
             <footer className="text-sm">Random Dude</footer>
           </blockquote>
-        </div>
+        </div> */}
       </div>
 
       {/* RIGHT: form column */}
@@ -120,13 +120,13 @@ export default function SignInViewPage() {
           <span className='w-full border-t' />
         </div>
         <div className='relative flex justify-center text-xs uppercase mt-4'>
-          <Link href={"/sign-up"}>
+          <Link href={`/${role}-sign-up`}>
         <Button
                 type="button"
                 className="underline text-gray-500 px-0"
                 variant={"link"}
               >
-                Don{"'"}t have an account? Sign up
+                Don{"'"}t have an account? {role.charAt(0).toUpperCase() + role.slice(1)} Sign up
               </Button>
               </Link>
         </div>

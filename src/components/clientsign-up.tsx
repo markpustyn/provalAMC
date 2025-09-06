@@ -1,11 +1,7 @@
 'use client'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { zodResolver } from "@hookform/resolvers/zod"
-
 import { useForm } from "react-hook-form"
-import { z } from "zod"
-
 import { register } from "@/lib/user.actions"
 import {
   Form,
@@ -17,12 +13,11 @@ import {
 } from "@/components/ui/form"
 import { toast } from 'sonner';
 import { useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { useEffect, useRef, useState } from "react"
 import { useLoadScript } from "@react-google-maps/api"
 import { AuthCredentials } from "types"
 
-export default function SignUpForm({
+export default function ClientSignUpForm({
   setIsOpened,
 }: {
   setIsOpened?: (isOpened: boolean) => void
@@ -51,13 +46,12 @@ export default function SignUpForm({
       const result = await register(data)
       if (result.success) {
         toast.success("Account Created!");
-        router.replace("/broker/dashboard")
+        router.replace("/client")
       }
       else {
         toast.error("Failed to create account. Please try again.");
       }
     } catch(error){
-      throw error
       toast.error("An error occurred while signing up")
     }
   }
@@ -93,7 +87,7 @@ export default function SignUpForm({
     
 
   return (
-    <div className="flex justify-center p-4">
+    <div className="flex justify-center">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
@@ -245,7 +239,7 @@ export default function SignUpForm({
               name="licenseNum"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>License Number</FormLabel>
+                  <FormLabel>Role</FormLabel>
                   <FormControl>
                     <Input placeholder="" {...field} />
                   </FormControl>
@@ -253,9 +247,11 @@ export default function SignUpForm({
                 </FormItem>
               )}
             />
+
             <Button type="submit">Sign up</Button>
           </form>
         </Form>
+
     </div>
   )
 }

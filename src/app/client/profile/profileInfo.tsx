@@ -25,13 +25,15 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
   };
 
   return (
-    <div className="mx-auto w-full">
-      <Card className="shadow-xl rounded-3xl border border-muted p-6">
-        <CardHeader className="border-b">
-          <CardTitle className="text-2xl font-bold tracking-tight">User Profile</CardTitle>
+    <div className="w-full max-w-screen-2xl mx-auto px-4 lg:px-6">
+      <Card className="w-full shadow-xl rounded-3xl border border-muted p-8 md:p-10">
+        <CardHeader className="border-b pb-6">
+          <CardTitle className="text-3xl font-bold tracking-tight">
+            User Profile
+          </CardTitle>
         </CardHeader>
 
-        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 pt-4 text-base">
+        <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-6 pt-6 text-base">
           <div>
             <span className="text-md font-medium text-black">Name</span>
             <p className="text-black">{user.fname} {user.lname}</p>
@@ -47,14 +49,12 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
             <p className="text-black">{user.phone}</p>
           </div>
 
-          <div>
-            <span className="text-md font-medium text-black">License #</span>
-            <p className="text-black">{user.licenseNum}</p>
-          </div>
-
-          <div>
+          <div className="col-span-1 sm:col-span-2">
             <span className="text-md font-medium text-black">Address</span>
-            <div className="text-black">{user.street}, <br />{user.city} {user.state} {user.zip}</div>
+            <div className="text-black">
+              {user.street},<br />
+              {user.city} {user.state} {user.zip}
+            </div>
           </div>
 
           <div>
@@ -73,12 +73,6 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
             <span className="text-md font-medium text-black">Last Active</span>
             <p className="text-black">{user.lastActivityDate?.toLocaleString() || "-"}</p>
           </div>
-
-          <div>
-            <span className="text-md font-medium text-muted-foreground">Status</span>
-            <p className="text-black">{user.statued}</p>
-          </div>
-
           <div>
             <span className="text-md font-medium text-muted-foreground">Created At</span>
             <p className="text-black">{formatDate(user.createdAt)}</p>

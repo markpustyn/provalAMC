@@ -24,7 +24,10 @@ export default async function DashboardLayout({
   const cookieStore = await cookies();
   const defaultOpen = cookieStore.get('sidebar:state')?.value === 'true';  
    const session = await auth()
-    if (!session?.user?.id) redirect("/sign-in");
+    if(session?.user.role !== 'broker'){
+      redirect('/')
+    }
+
   
 
   return (
