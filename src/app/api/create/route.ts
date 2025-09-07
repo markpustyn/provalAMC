@@ -7,7 +7,7 @@ import { OrderSchema } from "@/lib/schema/order_schema";
 import Email from "@/app/emails/my-email";
 import MainProduct from "@/components/forms/mainProduct";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_TOKEN); // keep this server side only
+const resend = new Resend(process.env.RESEND_TOKEN);
 
 
 export async function POST(req: Request) {
