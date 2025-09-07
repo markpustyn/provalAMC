@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Resend } from "resend";
 import Email from "@/app/emails/my-email";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_TOKEN); // keep this server side only
+const resend = new Resend(process.env.RESEND_TOKEN); // keep this server side only
 
 const BodySchema = z.object({
   orderId: z.string(),
