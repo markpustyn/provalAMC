@@ -90,7 +90,7 @@ function CheckoutForm({ order }: { order: any }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ ...order, paymentIntentId: paymentIntent.id }),
         });
-
+        
         if (!res.ok) {
           const txt = await res.text();
           setMessage(`Order creation failed: ${txt || res.statusText}`);

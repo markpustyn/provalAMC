@@ -158,12 +158,13 @@ export default function MainProduct() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...values,}),
       });
-
       if (result.ok) {
         toast.success("Order created successfully!");
+        
         router.push(`/client/order/`);
       } else {
         toast.error("Failed to create order. Please try again.");
+        return
       }
     } catch {
       toast.error("An error occurred while submitting the form.");

@@ -43,6 +43,7 @@ export default function SignUpForm({
       city: "",
       state: "",
       zip: "",
+      role: "broker"
     },
   })
 

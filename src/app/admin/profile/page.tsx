@@ -5,12 +5,10 @@ import { redirect } from 'next/navigation';
 import { db } from '@/db/drizzle';
 import { users } from '@/db/schema';
 import { eq } from 'drizzle-orm';
+import EmailButton from './emailbtn';
+
 type pageProps = {
   searchParams: Promise<SearchParams>;
-};
-
-export const metadata = {
-  title: 'My Orders : Profile'
 };
 
 export default async function Page({ searchParams }: pageProps) {
@@ -28,6 +26,7 @@ export default async function Page({ searchParams }: pageProps) {
   return (
     <div>
       <h1>Profile Page</h1>
+      <EmailButton/>
     </div>
   )
 

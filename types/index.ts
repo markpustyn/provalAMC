@@ -77,7 +77,7 @@ export interface AuthCredentials{
 	city:string,
 	state:string,
   zip:string,
-  role?:string,
+  role:string,
   statued?: string,
 	lastActivityDate?:string,
 	// createdAt?:string,
@@ -88,7 +88,7 @@ export interface StatusOrder {
   propStatus: string;
   reason:string;
   propOrderId: string;
-  vendorFee: number
+  vendorFee?: any
   vendorId: string;
   // status:string;
 }

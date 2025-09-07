@@ -12,52 +12,7 @@ import  {db}  from "@/db/drizzle"
 import { headers } from "next/headers"
 import ratelimit from "./ratelimit"
 import { redirect } from "next/navigation"
-import { workflowClient } from "./workflow"
 
-
-// export async function getUserFromDb(email: string, password: string) {
-//   try {
-//     const existedUser = await db.query.users.findFirst({
-//       where: eq(usersTable.email, email),
-//     })
-
-//     if (!existedUser) {
-//       return {
-//         success: false,
-//         message: "User not found.",
-//       }
-//     }
-
-//     if (!existedUser.password) {
-//       return {
-//         success: false,
-//         message: "Password is required.",
-//       }
-//     }
-
-//     const isPasswordMatches = await bcryptjs.compare(
-//       password,
-//       existedUser.password
-//     )
-
-//     if (!isPasswordMatches) {
-//       return {
-//         success: false,
-//         message: "Password is incorrect.",
-//       }
-//     }
-
-//     return {
-//       success: true,
-//       data: existedUser,
-//     }
-//   } catch (error: any) {
-//     return {
-//       success: false,
-//       message: error.message,
-//     }
-//   }
-// }
 
 export async function login({
   email,
@@ -109,6 +64,7 @@ export async function register(params: AuthCredentials) {
     city,
     state,
     zip,
+    role
   } = params;
     
   const existedUser = await db.select().from(users).where(eq(users.email, email)).limit(1)
@@ -143,15 +99,17 @@ export async function register(params: AuthCredentials) {
         city,
         state,
         zip,
+        role
       })
       const fullName = fname +  " " +  lname
-      await workflowClient.trigger({
-        url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
-        body: {
-          email, 
-          fullName
-        },
-  })
+//       await workflowClient.trigger({
+//         url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
+//         body: {
+//           email, 
+//           fullName
+//         },
+//   }
+// )
       await login({email, password});
 
       return{success: true}

@@ -38,6 +38,7 @@ export default function ClientSignUpForm({
       city: "",
       state: "",
       zip: "",
+      role: "client"
     },
   })
 

@@ -7,6 +7,7 @@
     "url": "https://github.com/Kiranism"
   },
   "scripts": {
+    "email": "email dev --dir src/app/emails",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -55,6 +56,7 @@
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-toast": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.1.5",
+    "@react-email/components": "^0.5.2",
     "@react-google-maps/api": "^2.20.7",
     "@react-pdf/renderer": "^4.3.0",
     "@simplewebauthn/server": "^13.1.1",
@@ -95,6 +97,7 @@
     "react-icons": "^5.5.0",
     "react-responsive": "^10.0.0",
     "recharts": "^2.15.0",
+    "resend": "^6.0.2",
     "sharp": "^0.33.5",
     "sonner": "^1.7.1",
     "sort-by": "^1.2.0",
@@ -109,6 +112,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
+    "@react-email/preview-server": "^4.2.8",
     "@types/bcryptjs": "^2.4.6",
     "@types/sort-by": "^1.2.3",
     "@types/uuid": "^10.0.0",
@@ -118,6 +122,7 @@
     "lint-staged": "^15.2.11",
     "prettier": "3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.9",
+    "react-email": "4.2.8",
     "tsx": "^4.19.3"
   },
   "overrides": {
