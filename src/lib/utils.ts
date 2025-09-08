@@ -32,8 +32,41 @@ export const getInitials = (name: string): string =>
     .toUpperCase()
     .slice(0,2);
 
+export function formatDateMDY(
+  input: Date | string | number = new Date(),
+  timeZone = "America/Los_Angeles"
+): string {
+  const d = input instanceof Date ? input : new Date(input);
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone,
+    month: "2-digit",
+    day: "2-digit",
+    year: "numeric",
+  }).format(d);
+}
+const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 3500 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 3000 },
+  Interior:     { label: "Interior Inspection",      amountCents: 7500 },
+};
+type ProductKey = keyof typeof PRODUCT_CATALOG;
 
-// 100 = low risk, 0 = high risk
+export function getProductFeeDollars(product: string): number | null {
+  const key = Object.keys(PRODUCT_CATALOG).find(
+    k => k.toLowerCase() === product.toLowerCase()
+  ) as ProductKey | undefined;
+
+  if (!key) return null;
+  return Math.trunc(PRODUCT_CATALOG[key].amountCents / 100);
+}
+
+export function getAllProductFeesDollars(): Record<ProductKey, number> {
+  return Object.fromEntries(
+    Object.entries(PRODUCT_CATALOG).map(([k, v]) => [k, Math.trunc(v.amountCents / 100)])
+  ) as Record<ProductKey, number>;
+}
+
+
 export const ratingAssesment = (orderData: any) => {
   // --- unwrap & parse JSON safely (supports: form.data | data | raw string/object) ---
   const unwrap = (d: any) => {
