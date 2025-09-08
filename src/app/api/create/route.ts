@@ -4,8 +4,8 @@ import { db } from "@/db/drizzle";
 import { order } from "@/db/schema";
 import { Resend } from "resend";
 import { OrderSchema } from "@/lib/schema/order_schema";
-import Email from "@/app/emails/my-email";
-import MainProduct from "@/components/forms/mainProduct";
+import Email from "@/app/emails/new-orderEmail";
+import ClientOrder from "@/app/emails/clientOrder";
 
 const resend = new Resend(process.env.RESEND_TOKEN);
 
@@ -45,9 +45,15 @@ export async function POST(req: Request) {
         propertyState: inserted.propertyState!,
         propertyZip: inserted.propertyZip!,
       }),
-          });
+      });
+      const { error: recipt } = await resend.emails.send({
+            from: "Evalu Cloud <info@evaluacloud.tech>",
+            to: "markpustyn@gmail.com",
+            subject: subject,
+            react: ClientOrder(),
+      });
 
-      if (emailError) {
+      if (emailError || recipt) {
       // order created but email failed
       return NextResponse.json(
         { success: true, data: inserted, emailError },

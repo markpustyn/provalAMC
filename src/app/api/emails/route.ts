@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
-import Email from "@/app/emails/my-email";
+import Email from "@/app/emails/new-orderEmail";
 
 const resend = new Resend(process.env.RESEND_TOKEN); // keep this server side only
 

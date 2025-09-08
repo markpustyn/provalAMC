@@ -12,6 +12,9 @@ import  {db}  from "@/db/drizzle"
 import { headers } from "next/headers"
 import ratelimit from "./ratelimit"
 import { redirect } from "next/navigation"
+import { Resend } from "resend"
+import Email from "@/app/emails/new-vendorEmail"
+import ClientEmail from "@/app/emails/new-clientEmail"
 
 
 export async function login({
@@ -83,6 +86,8 @@ export async function register(params: AuthCredentials) {
   }
 
   const hash = await bcryptjs.hash(password, 10)
+  const resend = new Resend(process.env.RESEND_TOKEN); // keep this server side only
+
 
   try {
     await db
@@ -102,14 +107,26 @@ export async function register(params: AuthCredentials) {
         role
       })
       const fullName = fname +  " " +  lname
-//       await workflowClient.trigger({
-//         url: `${process.env.NEXT_PUBLIC_PROD_API_ENDPOINT}/api/workflow/onboarding`,
-//         body: {
-//           email, 
-//           fullName
-//         },
-//   }
-// )
+      
+      const subject = 'Welcome to Evalu Cloud';
+
+      if(role == 'broker'){
+        await resend.emails.send({
+          from: "Evalu Cloud <info@evaluacloud.tech>",
+          to: email,
+          subject: 'Welcome to Evalu Cloud',
+          react: Email(),
+        });
+      } else if(role == 'client') {
+          await resend.emails.send({
+          from: "Evalu Cloud <info@evaluacloud.tech>",
+          to: email,
+          subject: 'Welcome to Evalu Cloud',
+          react: ClientEmail(),
+        });
+      }
+
+
       await login({email, password});
 
       return{success: true}
