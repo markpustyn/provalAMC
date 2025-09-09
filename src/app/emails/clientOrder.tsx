@@ -112,7 +112,7 @@ export default function ClientOrder({
 
                 <Column className="min-h-[44px] border-0 border-white border-r border-b pl-5" colSpan={2}>
                   <Text className="m-0 p-0 text-[10px] leading-[1.4] text-[#666]">BILLED TO</Text>
-                  <Text className="m-0 p-0 text-[12px] leading-[1.4]">Card</Text>
+                  {/* <Text className="m-0 p-0 text-[12px] leading-[1.4]">Card</Text> */}
                   <Text className="m-0 p-0 text-[12px] leading-[1.4]">{clientName}</Text>
                   <Text className="m-0 p-0 text-[12px] leading-[1.4]">{userStreet}</Text>
                   <Text className="m-0 p-0 text-[12px] leading-[1.4]">{userCity}, {userState} {userZip}</Text>
@@ -152,7 +152,7 @@ export default function ClientOrder({
                 </Column>
 
                 <Column align="right" className="table-cell w-[100px] pr-5 align-top">
-                  <Text className="m-0 text-[12px] font-semibold">{fee}</Text>
+                  <Text className="m-0 text-[12px] font-semibold">${fee}</Text>
                 </Column>
               </Row>
               <Row className="mt-4">
@@ -176,7 +176,7 @@ export default function ClientOrder({
                 </Column>
                 <Column className="min-h-[48px] border-l border-[#eee] pt-[48px]" />
                 <Column className="table-cell w-[90px]">
-                  <Text className="m-0 mr-5 whitespace-nowrap text-right text-[16px] font-semibold">{fee}</Text>
+                  <Text className="m-0 mr-5 whitespace-nowrap text-right text-[16px] font-semibold">${fee}</Text>
                 </Column>
               </Row>
             </Section>

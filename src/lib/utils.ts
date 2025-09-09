@@ -51,6 +51,22 @@ const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = 
 };
 type ProductKey = keyof typeof PRODUCT_CATALOG;
 
+const BROKER_FEES: Record<string, { label: string; amountCents: number }> = {
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 2500 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 2000 },
+  Interior:     { label: "Interior Inspection",      amountCents: 5500 },
+};
+type BrokerFees = keyof typeof BROKER_FEES;
+
+export function getBrokerFees(product: any): any | null {
+  const key = Object.keys(BROKER_FEES).find(
+    k => k.toLowerCase() === product.toLowerCase()
+  ) as BrokerFees | undefined;
+
+  if (!key) return null;
+  return Math.trunc(BROKER_FEES[key].amountCents / 100);
+}
+
 export function getProductFeeDollars(product: string): number | null {
   const key = Object.keys(PRODUCT_CATALOG).find(
     k => k.toLowerCase() === product.toLowerCase()

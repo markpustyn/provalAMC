@@ -46,6 +46,14 @@ export const columns: ColumnDef<OpenOrder>[] = [
     accessorKey: "mainProduct",
     header: "Order Type",
   },
+    {
+    accessorKey: 'orderFee',
+    header: 'Fee',
+    cell: ({ getValue }) => {
+      const v = getValue<number | string | null>();
+      return v == null ? '' : `$${v}`;
+    },
+  },
   {
     id: 'Status',
     cell: ({ row }) => <CellAction data={row.original} />

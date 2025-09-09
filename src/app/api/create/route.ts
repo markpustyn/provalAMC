@@ -7,7 +7,7 @@ import { OrderSchema } from "@/lib/schema/order_schema";
 import Email from "@/app/emails/new-orderEmail";
 import ClientOrder from "@/app/emails/clientOrder";
 import { eq } from "drizzle-orm";
-import { formatDateMDY, getProductFeeDollars } from "@/lib/utils";
+import { formatDateMDY, getBrokerFees, getProductFeeDollars } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_TOKEN);
 
@@ -21,35 +21,32 @@ export async function POST(req: Request) {
     const body = await req.json();
     const parsed = OrderSchema.parse(body);
 
+    const [userRow] = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, session.user.id))
+      .limit(1);
+    
     const [inserted] = await db
       .insert(order)
       .values({
         ...parsed,
+        lender: userRow.companyName,
+        lenderAddress: userRow.street,
+        lenderCity: userRow.city,
+        lenderZip: userRow.zip,
         clientId: session.user.id,
         paymentIntentId: body.paymentIntentId ?? null,
+        orderFee: getBrokerFees(body.mainProduct)
       })
       .returning();
-
-    // fetch the current user
-    const [userRow] = await db
-      .select({
-        id: users.id,
-        email: users.email,
-        street: users.street,
-        zip: users.zip,
-        state: users.state,
-        city: users.city,
-      })
-      .from(users)
-      .where(eq(users.id, session.user.id))
-      .limit(1);
 
     const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
 
 
     const { error: emailError } = await resend.emails.send({
       from: "Evalu Cloud <info@evaluacloud.tech>",
-      to: userRow?.email ?? "info@evaluacloud.tech",
+      to: "bobthebaugd@gmail.com",
       subject: `New EvaluCloud Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
       react: Email({
         clientName: inserted.lender ?? "Client",
@@ -58,6 +55,17 @@ export async function POST(req: Request) {
         propertyCity: inserted.propertyCity ?? "",
         propertyState: inserted.propertyState ?? "",
         propertyZip: inserted.propertyZip ?? "",
+        orderId: inserted.orderId!,
+        requestedDueDate: inserted.requestedDueDate!,
+        fee: inserted.orderFee,
+        borrowerName: inserted.borrowerName!,
+        borrowerEmail: inserted.borrowerEmail!,
+        borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
+        lender: inserted.lender!,
+        lenderAddress: inserted.lenderAddress!,
+        lenderCity: inserted.lenderCity!,
+        lenderZip: inserted.lenderZip!,
+        loanNumber: inserted.loanNumber!,
       }),
     });
 

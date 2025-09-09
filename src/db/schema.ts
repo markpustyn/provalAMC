@@ -46,6 +46,7 @@ export const order = pgTable("order", {
   unitNumber: varchar('unit_number', { length: 255 }),
   paymentIntentId: varchar('payment_id', { length: 255 }),
   requestedDueDate: varchar('requested_due_date', { length: 50 }),
+  orderFee: varchar('order_fee', { length: 50 }),
   description: text('description'),
   status: varchar('order_status'),
 });
