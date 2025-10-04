@@ -20,7 +20,7 @@ import * as React from 'react';
 
 const baseUrl = 'https://www.evaluacloud.tech';
 const previewText =
-  'Welcome to Evalu Cloud Client Portal. Sign in and place your first order.';
+  'Welcome to Blue Grid Solutions Client Portal. Sign in and place your first order.';
 
 export default function ClientEmail(): React.ReactElement {
   return (
@@ -32,10 +32,10 @@ export default function ClientEmail(): React.ReactElement {
 
           <Section className="mt-4">
             <Img
-              src={`${baseUrl}/Evalu%20Cloud.jpg`}
+              src={`${baseUrl}/blackLogo.png`}
               width="250"
               height="120"
-              alt="Evalu Cloud"
+              alt="Blue Grid"
               className="mx-auto my-0"
             />
           </Section>
@@ -43,11 +43,11 @@ export default function ClientEmail(): React.ReactElement {
           <Container className="mx-auto mt-6 w-full max-w-[600px] border border-[#eaeaea]">
             <Section className="px-2 py-8">
                 <Heading className="m-0 text-center text-[26px] font-semibold text-black">
-                Welcome to the Evalu Cloud Client Portal
+                Welcome to the Blue Grid Property Solutions Client Portal
                 </Heading>
 
                 <Text className="mt-4 text-[14px] leading-[24px] text-black">
-                Thank you for creating an account with Evalu Cloud. We help you order property inspections quickly with consistent quality. In your client portal you can create new orders and track progress in real time.
+                Thank you for creating an account with Blue Grid. We help you order property inspections quickly with consistent quality. In your client portal you can create new orders and track progress in real time.
                 </Text>
 
                 <ol className="ml-4 mt-4 list-decimal text-[14px] leading-[24px] text-black">
@@ -92,7 +92,7 @@ export default function ClientEmail(): React.ReactElement {
               </Row>
 
               <Text className="mt-6 text-center text-[12px] text-[#9ca3af]">
-                © {new Date().getFullYear()} Evalu Cloud. All rights reserved.
+                © {new Date().getFullYear()} BlueGrid Valuations. All rights reserved.
               </Text>
             </Section>
           </Container>

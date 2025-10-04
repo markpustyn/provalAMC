@@ -68,7 +68,7 @@ export default function ClientSideBar({ session, pathname }: AppSidebarProps) {
             <span className='truncate font-semibold'>{company.name}</span>
             <span className='truncate text-xs'>{company.plan}</span>
           </div> */}
-          <Image src={'/Evalu Cloud.jpg'} alt={'Main Logo Evalu Cloud'} height={150} width={300}/>
+          <Image src={'/blackLogo.png'} alt={'Main Logo Blue Grid'} height={150} width={300}/>
         </div>
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>

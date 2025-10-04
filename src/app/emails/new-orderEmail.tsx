@@ -54,7 +54,7 @@ export default function VendorNewOrderEmail({
   payoutUSD,
   acceptUrl = `${baseUrl}/broker/dashboard`,
   notes,
-  logoUrl = `${baseUrl}/Evalu%20Cloud.jpg`,
+  logoUrl = `${baseUrl}/blackLogo.png`,
   fee,
   supportEmail = "support@evaluacloud.tech",
   supportPhone = "(555) 123-4567",
@@ -86,7 +86,7 @@ export default function VendorNewOrderEmail({
                     src={logoUrl}
                     width="240"
                     height="96"
-                    alt="Evalu Cloud"
+                    alt="Blue Grid"
                     className="my-0"
                   />
                 </Column>
@@ -253,7 +253,7 @@ export default function VendorNewOrderEmail({
 
             {/* Footer */}
             <Text className="m-0 text-center text-[14px] leading-[1.8] text-[#6b7280]">
-              You received this message because you are an active vendor on Evalu Cloud
+              You received this message because you are an active vendor on Blue Grid
             </Text>
             <Text className="mt-4 text-center text-[14px] text-[#6b7280]">
               Need help?{" "}

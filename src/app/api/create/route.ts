@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const { error: emailError } = await resend.emails.send({
       from: "Evalu Cloud <info@evaluacloud.tech>",
       to: "bobthebaugd@gmail.com",
-      subject: `New EvaluCloud Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
+      subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
       react: Email({
         clientName: inserted.lender ?? "Client",
         product: inserted.mainProduct ?? "",

@@ -12,7 +12,7 @@ import MainProduct from '@/components/forms/mainProduct';
 
 
 export const metadata = {
-  title: 'Evalu Cloud Portal'
+  title: 'Blue Grid Portal'
 };
 
 type pageProps = {

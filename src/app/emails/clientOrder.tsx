@@ -67,10 +67,10 @@ export default function ClientOrder({
               <Row>
                 <Column>
                     <Img
-                    src={`${baseUrl}/Evalu%20Cloud.jpg`}
+                    src={`${baseUrl}/blackLogo.png`}
                     width="200"
                     height="80"
-                    alt="Evalu Cloud"
+                    alt="Blue Grid"
                     className="my-0 mb-10"
                     />
                 </Column>
@@ -188,10 +188,10 @@ export default function ClientOrder({
               <Row>
                 <Column align="center" className="block">
                     <Img
-                    src={`${baseUrl}/Evalu%20Cloud.jpg`}
+                    src={`${baseUrl}/blackLogo.png`}
                     width="200"
                     height="80"
-                    alt="Evalu Cloud"
+                    alt="Blue Grid"
                     className="my-0"
                     />
                 </Column>
@@ -221,7 +221,7 @@ export default function ClientOrder({
               </Link>
             </Text>
               <Text className="mt-6 text-center text-[12px] text-[#9ca3af]">
-                            © {new Date().getFullYear()} Evalu Cloud. All rights reserved.
+                            © {new Date().getFullYear()} BlueGrid Valuations. All rights reserved.
                     </Text>
           </Container>
         </Body>

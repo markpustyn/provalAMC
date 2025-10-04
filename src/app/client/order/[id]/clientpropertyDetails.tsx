@@ -78,7 +78,7 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
       const rating = ratingAssesment(orderRecord)
       
       const images = await Promise.all(imageUrls.map(toDataUrl));
-      const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={orderRecord.vendor} orderDetails={OrderDetails} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+      const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={orderRecord.vendor} orderDetails={OrderDetails} orderData={orderRecord.form} images={images} tags={tags} logoSrc="/blackLogo.png"/>).toBlob();
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;

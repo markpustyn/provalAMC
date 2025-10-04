@@ -27,7 +27,7 @@ type Props = {
 
 const baseUrl = 'https://www.evaluacloud.tech';
 const previewText =
-  'Welcome to Evalu Cloud Vendor Portal. Activate your account and get your first order.';
+  'Welcome to Blue Grid Vendor Portal. Activate your account and get your first order.';
 
 export default function Email(): React.ReactElement {
   return (
@@ -42,7 +42,7 @@ export default function Email(): React.ReactElement {
               src={`${baseUrl}/Evalu%20Cloud.jpg`}
               width="250"
               height="120"
-              alt="Evalu Cloud"
+              alt="Blue Grid"
               className="mx-auto my-0"
             />
           </Section>
@@ -50,7 +50,7 @@ export default function Email(): React.ReactElement {
           <Container className="mx-auto mt-6 w-full max-w-[600px] border border-[#eaeaea]">
             <Section className="px-2 py-8">
               <Heading className="m-0 text-center text-[26px] font-semibold text-black">
-                Welcome to Evalu Cloud Vendor Portal
+                Welcome to Blue Grid Vendor Portal
               </Heading>
 
 
@@ -98,7 +98,7 @@ export default function Email(): React.ReactElement {
               </Row>
 
               <Text className="mt-6 text-center text-[12px] text-[#9ca3af]">
-                © {new Date().getFullYear()} Evalu Cloud. All rights reserved.
+                © {new Date().getFullYear()} BlueGrid Valuations. All rights reserved.
               </Text>
             </Section>
           </Container>

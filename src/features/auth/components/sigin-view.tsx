@@ -10,7 +10,7 @@ import UserAuthForm from "./user-auth-form";
 
 export const metadata: Metadata = {
   title: "Login",
-  description: "Evalu Cloud Login",
+  description: "Blue Grid Login",
 };
 
 export default function SignInViewPage() {
@@ -34,8 +34,8 @@ export default function SignInViewPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#F9FAFB] to-[#E5E7EB]" />
         <div className="relative z-20">
           <Image
-            src="/mainLogo.png"
-            alt="Evalu Cloud Logo"
+            src="/blackLogo.png"
+            alt="Blue Grid Logo"
             width={500}
             height={250}
             priority
@@ -59,8 +59,8 @@ export default function SignInViewPage() {
           {/* Small-screen logo */}
           <div className="flex items-center justify-center lg:hidden">
             <Image
-              src="/mainLogo.png"
-              alt="Evalu Cloud Logo"
+              src="/blackLogo.png"
+              alt="Blue Grid Logo"
               width={220}
               height={110}
               priority

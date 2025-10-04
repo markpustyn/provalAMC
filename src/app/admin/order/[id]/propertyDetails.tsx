@@ -70,7 +70,7 @@ const generateReport = async (id: string) => {
     const rating = ratingAssesment(orderRecord)
     
     const images = await Promise.all(imageUrls.map(toDataUrl));
-    const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={vendor} orderDetails={OrderDetails} orderData={form} images={images} tags={tags} logoSrc="/mainLogo.png"/>).toBlob();
+    const blob = await ReactPDF.pdf(<GeneratePdf rating={rating} vendorDetails={vendor} orderDetails={OrderDetails} orderData={form} images={images} tags={tags} logoSrc="/blackLogo.png"/>).toBlob();
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;

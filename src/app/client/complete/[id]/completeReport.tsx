@@ -280,7 +280,7 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
             orderData={orderRecord.form}
             images={base64Images}
             tags={tags}
-            logoSrc="/mainLogo.png"
+            logoSrc="/blackLogo.png"
           />
         )
         .toBlob();
@@ -323,7 +323,7 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
           orderData={formData}
           images={imageUrls}
           tags={tags}
-          logoSrc="/mainLogo.png"
+          logoSrc="/blackLogo.png"
         />
       )}
     </div>
