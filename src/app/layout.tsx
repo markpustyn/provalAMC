@@ -6,6 +6,7 @@ import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import { Lato } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css'
+import Head from 'next/head';
 
 export const metadata: Metadata = {
   title: 'Next Shadcn',
@@ -27,6 +28,12 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang='en' className={`${lato.className}`} suppressHydrationWarning>
+    <Head>
+          <link rel="shortcut icon" href="/images/favicon.ico" />
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"/>
+          <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/>
+    </Head>
       <body className={'overflow-hidden'}>
         <NextTopLoader showSpinner={false} />
         <NuqsAdapter>
