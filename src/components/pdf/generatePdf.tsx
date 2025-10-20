@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // optional: spreads logo + title block
   },
   logo: { 
-    width: 180, 
-    height: 60, 
+    width: 200, 
+    height: 50, 
     marginRight: 5
 },
   titleBlock: {
