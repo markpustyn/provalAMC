@@ -30,8 +30,8 @@ export default function SignInViewPage() {
       </Link>
 
       {/* LEFT: image panel (visible on lg+) */}
-      <div className="relative hidden h-full flex-col bg-[#F9FAFB] p-10 dark:border-r lg:flex">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#F9FAFB] to-[#E5E7EB]" />
+      <div className="relative hidden h-full flex-col bg-gray-200 p-10 dark:border-r lg:flex">
+        <div className="absolute inset-0" />
         <div className="relative z-20">
           <Image
             src="/blackLogo.png"

@@ -90,7 +90,7 @@ export default function UserAuthForm({ role, setIsOpened }: Props) {
           )}
         />
 
-        <Button disabled={loading} className="ml-auto w-full" type="submit">
+        <Button disabled={loading} className="ml-auto w-full bg-blue-600 text-white" type="submit">
           Login
         </Button>
       </form>
