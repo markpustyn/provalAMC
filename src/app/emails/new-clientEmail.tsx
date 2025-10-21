@@ -18,7 +18,7 @@ import {
 } from '@react-email/components';
 import * as React from 'react';
 
-const baseUrl = 'https://www.evaluacloud.tech';
+const baseUrl = 'https://app.bluegridvaluations.com';
 const previewText =
   'Welcome to Blue Grid Solutions Client Portal. Sign in and place your first order.';
 
@@ -70,8 +70,8 @@ export default function ClientEmail(): React.ReactElement {
 
               <Text className="mt-4 text-center text-[12px] leading-[20px] text-[#666]">
                 Questions? Email{' '}
-                <Link href="mailto:support@evaluacloud.tech" className="text-[#2563eb] no-underline">
-                  support@evaluacloud.tech
+                <Link href="mailto:support@bluegridvaluations.com" className="text-[#2563eb] no-underline">
+                  support@bluegridvaluations.com
                 </Link>
                 .
               </Text>

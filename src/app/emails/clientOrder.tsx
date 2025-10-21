@@ -16,7 +16,7 @@ import {
 import { House } from 'lucide-react';
 
 
-const baseUrl = 'https://www.evaluacloud.tech';
+const baseUrl = 'https://app.bluegridvaluations.com';
 
 type ClientOrderProps = {
   clientName: string;
@@ -142,7 +142,7 @@ export default function ClientOrder({
                   <Text className="m-0 text-[12px] font-semibold">{propertyAddress} {propertyCity}, {propertyState} {propertyZip}</Text>
                   <Text className="m-0 text-[12px]">{product}</Text>
                   <Text className="m-0 text-[12px] text-[#666]">Submitted By: {requestedDueDate}</Text>
-                  <Link href="mailto:support@evaluacloud.tech" className="text-[12px] text-[#0070C9] no-underline">
+                  <Link href="mailto:support@bluegridvaluations.com" className="text-[12px] text-[#0070C9] no-underline">
                     Contact Support
                   </Link>
                   <span className="mx-1 text-[#333] font-extralight">|</span>

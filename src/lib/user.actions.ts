@@ -108,20 +108,20 @@ export async function register(params: AuthCredentials) {
       })
       const fullName = fname +  " " +  lname
       
-      const subject = 'Welcome to Evalu Cloud';
+      const subject = 'Welcome to Blue Grid Valuations';
 
       if(role == 'broker'){
         await resend.emails.send({
-          from: "Evalu Cloud <info@evaluacloud.tech>",
+          from: "Blue Grid Valuations <noreply@app.bluegridvaluations.com>",
           to: email,
-          subject: 'Welcome to Evalu Cloud',
+          subject: 'Welcome to Blue Grid Valuations',
           react: Email(),
         });
       } else if(role == 'client') {
           await resend.emails.send({
-          from: "Evalu Cloud <info@evaluacloud.tech>",
+          from: "Blue Grid Valuations <noreply@app.bluegridvaluations.com>",
           to: email,
-          subject: 'Welcome to Evalu Cloud',
+          subject: 'Welcome to Blue Grid Valuations',
           react: ClientEmail(),
         });
       }

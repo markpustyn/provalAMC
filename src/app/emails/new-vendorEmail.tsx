@@ -25,7 +25,7 @@ type Props = {
   supportEmail?: string;
 };
 
-const baseUrl = 'https://www.evaluacloud.tech';
+const baseUrl = 'https://app.bluegridvaluations.com';
 const previewText =
   'Welcome to Blue Grid Vendor Portal. Activate your account and get your first order.';
 
@@ -39,7 +39,7 @@ export default function Email(): React.ReactElement {
 
           <Section className="mt-4">
             <Img
-              src={`${baseUrl}/Evalu%20Cloud.jpg`}
+              src={`${baseUrl}/blackLogo.png`}
               width="250"
               height="120"
               alt="Blue Grid"
@@ -76,8 +76,8 @@ export default function Email(): React.ReactElement {
 
               <Text className="mt-4 text-center text-[12px] leading-[20px] text-[#666]">
                 Questions? Email{' '}
-                <Link href={`mailto:support@evaluacloud.tech`} className="text-[#2563eb] no-underline">
-                  support@evaluacloud.tech
+                <Link href={`mailto:support@bluegridvaluations.com`} className="text-[#2563eb] no-underline">
+                  support@bluegridvaluations.com
                 </Link>
                 .
               </Text>

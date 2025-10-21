@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const subject = `New order ${order.orderId}: ${order.product} at ${order.propertyAddress}`;
 
     const { data, error } = await resend.emails.send({
-      from: "Evalu Cloud <info@evaluacloud.tech>",
+      from: "Blue Grid Valuations <noreply@app.bluegridvaluations.com>",
       to: vendorEmails,
       subject,
       react: Email({

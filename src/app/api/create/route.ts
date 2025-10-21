@@ -45,7 +45,7 @@ export async function POST(req: Request) {
 
 
     const { error: emailError } = await resend.emails.send({
-      from: "Blue Grid <info@evaluacloud.tech>",
+      from: "Blue Grid <noreply@app.bluegridvaluations.com>",
       to: "bobthebaugd@gmail.com",
       subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
       react: Email({
@@ -71,7 +71,7 @@ export async function POST(req: Request) {
 
     const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
     const { error: receiptError } = await resend.emails.send({
-      from: "Blue Grid <info@evaluacloud.tech>",
+      from: "Blue Grid <noreply@app.bluegridvaluations.com>",
       to: userRow?.email ?? "bobthebaugd@gmail.com",
       subject,
       react: ClientOrder({

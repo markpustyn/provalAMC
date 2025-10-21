@@ -30,7 +30,7 @@ export type VendorNewOrderEmailProps = {
   loanNumber?: string;
 };
 
-const baseUrl = "https://www.evaluacloud.tech";
+const baseUrl = "https://app.bluegridvaluations.com";
 
 export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
   const {
@@ -38,7 +38,7 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
     requestedDueDate, clientName, payoutUSD, notes, fee,
     acceptUrl = `${baseUrl}/broker/dashboard`,
     logoUrl = `${baseUrl}/blackLogo.png`,
-    supportEmail = "support@evaluacloud.tech",
+    supportEmail = "support@bluegridvaluations.com",
     supportPhone = "(555) 123-4567",
     borrowerName, borrowerEmail, borrowerPhoneNumber,
     lender, lenderAddress, lenderCity, lenderZip, loanNumber,

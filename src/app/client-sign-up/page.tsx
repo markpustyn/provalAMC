@@ -22,10 +22,10 @@ export default function SignInPage() {
               <p className="max-w-md text-sm text-muted-foreground mt-4">
                 Have questions? Email us at{" "}
                 <a
-                  href="mailto:support@evalucloud.com"
+                  href="mailto:support@bluegridvaluations.com"
                   className="text-black font-medium underline-offset-4 hover:underline"
                 >
-                  support@evalucloud.com
+                  support@bluegridvaluations.com
                 </a>
               </p>
           </div>
