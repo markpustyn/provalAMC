@@ -9,7 +9,7 @@ import ClientOrder from "@/app/emails/clientOrder";
 import { eq } from "drizzle-orm";
 import { formatDateMDY, getBrokerFees, getProductFeeDollars } from "@/lib/utils";
 
-const resend = new Resend(process.env.RESEND_TOKEN);
+const resend = new Resend('process.env.RESEND_TOKEN');
 
 export async function POST(req: Request) {
   try {
@@ -41,11 +41,11 @@ export async function POST(req: Request) {
       })
       .returning();
 
-    const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
+    
 
 
     const { error: emailError } = await resend.emails.send({
-      from: "Evalu Cloud <info@evaluacloud.tech>",
+      from: "Blue Grid <info@evaluacloud.tech>",
       to: "bobthebaugd@gmail.com",
       subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
       react: Email({
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         propertyZip: inserted.propertyZip ?? "",
         orderId: inserted.orderId!,
         requestedDueDate: inserted.requestedDueDate!,
-        fee: inserted.orderFee,
+        fee: inserted.orderFee!,
         borrowerName: inserted.borrowerName!,
         borrowerEmail: inserted.borrowerEmail!,
         borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
@@ -69,9 +69,10 @@ export async function POST(req: Request) {
       }),
     });
 
+    const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
     const { error: receiptError } = await resend.emails.send({
-      from: "Evalu Cloud <info@evaluacloud.tech>",
-      to: userRow?.email ?? "info@evaluacloud.tech",
+      from: "Blue Grid <info@evaluacloud.tech>",
+      to: userRow?.email ?? "bobthebaugd@gmail.com",
       subject,
       react: ClientOrder({
         clientName: inserted.lender ?? "Client",

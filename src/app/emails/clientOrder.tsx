@@ -146,7 +146,7 @@ export default function ClientOrder({
                     Contact Support
                   </Link>
                   <span className="mx-1 text-[#333] font-extralight">|</span>
-                  <Link href="https://www.apple.com/" className="text-[12px] text-[#0070C9] no-underline">
+                  <Link href="" className="text-[12px] text-[#0070C9] no-underline">
                     Cancel Order
                   </Link>
                 </Column>
@@ -189,7 +189,7 @@ export default function ClientOrder({
                 <Column align="center" className="block">
                     <Img
                     src={`${baseUrl}/blackLogo.png`}
-                    width="200"
+                    width="250"
                     height="80"
                     alt="Blue Grid"
                     className="my-0"
@@ -198,13 +198,6 @@ export default function ClientOrder({
               </Row>
             </Section>
 
-            {/* <Section>
-              <Row>
-                <Column align="center" className="my-4 block">
-                  <Text className="text-[24px] font-medium">Save 3% on all your Apple purchases.</Text>
-                </Column>
-              </Row>
-            </Section> */}
             <Hr className="my-5 border-t border-[#eee]" />
 
             <Text className="m-0 text-center text-[12px] text-[#666]">
@@ -212,11 +205,11 @@ export default function ClientOrder({
                 Log In
               </Link>{" "}
               •{" "}
-              <Link href="https://www.apple.com/" className="text-[#0073FF] underline">
+              <Link href="" className="text-[#0073FF] underline">
                 Terms of Sale
               </Link>{" "}
               •{" "}
-              <Link href="https://www.apple.com/legal/privacy/" className="text-[#0073FF] underline">
+              <Link href="" className="text-[#0073FF] underline">
                 Privacy Policy
               </Link>
             </Text>

@@ -86,7 +86,7 @@ export async function register(params: AuthCredentials) {
   }
 
   const hash = await bcryptjs.hash(password, 10)
-  const resend = new Resend(process.env.RESEND_TOKEN); // keep this server side only
+  const resend = new Resend(process.env.RESEND_TOKEN);
 
 
   try {

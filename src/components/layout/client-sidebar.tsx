@@ -46,7 +46,7 @@ import { Session } from 'next-auth';
 import Image from 'next/image';
 import { signOut } from '@/lib/auth';
 export const company = {
-  name: 'AMC SAAS',
+  name: 'Blue Grid Valuations',
   logo: GalleryVerticalEnd,
   plan: 'Enterprise'
 };

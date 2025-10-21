@@ -9,8 +9,7 @@ import { redirect } from 'next/navigation';
 
 
 export const metadata: Metadata = {
-  title: 'AMC Broker',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Blue Grid Vendor',
 };
 
 

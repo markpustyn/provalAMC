@@ -13,8 +13,7 @@ import { after } from 'next/server';
 
 
 export const metadata: Metadata = {
-  title: 'AMC ADMIN',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Blue Grid Admin',
 };
 
 

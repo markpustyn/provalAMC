@@ -10,8 +10,7 @@ import { redirect } from 'next/navigation';
 
 
 export const metadata: Metadata = {
-  title: 'AMC Client',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Blue Grid Client',
 };
 
 

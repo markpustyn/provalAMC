@@ -1,20 +1,10 @@
+import React from "react";
 import {
-  Body,
-  Column,
-  Container,
-  Head,
-  Hr,
-  Html,
-  Img,
-  Link,
-  Preview,
-  Row,
-  Section,
-  Tailwind,
-  Text,
+  Body, Column, Container, Head, Hr, Html, Img, Link, Preview,
+  Row, Section, Tailwind, Text,
 } from "@react-email/components";
 
-type Props = {
+export type VendorNewOrderEmailProps = {
   orderId: string;
   product: string;
   propertyAddress: string;
@@ -27,7 +17,7 @@ type Props = {
   acceptUrl?: string;
   notes?: string;
   logoUrl?: string;
-  fee?: any;
+  fee?: string;
   supportEmail?: string;
   supportPhone?: string;
   borrowerName?: string;
@@ -42,32 +32,20 @@ type Props = {
 
 const baseUrl = "https://www.evaluacloud.tech";
 
-export default function VendorNewOrderEmail({
-  orderId,
-  product,
-  propertyAddress,
-  propertyCity,
-  propertyState,
-  propertyZip,
-  requestedDueDate,
-  clientName,
-  payoutUSD,
-  acceptUrl = `${baseUrl}/broker/dashboard`,
-  notes,
-  logoUrl = `${baseUrl}/blackLogo.png`,
-  fee,
-  supportEmail = "support@evaluacloud.tech",
-  supportPhone = "(555) 123-4567",
-  borrowerName,
-  borrowerEmail,
-  borrowerPhoneNumber,
-  lender,
-  lenderAddress,
-  lenderCity,
-  lenderZip,
-  loanNumber,
-}: Props) {
+export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
+  const {
+    orderId, product, propertyAddress, propertyCity, propertyState, propertyZip,
+    requestedDueDate, clientName, payoutUSD, notes, fee,
+    acceptUrl = `${baseUrl}/broker/dashboard`,
+    logoUrl = `${baseUrl}/blackLogo.png`,
+    supportEmail = "support@evaluacloud.tech",
+    supportPhone = "(555) 123-4567",
+    borrowerName, borrowerEmail, borrowerPhoneNumber,
+    lender, lenderAddress, lenderCity, lenderZip, loanNumber,
+  } = props;
+
   const fullAddress = `${propertyAddress}, ${propertyCity}, ${propertyState} ${propertyZip}`;
+
   return (
     <Html>
       <Head />
@@ -76,19 +54,15 @@ export default function VendorNewOrderEmail({
       </Preview>
       <Tailwind>
         <Body className="bg-white font-sans">
-          {/* Wider container and larger base spacing */}
           <Container className="mx-auto w-full max-w-[820px] px-6 py-10">
-            {/* Header */}
             <Section className="px-2">
               <Row className="items-center">
                 <Column>
-                  <Img
-                    src={logoUrl}
-                    width="240"
-                    height="96"
-                    alt="Blue Grid"
-                    className="my-0"
-                  />
+                  <Img src={logoUrl}
+                  width="250"
+                  height="80"
+                  alt="Blue Grid"
+                  className="my-0" />
                 </Column>
                 <Column align="right">
                   <Text className="m-0 text-[34px] font-semibold leading-[1.2] text-[#111]">
@@ -98,26 +72,21 @@ export default function VendorNewOrderEmail({
               </Row>
             </Section>
 
-            {/* Callout */}
             <Section className="mt-8 px-2">
               <Text className="m-0 rounded border border-[#e5e7eb] bg-[#f8fafc] px-6 py-5 text-[18px] leading-[1.8] text-[#111]">
                 You have a new assignment that is pending your acceptance. Other vendors may also have been notified. Please accept as soon as possible. Sign in to the portal to accept or decline.
               </Text>
             </Section>
 
-            {/* Order info title */}
             <Section className="mt-12 px-2 mb-2">
-              <Text className="m-0 text-center text-[26px] font-bold text-[#111]">
-                Order Information
-              </Text>
+              <Text className="m-0 text-center text-[26px] font-bold text-[#111]">Order Information</Text>
             </Section>
 
-            {/* Order info card — larger type and padding */}
             <Section className="mx-2 rounded border border-[#e5e7eb] bg-white text-[#111]">
               <Row className="border-b border-[#e5e7eb]">
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
-                    Address:
+                    <strong>Address:</strong>
                     <span className="ml-2 font-normal text-[#374151]">{fullAddress}</span>
                   </Text>
                 </Column>
@@ -125,7 +94,7 @@ export default function VendorNewOrderEmail({
               <Row className="border-b border-[#e5e7eb]">
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
-                    Service:
+                    <strong>Report Type:</strong>
                     <span className="ml-2 font-normal text-[#374151]">{product} Property Inspection</span>
                   </Text>
                 </Column>
@@ -133,7 +102,8 @@ export default function VendorNewOrderEmail({
               <Row className="border-b border-[#e5e7eb]">
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
-                    Due Date:
+                    <strong>Due Date:</strong>
+                    
                     <span className="ml-2 font-normal text-[#374151]">
                       {requestedDueDate || "TBD"}
                     </span>
@@ -143,9 +113,14 @@ export default function VendorNewOrderEmail({
               <Row className="border-b border-[#e5e7eb]">
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
-                    Fee:
+                    
+                   <strong>Fee:</strong>
                     <span className="ml-2 font-normal text-[#374151]">
-                      {typeof fee !== "undefined" ? `$${fee}` : typeof payoutUSD === "number" ? `$${payoutUSD}` : "TBD"}
+                      {typeof fee === "number"
+                        ? `$${fee}`
+                        : typeof payoutUSD === "number"
+                        ? `$${payoutUSD}`
+                        : "TBD"}
                     </span>
                   </Text>
                 </Column>
@@ -153,24 +128,22 @@ export default function VendorNewOrderEmail({
               <Row>
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
-                    Order ID:
+                    <strong>Order ID:</strong>
                     <span className="ml-2 font-normal text-[#374151]">{orderId}</span>
                   </Text>
                 </Column>
               </Row>
             </Section>
 
-            {/* Instructions — bigger card */}
             <Section className="mt-12 px-2">
-              <Text className="m-0 text-[22px] font-semibold text-[#111]">Instructions</Text>
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Instructions</Text>
               <Text className="mt-4 rounded border border-[#e5e7eb] bg-[#f8fafc] px-6 py-6 text-[18px] leading-[1.9] text-[#111]">
                 {notes || "No special instructions were provided."}
               </Text>
             </Section>
 
-            {/* Contact block — larger type */}
             <Section className="mt-10 px-2">
-              <Text className="m-0 text-[22px] font-semibold text-[#111]">Contact</Text>
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Contact</Text>
               <Text className="mt-3 text-[18px] leading-[1.9] text-[#374151]">
                 Support Email:{" "}
                 <Link href={`mailto:${supportEmail}`} className="text-[#0073FF] underline">
@@ -181,9 +154,8 @@ export default function VendorNewOrderEmail({
               </Text>
             </Section>
 
-            {/* Borrower info — expanded */}
             <Section className="mt-12 px-2">
-              <Text className="m-0 text-[22px] font-semibold text-[#111]">Borrower Information</Text>
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Borrower Information</Text>
             </Section>
             <Section className="mx-2 rounded border border-[#e5e7eb] bg-white">
               <Row className="border-b border-[#e5e7eb]">
@@ -202,9 +174,8 @@ export default function VendorNewOrderEmail({
               </Row>
             </Section>
 
-            {/* Client info — expanded */}
             <Section className="mt-12 px-2">
-              <Text className="m-0 text-[22px] font-semibold text-[#111]">Client Information</Text>
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Client Information</Text>
             </Section>
             <Section className="mx-2 rounded border border-[#e5e7eb] bg-white">
               <Row className="border-b border-[#e5e7eb]">
@@ -217,7 +188,7 @@ export default function VendorNewOrderEmail({
                   <Text className="m-0 text-[18px] text-[#111]">
                     {lenderAddress || "—"}
                     <br />
-                    {(lenderCity && lenderZip) ? `${lenderCity}, ${lenderZip}` : "—"}
+                    {lenderCity && lenderZip ? `${lenderCity}, ${lenderZip}` : "—"}
                   </Text>
                 </Column>
               </Row>
@@ -235,13 +206,12 @@ export default function VendorNewOrderEmail({
 
             <Hr className="my-12 border-t border-[#eee]" />
 
-            {/* CTA — bigger button */}
             <Section>
               <Row>
                 <Column align="center" className="my-2 block">
                   <Link
                     href={acceptUrl}
-                    className="inline-block rounded bg-[#0073FF] px-10 py-5 text-[20px] font-semibold text-white no-underline"
+                    className="inline-block rounded bg-[#0073FF] px-10 py-5 text-[24px] font-semibold text-white no-underline"
                   >
                     View or accept order
                   </Link>
@@ -251,7 +221,6 @@ export default function VendorNewOrderEmail({
 
             <Hr className="my-10 border-t border-[#eee]" />
 
-            {/* Footer */}
             <Text className="m-0 text-center text-[14px] leading-[1.8] text-[#6b7280]">
               You received this message because you are an active vendor on Blue Grid
             </Text>
