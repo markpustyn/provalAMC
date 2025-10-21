@@ -9,7 +9,7 @@ import ClientOrder from "@/app/emails/clientOrder";
 import { eq } from "drizzle-orm";
 import { formatDateMDY, getBrokerFees, getProductFeeDollars } from "@/lib/utils";
 
-const resend = new Resend('process.env.RESEND_TOKEN');
+const resend = new Resend(process.env.RESEND_TOKEN);
 
 export async function POST(req: Request) {
   try {
