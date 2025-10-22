@@ -115,7 +115,7 @@ return (
       <div className="flex w-full items-center justify-end gap-2 pt-6">
         <Button variant="outline" onClick={onClose}>Cancel</Button>
         <Button variant="default" className="bg-green-500" onClick={onConfirm}>
-          Accept Order
+          Accept
         </Button>
       </div>
     </div>

@@ -10,6 +10,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
+import AppSidebar from '@/components/layout/app-sidebar';
 
 
 export const metadata: Metadata = {
@@ -53,7 +54,7 @@ export default async function DashboardLayout({
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
-        <SidebarWrapper session={session} />
+        <AppSidebar session={session} pathname={''} />
         <SidebarInset>
           <Header />
           {/* page main content */}

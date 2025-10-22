@@ -65,8 +65,8 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
                   className="my-0" />
                 </Column>
                 <Column align="right">
-                  <Text className="m-0 text-[34px] font-semibold leading-[1.2] text-[#111]">
-                    New Inspection Order
+                  <Text className="m-0 text-[28px] font-semibold leading-[1.2] text-[#111]">
+                    
                   </Text>
                 </Column>
               </Row>
@@ -79,7 +79,7 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
             </Section>
 
             <Section className="mt-12 px-2 mb-2">
-              <Text className="m-0 text-center text-[26px] font-bold text-[#111]">Order Information</Text>
+              <Text className="m-0 text-center text-[32px] font-bold text-[#111] mb-2">New Inspection Order</Text>
             </Section>
 
             <Section className="mx-2 rounded border border-[#e5e7eb] bg-white text-[#111]">
@@ -87,7 +87,7 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
                 <Column className="px-6 py-1.5">
                   <Text className="m-0 text-[20px] font-medium leading-[1.8]">
                     <strong>Address:</strong>
-                    <span className="ml-2 font-normal text-[#374151]">{fullAddress}</span>
+                    <span className="ml-2 font-bold text-[#374151]">{fullAddress}</span>
                   </Text>
                 </Column>
               </Row>
@@ -134,26 +134,6 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
                 </Column>
               </Row>
             </Section>
-
-            <Section className="mt-12 px-2">
-              <Text className="m-0 text-[22px] font-bold text-[#111]">Instructions</Text>
-              <Text className="mt-4 rounded border border-[#e5e7eb] bg-[#f8fafc] px-6 py-6 text-[18px] leading-[1.9] text-[#111]">
-                {notes || "No special instructions were provided."}
-              </Text>
-            </Section>
-
-            <Section className="mt-10 px-2">
-              <Text className="m-0 text-[22px] font-bold text-[#111]">Contact</Text>
-              <Text className="mt-3 text-[18px] leading-[1.9] text-[#374151]">
-                Support Email:{" "}
-                <Link href={`mailto:${supportEmail}`} className="text-[#0073FF] underline">
-                  {supportEmail}
-                </Link>
-                <br />
-                Support Phone: <span className="text-[#111]">{supportPhone}</span>
-              </Text>
-            </Section>
-
             <Section className="mt-12 px-2">
               <Text className="m-0 text-[22px] font-bold text-[#111]">Borrower Information</Text>
             </Section>
@@ -203,6 +183,14 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
                 </Column>
               </Row>
             </Section>
+            
+            <Section className="mt-12 px-2">
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Instructions</Text>
+              <Text className="mt-4 rounded border border-[#e5e7eb] bg-[#f8fafc] px-6 py-6 text-[18px] leading-[1.9] text-[#111]">
+                {notes || ""}
+              </Text>
+            </Section>
+
 
             <Hr className="my-12 border-t border-[#eee]" />
 
@@ -218,6 +206,18 @@ export default function VendorNewOrderEmail(props: VendorNewOrderEmailProps) {
                 </Column>
               </Row>
             </Section>
+                <Section className="mt-10 px-2">
+              <Text className="m-0 text-[22px] font-bold text-[#111]">Contact</Text>
+              <Text className="mt-3 text-[18px] leading-[1.9] text-[#374151]">
+                Support Email:{" "}
+                <Link href={`mailto:${supportEmail}`} className="text-[#0073FF] underline">
+                  {supportEmail}
+                </Link>
+                <br />
+                Support Phone: <span className="text-[#111]">{supportPhone}</span>
+              </Text>
+            </Section>
+
 
             <Hr className="my-10 border-t border-[#eee]" />
 

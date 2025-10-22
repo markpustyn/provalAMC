@@ -37,7 +37,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           onClick={() => setOpenAccept(true)}
           className="h-8 bg-green-500 hover:bg-green-600"
         >
-          Accept Order
+          Accept
         </Button>
 
         <Button
@@ -45,7 +45,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
           onClick={() => setOpenDecline(true)}
           className="h-8 bg-red-500 hover:bg-red-600"
         >
-          Decline Order
+          Decline
         </Button>
       </div>
     </>

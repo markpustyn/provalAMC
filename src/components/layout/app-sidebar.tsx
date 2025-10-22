@@ -188,6 +188,7 @@ export default function AppSidebar({ session, pathname }: AppSidebarProps) {
           <DropdownMenuItem asChild>
             <form
               action={async () => {
+                'use server';
                 await signOut();
               }}
             >
