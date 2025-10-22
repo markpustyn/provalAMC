@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button"; // if you use shadcn/ui
+import { Button } from "@/components/ui/button";
 
 export default function UnauthorizedPage() {
   const router = useRouter();

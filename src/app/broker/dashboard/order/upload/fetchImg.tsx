@@ -60,7 +60,6 @@ export function FetchImages({ userId, propId }: { userId: string; propId: string
     }
 
     const result = await response.json();
-    console.log("Uploaded:", result);
     toast.success("Upload successful!");
 
 

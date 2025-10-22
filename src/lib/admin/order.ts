@@ -42,7 +42,6 @@ export const acceptOrder = async (params: StatusOrder) => {
         return { success: true };
         
     } catch (error) {
-        console.log("Error:", error);
         return { success: false, error: "Failed to process order" };
     }
 };
@@ -55,7 +54,6 @@ export const declineOrder = async (params: StatusOrder) => {
 
         return { success: true };
     } catch (error) {
-        console.log("Error:", error);
         return { success: false, error: "Failed to process order" };
     }
 };

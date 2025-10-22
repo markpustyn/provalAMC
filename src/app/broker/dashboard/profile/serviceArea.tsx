@@ -54,8 +54,6 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
   const updateZips = async (selectedZips: string[], selectedCounty: string)  => {
     
     try{
-      console.log("sessionId:", sessionId);
-      console.log("selectedZips:", selectedZips);
       await fetch("/api/savezips", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

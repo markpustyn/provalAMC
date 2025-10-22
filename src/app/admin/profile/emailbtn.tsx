@@ -25,7 +25,7 @@ export default function EmailButton() {
 
   const data = await res.json();
   if (!res.ok) console.error("Email error:", data.error);
-  else console.log("Email sent successfully:", data.data);
+
 }
   return (
     <Button

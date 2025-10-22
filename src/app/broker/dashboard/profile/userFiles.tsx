@@ -122,7 +122,6 @@ const handleSubmit = async () => {
     }
 
     const result = await res.json();
-    console.log("Uploaded:", result);
     toast.success("Upload successful!");
 
     setFiles({}); // reset files

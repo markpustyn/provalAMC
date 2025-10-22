@@ -80,7 +80,6 @@ const router = useRouter();
   })
 
 async function onSubmit(values: z.infer<typeof FormSchema>) {
-    console.log("Submitting: ", values);
         try {
         const res = await fetch(`/api/order/${OrderDetails.orderId}`, {
           method: 'PUT',

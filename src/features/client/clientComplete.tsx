@@ -18,7 +18,6 @@ export default async function ClientComplete() {
     .where(and(eq(order.clientId, sessionUserId), eq(order.status, 'Submitted')))
     
   ) as OpenOrder[];
-  console.log(data)
 
   const totalProducts = data.length;
 

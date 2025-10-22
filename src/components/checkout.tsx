@@ -84,7 +84,6 @@ function CheckoutForm({ order }: { order: any }) {
       }
 
       if (paymentIntent.status === "succeeded") {
-        console.log(paymentIntent.id)
         const res = await fetch("/api/create", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
