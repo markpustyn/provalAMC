@@ -7,7 +7,7 @@ import { OrderSchema } from "@/lib/schema/order_schema";
 import Email from "@/app/emails/new-orderEmail";
 import ClientOrder from "@/app/emails/clientOrder";
 import { eq } from "drizzle-orm";
-import { formatDateMDY, getBrokerFees, getProductFeeDollars } from "@/lib/utils";
+import { formatDateMDY, getBrokerFees, getProductFeeDollars, getVendorEmail } from "@/lib/utils";
 
 const resend = new Resend(process.env.RESEND_TOKEN);
 
@@ -42,32 +42,35 @@ export async function POST(req: Request) {
       .returning();
 
     
-
-
-    const { error: emailError } = await resend.emails.send({
-      from: "Blue Grid <noreply@app.bluegridvaluations.com>",
-      to: "bobthebaugd@gmail.com",
-      subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
-      react: Email({
-        clientName: inserted.lender ?? "Client",
-        product: inserted.mainProduct ?? "",
-        propertyAddress: inserted.propertyAddress ?? "",
-        propertyCity: inserted.propertyCity ?? "",
-        propertyState: inserted.propertyState ?? "",
-        propertyZip: inserted.propertyZip ?? "",
-        orderId: inserted.orderId!,
-        requestedDueDate: inserted.requestedDueDate!,
-        fee: inserted.orderFee!,
-        borrowerName: inserted.borrowerName!,
-        borrowerEmail: inserted.borrowerEmail!,
-        borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
-        lender: inserted.lender!,
-        lenderAddress: inserted.lenderAddress!,
-        lenderCity: inserted.lenderCity!,
-        lenderZip: inserted.lenderZip!,
-        loanNumber: inserted.loanNumber!,
-      }),
-    });
+        const recipients = [...new Set(await getVendorEmail(inserted.propertyZip!))].filter(Boolean);
+          const results = await Promise.allSettled(
+          recipients.map(email =>
+          resend.emails.send({
+            from: "Blue Grid <noreply@app.bluegridvaluations.com>",
+            to: email,
+            subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
+                  react: Email({
+              clientName: inserted.lender ?? "Client",
+              product: inserted.mainProduct ?? "",
+              propertyAddress: inserted.propertyAddress ?? "",
+              propertyCity: inserted.propertyCity ?? "",
+              propertyState: inserted.propertyState ?? "",
+              propertyZip: inserted.propertyZip ?? "",
+              orderId: inserted.orderId!,
+              requestedDueDate: inserted.requestedDueDate!,
+              fee: inserted.orderFee!,
+              borrowerName: inserted.borrowerName!,
+              borrowerEmail: inserted.borrowerEmail!,
+              borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
+              lender: inserted.lender!,
+              lenderAddress: inserted.lenderAddress!,
+              lenderCity: inserted.lenderCity!,
+              lenderZip: inserted.lenderZip!,
+              loanNumber: inserted.loanNumber!,
+            }),
+          })
+        )
+      );
 
     const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
     const { error: receiptError } = await resend.emails.send({
@@ -93,12 +96,11 @@ export async function POST(req: Request) {
       }),
     });
 
-    if (emailError || receiptError) {
+    if (!results || receiptError) {
       return NextResponse.json(
         {
           success: true,
           data: inserted,
-          emailError,
           receiptError,
         },
         { status: 207 }

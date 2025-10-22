@@ -1,5 +1,9 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { db } from '@/db/drizzle';
+import { users, vendorZipCodes } from '@/db/schema';
+import { auth } from '@/lib/auth';
+import { eq } from 'drizzle-orm';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -185,4 +189,15 @@ export const ratingAssesment = (orderData: any) => {
   score = clamp(score);
   const rating = score >= 85 ? 'Good' : score >= 70 ? 'Moderate' : score >= 50 ? 'Elevated' : 'High';
   return { score, rating, reasons, flags };
+};
+
+
+export const getVendorEmail = async (zip: string) => {
+  const result = await db
+    .select({ email: users.email })
+    .from(users)
+    .leftJoin(vendorZipCodes, eq(users.id, vendorZipCodes.userId))
+    .where(eq(vendorZipCodes.zipCode, zip));
+
+  return result.map((r) => r.email);
 };
