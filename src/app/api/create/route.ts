@@ -42,35 +42,45 @@ export async function POST(req: Request) {
       .returning();
 
     
-        const recipients = [...new Set(await getVendorEmail(inserted.propertyZip!))].filter(Boolean);
-          const results = await Promise.allSettled(
-          recipients.map(email =>
-          resend.emails.send({
-            from: "Blue Grid <noreply@app.bluegridvaluations.com>",
-            to: email,
-            subject: `New Blue Grid Order ${inserted.mainProduct ?? ""} Inspection in ${inserted.propertyCity ?? ""} is available`,
-                  react: Email({
-              clientName: inserted.lender ?? "Client",
-              product: inserted.mainProduct ?? "",
-              propertyAddress: inserted.propertyAddress ?? "",
-              propertyCity: inserted.propertyCity ?? "",
-              propertyState: inserted.propertyState ?? "",
-              propertyZip: inserted.propertyZip ?? "",
-              orderId: inserted.orderId!,
-              requestedDueDate: inserted.requestedDueDate!,
-              fee: inserted.orderFee!,
-              borrowerName: inserted.borrowerName!,
-              borrowerEmail: inserted.borrowerEmail!,
-              borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
-              lender: inserted.lender!,
-              lenderAddress: inserted.lenderAddress!,
-              lenderCity: inserted.lenderCity!,
-              lenderZip: inserted.lenderZip!,
-              loanNumber: inserted.loanNumber!,
-            }),
-          })
-        )
-      );
+
+    const recipients = [
+      ...new Set(await getVendorEmail(inserted.propertyZip!)),
+    ].filter(Boolean);
+
+    if (recipients.length === 0) {
+      console.warn("No vendor emails found.");
+      return;
+    }
+
+    const batchPayload = recipients.map((email) => ({
+      from: "Blue Grid <noreply@app.bluegridvaluations.com>",
+      to: [email],
+      subject: `New Blue Grid Order ${
+        inserted.mainProduct ?? ""
+      } Inspection in ${inserted.propertyCity ?? ""} is available`,
+      react: Email({
+        clientName: inserted.lender ?? "Client",
+        product: inserted.mainProduct ?? "",
+        propertyAddress: inserted.propertyAddress ?? "",
+        propertyCity: inserted.propertyCity ?? "",
+        propertyState: inserted.propertyState ?? "",
+        propertyZip: inserted.propertyZip ?? "",
+        orderId: inserted.orderId!,
+        requestedDueDate: inserted.requestedDueDate!,
+        fee: inserted.orderFee!,
+        borrowerName: inserted.borrowerName!,
+        borrowerEmail: inserted.borrowerEmail!,
+        borrowerPhoneNumber: inserted.borrowerPhoneNumber!,
+        lender: inserted.lender!,
+        lenderAddress: inserted.lenderAddress!,
+        lenderCity: inserted.lenderCity!,
+        lenderZip: inserted.lenderZip!,
+        loanNumber: inserted.loanNumber!,
+      }),
+    }));
+
+    const { data, error } = await resend.batch.send(batchPayload);
+  
 
     const subject = `We received your inspection order for ${inserted.propertyAddress}, ${inserted.propertyCity} ${inserted.propertyState}`;
     const { error: receiptError } = await resend.emails.send({
@@ -95,8 +105,9 @@ export async function POST(req: Request) {
         fee: getProductFeeDollars(inserted.mainProduct!),
       }),
     });
+    
 
-    if (!results || receiptError) {
+    if (data || receiptError) {
       return NextResponse.json(
         {
           success: true,
@@ -106,6 +117,7 @@ export async function POST(req: Request) {
         { status: 207 }
       );
     }
+    
 
     return NextResponse.json({ success: true, data: inserted });
   } catch (err) {

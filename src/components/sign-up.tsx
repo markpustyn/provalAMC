@@ -50,7 +50,7 @@ const form = useForm<RegisterFormValues>({
     state: "",
     zip: "",
     licenseNum: "",
-    role: "Broker",
+    role: "broker",
   },
 });
 
