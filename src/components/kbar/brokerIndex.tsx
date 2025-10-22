@@ -1,5 +1,5 @@
 'use client';
-import { clientNav, navItems } from '@/constants/data';
+import { brokerNav, clientNav, navItems } from '@/constants/data';
 import {
   KBarAnimator,
   KBarPortal,
@@ -12,7 +12,7 @@ import { useMemo } from 'react';
 import RenderResults from './render-result';
 import useThemeSwitching from './use-theme-switching';
 
-export default function ClientKBar({ children }: { children: React.ReactNode }) {
+export default function BrokerKBar({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   const navigateTo = (url: string) => {
@@ -22,7 +22,7 @@ export default function ClientKBar({ children }: { children: React.ReactNode }) 
   // These action are for the navigation
   const actions = useMemo(
     () =>
-      clientNav.flatMap((navItem) => {
+      brokerNav.flatMap((navItem) => {
         // Only include base action if the navItem has a real URL and is not just a container
         const baseAction =
           navItem.url !== '#'

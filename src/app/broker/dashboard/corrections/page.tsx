@@ -16,7 +16,7 @@ import Corrections from '@/features/broker/corrections';
 
 
 export const metadata = {
-  title: 'Corrections'
+  title: 'Order Corrections'
 };
 
 type pageProps = {

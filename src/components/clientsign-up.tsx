@@ -16,6 +16,12 @@ import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { useLoadScript } from "@react-google-maps/api"
 import { AuthCredentials } from "types"
+import { ClientRegisterSchema } from "@/lib/schema/signup_schema"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+
+type RegisterFormValues = z.infer<typeof ClientRegisterSchema>;
+
 
 export default function ClientSignUpForm({
   setIsOpened,
@@ -24,23 +30,25 @@ export default function ClientSignUpForm({
 }) {
   const router = useRouter()
 
-  const form = useForm({
-    defaultValues: {
-      fname: "",
-      lname: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      companyName: "",
-      licenseNum: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      role: "client"
-    },
-  })
+const form = useForm<RegisterFormValues>({
+  resolver: zodResolver(ClientRegisterSchema),
+  mode: "onSubmit",
+  defaultValues: {
+    fname: "",
+    lname: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    companyName: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    licenseNum: "",
+    role: "client",
+  },
+});
 
   const onSubmit = async (data: AuthCredentials) => {
     try{
@@ -50,7 +58,7 @@ export default function ClientSignUpForm({
         router.replace("/client")
       }
       else {
-        toast.error("Failed to create account. Please try again.");
+        toast.error(result?.message ?? "Failed to create account");
       }
     } catch(error){
       toast.error("An error occurred while signing up")

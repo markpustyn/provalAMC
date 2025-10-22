@@ -81,7 +81,7 @@ export async function register(params: AuthCredentials) {
   if (existedUser.length > 0) {
     return {
       success: false,
-      message: "User already exists.",
+      message: "Failed to create account. Please try again.",
     }
   }
 

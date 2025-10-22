@@ -21,6 +21,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { useEffect, useRef, useState } from "react"
 import { useLoadScript } from "@react-google-maps/api"
 import { AuthCredentials } from "types"
+import { BrokerRegisterSchema } from "@/lib/schema/signup_schema"
+
+
+type RegisterFormValues = z.infer<typeof BrokerRegisterSchema>;
+
 
 export default function SignUpForm({
   setIsOpened,
@@ -29,23 +34,25 @@ export default function SignUpForm({
 }) {
   const router = useRouter()
 
-  const form = useForm({
-    defaultValues: {
-      fname: "",
-      lname: "",
-      email: "",
-      phone: "",
-      password: "",
-      confirmPassword: "",
-      companyName: "",
-      licenseNum: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      role: "broker"
-    },
-  })
+const form = useForm<RegisterFormValues>({
+  resolver: zodResolver(BrokerRegisterSchema),
+  mode: "onSubmit",
+  defaultValues: {
+    fname: "",
+    lname: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    companyName: "",
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    licenseNum: "",
+    role: "Broker",
+  },
+});
 
   const onSubmit = async (data: AuthCredentials) => {
     try{
@@ -58,7 +65,6 @@ export default function SignUpForm({
         toast.error("Failed to create account. Please try again.");
       }
     } catch(error){
-      throw error
       toast.error("An error occurred while signing up")
     }
   }

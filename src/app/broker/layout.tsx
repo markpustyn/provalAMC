@@ -1,4 +1,4 @@
-import KBar from '@/components/kbar';
+import BrokerKBar from '@/components/kbar/brokerIndex';
 import BrokerSideBar from '@/components/layout/broker-sidebar';
 import Header from '@/components/layout/header';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
@@ -30,7 +30,7 @@ export default async function DashboardLayout({
   
 
   return (
-    <KBar>
+    <BrokerKBar>
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
@@ -42,6 +42,6 @@ export default async function DashboardLayout({
           {/* page main content ends */}
         </SidebarInset>
       </SidebarProvider>
-    </KBar>
+    </BrokerKBar>
   );
 }

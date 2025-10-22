@@ -9,8 +9,7 @@ import './globals.css'
 import Head from 'next/head';
 
 export const metadata: Metadata = {
-  title: 'Next Shadcn',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Account | Sign Up',
 };
 
 

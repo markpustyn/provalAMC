@@ -7,6 +7,7 @@ import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import ClientSideBar from '@/components/layout/client-sidebar';
 import { redirect } from 'next/navigation';
+import ClientKBar from '@/components/kbar';
 
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <KBar>
+    <ClientKBar>
       <SidebarProvider 
       // defaultOpen={defaultOpen}
       >
@@ -40,6 +41,6 @@ export default async function DashboardLayout({
           {/* page main content ends */}
         </SidebarInset>
       </SidebarProvider>
-    </KBar>
+    </ClientKBar>
   );
 }

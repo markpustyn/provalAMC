@@ -84,7 +84,7 @@ export const brokerNav: BrokerNavItem[] = [
     items: [] // Empty array as there are no child items for Dashboard
   },
   {
-    title: 'Corrections',
+    title: 'Order Corrections',
     url: '/broker/dashboard/corrections',
     icon: 'correction',
     isActive: false,

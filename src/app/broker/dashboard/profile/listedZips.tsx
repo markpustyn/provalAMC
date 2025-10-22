@@ -41,7 +41,7 @@ export function ListedZips({ sessionId }: ServiceAreaProps) {
     <div className="py-4 mx-auto w-full">
       <Card className="shadow-xl rounded-3xl border border-muted p-6">
         <CardHeader className="pb-4">
-          <CardTitle className="text-2xl font-bold tracking-tight">
+          <CardTitle className="text-2xl font-bold ">
             Currently Servicing ZIP Codes
           </CardTitle>
               {totalPages > 1 && (
