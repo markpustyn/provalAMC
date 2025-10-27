@@ -43,13 +43,12 @@ export async function POST(req: Request) {
 
     
 
-    const recipients = [
+    let recipients = [
       ...new Set(await getVendorEmail(inserted.propertyZip!)),
     ].filter(Boolean);
 
     if (recipients.length === 0) {
-      console.warn("No vendor emails found.");
-      return;
+      recipients = ["bobthebaugd@gmail.com"]
     }
 
     const batchPayload = recipients.map((email) => ({
