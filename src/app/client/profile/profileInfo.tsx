@@ -35,47 +35,47 @@ export default async function ProfileDetails({ session }: ProfileDetailsProps) {
 
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-6 pt-6 text-base">
           <div>
-            <span className="text-md font-medium text-black">Name</span>
-            <p className="text-black">{user.fname} {user.lname}</p>
+            <span className="text-md font-medium text-black dark:text-white">Name</span>
+            <p className="text-black dark:text-white">{user.fname} {user.lname}</p>
           </div>
 
           <div>
-            <span className="text-md font-medium text-black">Email</span>
-            <p className="text-black">{user.email}</p>
+            <span className="text-md font-medium text-black dark:text-white">Email</span>
+            <p className="text-black dark:text-white">{user.email}</p>
           </div>
 
           <div>
-            <span className="text-md font-medium text-black">Phone</span>
-            <p className="text-black">{user.phone}</p>
+            <span className="text-md font-medium text-black dark:text-white">Phone</span>
+            <p className="text-black dark:text-white">{user.phone}</p>
           </div>
 
           <div className="col-span-1 sm:col-span-2">
-            <span className="text-md font-medium text-black">Address</span>
-            <div className="text-black">
+            <span className="text-md font-medium text-black dark:text-white">Address</span>
+            <div className="text-black dark:text-white">
               {user.street},<br />
               {user.city} {user.state} {user.zip}
             </div>
           </div>
 
           <div>
-            <span className="text-md font-medium text-black">Role</span>
-            <div className="text-black">
+            <span className="text-md font-medium text-black dark:text-white">Role</span>
+            <div className="text-black dark:text-white">
               <Badge variant="secondary" className="text-md">{user.role}</Badge>
             </div>
           </div>
 
           <div>
-            <span className="text-md font-medium text-black">Company</span>
-            <p className="text-black">{user.companyName}</p>
+            <span className="text-md font-medium text-black dark:text-white">Company</span>
+            <p className="text-black dark:text-white">{user.companyName}</p>
           </div>
 
           <div>
-            <span className="text-md font-medium text-black">Last Active</span>
-            <p className="text-black">{user.lastActivityDate?.toLocaleString() || "-"}</p>
+            <span className="text-md font-medium text-black dark:text-white">Last Active</span>
+            <p className="text-black dark:text-white">{user.lastActivityDate?.toLocaleString() || "-"}</p>
           </div>
           <div>
-            <span className="text-md font-medium text-muted-foreground">Created At</span>
-            <p className="text-black">{formatDate(user.createdAt)}</p>
+            <span className="text-md font-medium text-muted-foreground dark:text-white">Created At</span>
+            <p className="text-black dark:text-white">{formatDate(user.createdAt)}</p>
           </div>
         </CardContent>
       </Card>

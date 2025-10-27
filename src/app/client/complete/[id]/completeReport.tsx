@@ -14,6 +14,7 @@ import { eq } from "drizzle-orm";
 import { ratingAssesment } from "@/lib/utils";
 import { GeneratePdf } from "@/components/pdf/generatePdf";
 import ReactPDF from "@react-pdf/renderer";
+import Link from "next/link";
 
 /**
  * Combined UI + PDF generation in one file
@@ -107,29 +108,29 @@ export function PropertyReport({
   const front = sorted[0];
 
   return (
-    <div className="mx-auto max-w-4xl p-6 bg-white text-black">
+    <div className="mx-auto max-w-4xl p-6 bg-white text-black dark:bg-black">
 
       {/* ADDRESS */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-2xl font-bold text-black pl-2 border-l-4 border-[#256ccb] mb-3">Address</h2>
-        <div className="space-y-1 text-md">
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">Street:</span><span>{orderDetails?.propertyAddress || "N/A"}</span></div>
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">City/State/Zip:</span><span>{`${orderDetails?.propertyCity || "N/A"}, ${orderDetails?.propertyState || "N/A"} ${orderDetails?.propertyZip || "N/A"}`}</span></div>
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">Inspection Date:</span><span>{orderDetails?.requestedDueDate || "N/A"}</span></div>
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">Order Type:</span><span>{orderDetails?.mainProduct || "N/A"} PCR</span></div>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Address</h2>
+        <div className="space-y-1 text-xl">
+          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Street:</span><span>{orderDetails?.propertyAddress || "N/A"}</span></div>
+          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">City/State/Zip:</span><span>{`${orderDetails?.propertyCity || "N/A"}, ${orderDetails?.propertyState || "N/A"} ${orderDetails?.propertyZip || "N/A"}`}</span></div>
+          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Inspection Date:</span><span>{orderDetails?.requestedDueDate || "N/A"}</span></div>
+          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Order Type:</span><span>{orderDetails?.mainProduct || "N/A"} PCR</span></div>
         </div>
       </section>
 
       {/* RATING + FRONT PHOTO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div className="rounded-2xl border border-black p-4">
-          <h3 className="text-2xl font-semibold text-black mb-2">Overall Rating</h3>
+          <h3 className="text-2xl font-semibold text-black dark:text-white mb-2">Overall Rating</h3>
           <div className="flex flex-col items-center justify-center mt-4">
             <span className={classNames("mt-2 text-3xl px-3 py-1 rounded-full", palette.bg, palette.fg)}>
               {rLabel}
             </span>
           </div>
-          <div className="mt-4 space-y-1 text-md text-gray-600">
+          <div className="mt-4 space-y-1 text-md text-gray-600 dark:text-white">
             <div>
               Type: {gv("propertyType")} • Stories: {gv("stories")}
             </div>
@@ -144,15 +145,15 @@ export function PropertyReport({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={front.image} alt={front.tag || "Front"} className="h-72 w-full object-cover rounded-xl" />
           ) : (
-            <div className="text-sm text-gray-500">No image</div>
+            <div className="text-sm text-gray-500 dark:text-white">No image</div>
           )}
         </div>
       </div>
 
       {/* PROPERTY INFORMATION */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-2xl font-bold text-black pl-2 border-l-4 border-[#256ccb] mb-3">Property Information</h2>
-        <div className="space-y-1 text-md">
+        <h2 className="text-2xl font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Property Information</h2>
+        <div className="space-y-1 text-xl">
           {([
             ["Property Type", gv("propertyType")],
             ["Stories", gv("stories")],
@@ -167,8 +168,8 @@ export function PropertyReport({
             ["Date Assigned", gv("date")],
           ] as const).map(([label, value], i) => (
             <div key={i} className="flex justify-between">
-              <span className="font-semibold text-gray-600">{label}:</span>
-              <span className="text-gray-900">{String(value)}</span>
+              <span className="font-semibold text-gray-600 dark:text-white">{label}:</span>
+              <span className="text-gray-900 dark:text-white">{String(value)}</span>
             </div>
           ))}
         </div>
@@ -176,23 +177,23 @@ export function PropertyReport({
 
       {/* VENDOR INFO */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-2xl font-bold text-black pl-2 border-l-4 border-[#256ccb] mb-3">Vendor Information</h2>
-        <div className="space-y-1 text-md">
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">Name</span><span>{vendorDetails?.fname} {vendorDetails?.lname}</span></div>
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">License</span><span>{vendorDetails?.licenseNum} {vendorDetails?.state}</span></div>
-          <div className="flex justify-between"><span className="font-semibold text-gray-600">Company</span><span>{vendorDetails?.companyName}</span></div>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Vendor Information</h2>
+        <div className="space-y-1 text-xl">
+          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">Name</span><span>{vendorDetails?.fname} {vendorDetails?.lname}</span></div>
+          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">License</span><span>{vendorDetails?.licenseNum} {vendorDetails?.state}</span></div>
+          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">Company</span><span>{vendorDetails?.companyName}</span></div>
         </div>
       </section>
 
       {/* IMAGES */}
       <section className="border-b border-black pb-2">
-        <h2 className="text-2xl font-bold text-black pl-2 border-l-4 border-[#256ccb] mb-3">Property Photos</h2>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Property Photos</h2>
         <div className="space-y-6">
           {sorted.map((it, i) => (
             <figure key={`${it.idx}-${i}`} className="w-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={it.image} alt={it.tag || `Photo ${i + 1}`} className="w-full h-[350px] object-contain rounded-xl border" />
-              <figcaption className="mt-2 text-center text-md font-medium">{it.tag || ""}</figcaption>
+              <figcaption className="mt-2 text-center text-xl font-medium dark:text-white">{it.tag || ""}</figcaption>
             </figure>
           ))}
         </div>
@@ -305,15 +306,17 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
       <div className="flex justify-end gap-4 mb-6 print:hidden">
         <Button
           variant="outline"
-          className="text-black"
+          className="text-black dark:text-white"
           onClick={() => generateReport(OrderDetails.orderId!)}
           disabled={loading}
         >
           {loading ? "Building…" : "Download Report"}
         </Button>
+        <a href="mailto:support@bluegridvaluations.com">
         <Button className="bg-blue-600 text-white" variant="outline">
           Contact Us
         </Button>
+        </a>
       </div>
       {vendor && (
         <PropertyReport

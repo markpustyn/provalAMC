@@ -60,7 +60,7 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
         body: JSON.stringify({ userId:sessionId, zipCodes: selectedZips, county: selectedCounty }),
       });
       
-      toast ("Zip Codes Added! ");
+      toast ("Zip Codes Added! (Refresh Page)");
     }
     catch{
       toast("Error updating zips.")
@@ -116,7 +116,7 @@ export function ServiceArea({ counties, sessionId }: ServiceAreaProps) {
 
               <div className="grid grid-cols-8 gap-3 mt-2">
                 {currentPageZips.map(z => (
-                  <label key={z.zip} className="flex items-center gap-2">
+                  <label key={z.zip} className="flex items-center gap-2 dark:text-white">
                     <Checkbox
                       checked={selectedZips.includes(z.zip)}
                       onCheckedChange={() => toggleZip(z.zip)}

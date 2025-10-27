@@ -36,10 +36,10 @@ export default function SignInViewPage() {
           <Image
             src="/blackLogo.png"
             alt="Blue Grid Logo"
-            width={500}
-            height={250}
+            width={350}
+            height={200}
             priority
-            className="h-auto w-auto"
+            className=""
           />
         </div>
         {/* <div className="relative z-20 mt-auto text-gray-700">
@@ -55,17 +55,24 @@ export default function SignInViewPage() {
 
       {/* RIGHT: form column */}
       <div className="flex h-full items-center p-4 lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px]">
+        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[380px] p-5">
           {/* Small-screen logo */}
           <div className="flex items-center justify-center lg:hidden">
-            <Image
-              src="/blackLogo.png"
-              alt="Blue Grid Logo"
-              width={220}
-              height={110}
-              priority
-              className="h-auto w-auto mb-4"
+              <Image
+                  src="/blackLogo.png"
+                  alt="Blue Grid Logo"
+                width={500}
+                height={250}
+              className="block dark:hidden"
             />
+                <Image
+                  src="/newLogo.png"
+                  alt="Blue Grid Logo"
+                width={500}
+                height={250}
+                  priority
+                  className="hidden dark:block"
+                />
           </div>
 
 
@@ -123,7 +130,7 @@ export default function SignInViewPage() {
           <Link href={`/${role}-sign-up`}>
         <Button
                 type="button"
-                className="underline text-gray-500 px-0"
+                className="underline text-gray-500 dark:text-white px-0"
                 variant={"link"}
               >
                 Don{"'"}t have an account? {role.charAt(0).toUpperCase() + role.slice(1)} Sign up

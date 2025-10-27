@@ -185,7 +185,7 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
         <div className="flex-1 space-y-10">
                   <Card>
         <CardHeader>
-          <CardDescription className="text-2xl font-semibold text-black">Subject Property Address</CardDescription>
+          <CardDescription className="text-[28px] font-semibold text-black dark:text-white">Subject Property Address</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -280,7 +280,7 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
       </Card>
               <Card id="details-section">
           <CardHeader>
-            <CardDescription className="text-2xl font-semibold text-black">Borrower Info</CardDescription>
+            <CardDescription className="text-[28px] font-semibold text-black dark:text-white">Borrower Info</CardDescription>
           </CardHeader>
           <CardContent>
             <Form {...form}>
@@ -351,12 +351,12 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                                     });
                                   }}
                                 className={`text-left rounded-xl border p-4 text-sm shadow-sm transition-all focus:outline-none focus:ring-2 ${
-                                  field.value === opt.value ? "border-blue-600 bg-blue-50 ring-blue-200" : "border-gray-300 hover:border-blue-400"
+                                  field.value === opt.value ? "border-blue-600 bg-blue-50 ring-blue-200 dark:text-black" : "border-gray-300 hover:border-blue-400 dark:text-white"
                                 }`}
                               >
                                 <p className="font-medium leading-5">{opt.label}</p>
-                                <p className="mt-1 text-gray-900">{opt.price}</p>
-                                <p className="text-xs text-gray-600">Due: {opt.date}</p>
+                                <p className="mt-1 text-gray-900 dark:text-white">{opt.price}</p>
+                                <p className="text-xs text-gray-600 dark:text-gray-200">Due: {opt.date}</p>
                               </button>
                             ))}
                           </div>
@@ -429,7 +429,7 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                 </Card>
             <Card>
                 <CardHeader>
-                    <CardDescription className="text-xl font-bold text-black">Payment Options</CardDescription>
+                    <CardDescription className="text-xl font-bold text-black dark:text-white">Payment Options</CardDescription>
                 </CardHeader>
                 <CardContent>
                     {!mainProduct ? (

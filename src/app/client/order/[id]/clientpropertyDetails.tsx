@@ -139,9 +139,11 @@ export function PropertyDetails({ OrderDetails }: { OrderDetails: OpenOrder }) {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-        <Button className="bg-blue-600 text-white text-md" variant={'outline'}>
+        <a href="mailto:support@bluegridvaluations.com">
+        <Button className="bg-blue-600 text-white" variant="outline">
           Contact Us
         </Button>
+        </a>
       </div>
 
       {/* Address */}

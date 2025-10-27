@@ -201,9 +201,6 @@ export const GeneratePdf = ({
           {logoSrc ? <Image src={logoSrc} style={styles.logo} /> : <View style={styles.logo} />}
           <View style={styles.titleBlock}>
             <Text style={styles.reportTitle}>Property Condition Report</Text>
-            <Text style={styles.reportSubtitle}>
-              {orderDetails?.propertyAddress || 'No Address'}
-            </Text>
           </View>
         </View>
 

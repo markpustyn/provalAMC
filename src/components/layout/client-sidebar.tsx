@@ -68,7 +68,22 @@ export default function ClientSideBar({ session, pathname }: AppSidebarProps) {
             <span className='truncate font-semibold'>{company.name}</span>
             <span className='truncate text-xs'>{company.plan}</span>
           </div> */}
-          <Image src={'/blackLogo.png'} alt={'Main Logo Blue Grid'} height={150} width={300}/>
+              <Image
+              src="/blackLogo.png"
+              alt="Main Logo Blue Grid"
+              height={150}
+              width={300}
+              className="block dark:hidden"
+            />
+
+            {/* Dark mode logo */}
+            <Image
+              src="/newLogo.png"
+              alt="Main Logo Blue Grid (Dark)"
+              height={150}
+              width={300}
+              className="hidden dark:block"
+            />
         </div>
       </SidebarHeader>
       <SidebarContent className='overflow-x-hidden'>

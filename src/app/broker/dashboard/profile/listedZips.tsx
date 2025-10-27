@@ -80,7 +80,7 @@ export function ListedZips({ sessionId }: ServiceAreaProps) {
                 </thead>
                 <tbody>
                   {currentPageZips.map((zip, index) => (
-                    <tr key={zip.zipCode} className="even:bg-gray-50">
+                    <tr key={zip.zipCode} className="even:bg-gray-50 dark:even:bg-gray-700">
                       <td className="p-2 border">{page * PAGE_SIZE + index + 1}</td>
                       <td className="p-2 border">{zip.zipCode}</td>
                       <td className="p-2 border">{zip.county}</td>
