@@ -28,7 +28,7 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Orders',
+    title: 'Quality Control',
     url: '/admin/order',
     icon: 'product',
     isActive: false,

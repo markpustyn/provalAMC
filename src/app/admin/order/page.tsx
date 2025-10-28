@@ -3,14 +3,12 @@ import { buttonVariants } from '@/components/ui/button';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
-import { searchParamsCache, serialize } from '@/lib/searchparams';
 import { cn } from '@/lib/utils';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
-import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
-import ProductListingPage from '@/features/products/components/product-listing';
 import ProductTableAction from '@/features/products/components/product-tables/product-table-action';
+import AdminListingPage from '@/features/products/components/admin-listing';
 
 export const metadata = {
   title: 'My Orders: Products'
@@ -25,7 +23,7 @@ export default async function Page() {
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Open Orders'
+            title='Quality Control'
             description='Manage products (Server side table functionalities.)'
           />
           <Link
@@ -41,7 +39,7 @@ export default async function Page() {
           // key={key}
           fallback={<DataTableSkeleton columnCount={5} rowCount={10} />}
         >
-          <ProductListingPage />
+          <AdminListingPage />
         </Suspense>
       </div>
     </PageContainer>

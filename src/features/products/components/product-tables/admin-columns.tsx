@@ -1,9 +1,12 @@
 'use client';
 import { OpenOrder } from 'types';
 import { ColumnDef } from '@tanstack/react-table';
-import { ClinentActions } from './client-action';
+import { AdminActions } from './admin-actions';
+import { AdminOrderActions } from './admin-order-action';
 
-export const clientColumns: ColumnDef<OpenOrder>[] = [
+
+
+export const AdminColumn: ColumnDef<OpenOrder>[] = [
   // {
   //   accessorKey: 'photo_url',
   //   header: 'IMAGE',
@@ -50,6 +53,6 @@ export const clientColumns: ColumnDef<OpenOrder>[] = [
   },
   {
     id: 'actions',
-    cell: ({ row }) => <ClinentActions data={row.original} />
+    cell: ({ row }) => <AdminOrderActions data={row.original} />
   }
 ];

@@ -3,10 +3,12 @@ import PageContainer from '@/components/layout/page-container';
 import { Suspense } from 'react';
 import ProductViewPage from '@/features/products/components/product-view-page';
 import { db } from '@/db/drizzle';
-import { users } from '@/db/schema';
+import { users, vendorFiles } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import Details from '../details';
 import { AuthCredentials } from 'types';
+import VendorFiles from '../vendorFiles';
+
 
 
 
@@ -15,13 +17,16 @@ const Page = async ({params}: {
 }) => {
   const id = (await params).id
 
-  const [vendorDetails] = await db.select().from(users).where(eq(users.id, id)).limit(1)
+  const [vendorDetails] = 
+  await db.select()
+  .from(users).where(eq(users.id, id)).limit(1)
 
   return (
     <PageContainer scrollable>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
         <Details vendorDetails={vendorDetails as AuthCredentials}></Details>
+        <VendorFiles vendorDetails={vendorDetails as AuthCredentials}></VendorFiles>
         </Suspense>
       </div>
     </PageContainer>
