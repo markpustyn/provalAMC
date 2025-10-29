@@ -49,8 +49,13 @@ export default function Corrections({ orderId }: { orderId: string }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comments, orderId }),
       })
-      if (!res.ok) throw new Error(await res.text())
-
+        const email = await fetch("/api/emails", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ comments, orderId }),
+        })
       toast('Correction submitted')
       setComments('')
 
@@ -94,14 +99,14 @@ export default function Corrections({ orderId }: { orderId: string }) {
         {allCorrections.length === 0 ? (
           <p className="text-gray-500">No order corrections.</p>
         ) : (
-          allCorrections.map((correction) => (
-            <div
-              key={correction.id || correction.comments}
-              className="border rounded p-3 bg-gray-50"
-            >
-              <p className="text-gray-700">{correction.comments}</p>
-              {correction.createdAt}
-            </div>
+          allCorrections.map((correction, index) => (
+                <div
+                key={correction.id || index}
+                className="border rounded p-3 bg-gray-50"
+                >
+                <p className="text-gray-700">{correction.comments}</p>
+                {correction.createdAt}
+                </div>
           ))
         )}
       </div>

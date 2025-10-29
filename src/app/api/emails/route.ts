@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     const { vendorEmails, ...order } = parsed.data;
 
-    const subject = `New order ${order.orderId}: ${order.product} at ${order.propertyAddress}`;
+    const subject = `Corrections Needed for property at ${order.propertyAddress}`;
 
     const { data, error } = await resend.emails.send({
       from: "Blue Grid Valuations <noreply@app.bluegridvaluations.com>",
