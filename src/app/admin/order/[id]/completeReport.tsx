@@ -9,7 +9,7 @@ import { z } from "zod";
 import { OrderSchema } from "@/lib/schema/order_schema";
 import { deleteOrder } from "@/lib/admin/order";
 import { db } from "@/db/drizzle";
-import { pcrForms, s3AmcUploads, users } from "@/db/schema";
+import { order, pcrForms, s3AmcUploads, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ratingAssesment } from "@/lib/utils";
 import { GeneratePdf } from "@/components/pdf/generatePdf";
@@ -300,23 +300,42 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
       setLoading(false);
     }
   };
+
+const sendReport = async (orderId: string) => {
+  try {
+    setLoading(true)
+    await db
+      .update(order)
+      .set({ status: "Submitted" })
+      .where(eq(order.orderId, orderId))
+    toast("Report sent to client")
+
+  } catch (err) {
+    console.error("Failed to send report", err)
+    toast("Error sending report")
+  } finally {
+    setLoading(false)
+  }
+}
   return (
     <div className="space-y-10 w-full max-w-5xl mx-auto px-6 py-10">
       {/* Top Buttons */}
       <div className="flex justify-end gap-4 mb-6 print:hidden">
         <Button
           variant="outline"
-          className="text-black dark:text-white"
+          className="text-black dark:text-white "
           onClick={() => generateReport(OrderDetails.orderId!)}
           disabled={loading}
         >
           {loading ? "Building…" : "Download Report"}
         </Button>
-        <a href="mailto:support@bluegridvaluations.com">
-        <Button className="bg-blue-600 text-white" variant="outline">
-          Contact Us
+        <Button
+          className="bg-blue-600 text-white"
+          onClick={() => sendReport(OrderDetails.orderId!)}
+          disabled={loading}
+        >
+          Send to Client
         </Button>
-        </a>
       </div>
       {vendor && (
         <PropertyReport

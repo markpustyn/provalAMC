@@ -119,3 +119,10 @@ export const vendorFiles = pgTable("vendor_files", {
   uploadTimestamp: timestamp("upload_timestamp", { withTimezone: true }).defaultNow()
 });
 
+export const orderCorrections = pgTable("order_corrections", {
+  correctionsId: uuid('corrections_id').primaryKey().defaultRandom(),
+  orderId: uuid('order_id').references(() => order.orderId).notNull(),
+  comments: varchar("file_tag", {length: 255}),
+  correctionTime: timestamp("corrections_timestamp", { withTimezone: true }).defaultNow()
+});
+
