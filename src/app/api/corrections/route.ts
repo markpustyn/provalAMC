@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     await db.insert(orderCorrections).values({ orderId, comments: comments ?? '' })
 
     // 2) update order status
-    await db.update(order).set({ status: 'corrections' }).where(eq(order.orderId, orderId))
+    await db.update(order).set({ status: 'Corrections' }).where(eq(order.orderId, orderId))
 
     // 3) pull the order for template fields
     const [ord] = await db.select().from(order).where(eq(order.orderId, orderId))

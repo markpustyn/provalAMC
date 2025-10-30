@@ -9,7 +9,7 @@ import { z } from "zod";
 import { OrderSchema } from "@/lib/schema/order_schema";
 import { deleteOrder } from "@/lib/admin/order";
 import { db } from "@/db/drizzle";
-import { order, pcrForms, s3AmcUploads, users } from "@/db/schema";
+import { order, pcrForms, s3AmcUploads, statusOrder, users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ratingAssesment } from "@/lib/utils";
 import { GeneratePdf } from "@/components/pdf/generatePdf";
@@ -329,11 +329,47 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
 const sendReport = async (orderId: string) => {
   try {
     setLoading(true)
-    await db
+    const [row] = await db
       .update(order)
-      .set({ status: "Submitted" })
+      .set({ status: "Complete" })
       .where(eq(order.orderId, orderId))
- 
+      .returning({
+        clientEmail: order.loanOfficerEmail,
+        orderId: order.orderId,
+        mainProduct: order.mainProduct,
+        propertyAddress: order.propertyAddress,
+        propertyCity: order.propertyCity,
+        propertyState: order.propertyState,
+        propertyZip: order.propertyZip,
+        lender: order.lender,
+        completeUrl: order.completeUrl,
+      });
+
+     const res = await fetch("/api/complete-email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        recipients: [row.clientEmail],
+        order: {
+          orderId: orderId,
+          product: row.mainProduct,
+          propertyAddress: row.propertyAddress,
+          propertyCity: row.propertyCity,
+          propertyState: row.propertyState,
+          propertyZip: row.propertyZip,
+          clientName: row.lender,
+          mainProduct: row.mainProduct,
+          completedAt: new Date().toISOString(),
+          downloadUrl: row.completeUrl,
+          dashboardUrl: "https://app.bluegridvaluations.com/client/dashboard",
+          supportEmail: "support@bluegridvaluations.com",
+          supportPhone: "(555) 123-4567",
+        },
+      }),
+    });
+      
     toast("Report sent to client")
 
   } catch (err) {

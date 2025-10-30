@@ -53,7 +53,7 @@ export async function POST(_:Request, {params}: {params: {id:string}}) {
   
    await db
     .update(order)
-    .set({status: "Submitted"})
+    .set({status: "Quality Control"})
     .where(eq(order.orderId, id))
 
 

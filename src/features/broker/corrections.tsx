@@ -22,7 +22,7 @@ export default async function Corrections() {
     .where(
       and(
         eq(statusOrder.vendorId, sessionUserId),
-        eq(order.status, 'corrections')
+        eq(order.status, 'Corrections')
       )
     )
   ) as OpenOrder[];

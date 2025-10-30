@@ -11,15 +11,12 @@ export async function POST(req: NextRequest) {
     }
 
     const json = await req.json();
-    const { recipients, order } = json || {};
-
-    // if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
-    //   return NextResponse.json({ error: "Missing or invalid recipients array" }, { status: 400 });
-    // }
+    const { order } = json || {};
 
     if (!order || !order.propertyAddress) {
       return NextResponse.json({ error: "Invalid or missing order object" }, { status: 400 });
     }
+    
 
     const subject = `Complete Property inspection order at ${order.propertyAddress} ${order.propertyCity || ""} ${order.propertyState || ""} ${order.propertyZip || ""}`;
 

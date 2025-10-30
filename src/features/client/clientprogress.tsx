@@ -14,7 +14,7 @@ export default async function ClientProgress() {
   const data = (await db
     .select()
     .from(order)
-    .where(and(eq(order.clientId, sessionUserId), ne(order.status, 'Submitted')))
+    .where(and(eq(order.clientId, sessionUserId), ne(order.status, 'Complete')))
     
   ) as OpenOrder[];
 

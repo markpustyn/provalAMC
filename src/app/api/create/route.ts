@@ -36,6 +36,7 @@ export async function POST(req: Request) {
         lenderCity: userRow.city,
         lenderZip: userRow.zip,
         clientId: session.user.id,
+        loanOfficerEmail: userRow.email,
         paymentIntentId: body.paymentIntentId ?? null,
         orderFee: getBrokerFees(body.mainProduct)
       })
