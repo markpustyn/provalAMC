@@ -21,6 +21,7 @@ export const users = pgTable("users", {
 
 export const order = pgTable("order", {
   orderId: uuid('id').notNull().primaryKey().defaultRandom(),
+  completeUrl:  varchar('complete_order', { length: 255 }),
   clientId: uuid('client_id').references(() => users.id).notNull(),
   loanNumber: varchar('loan_number', { length: 50 }),
   loanOfficer: varchar('loan_officer', { length: 255 }),

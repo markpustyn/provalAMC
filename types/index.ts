@@ -28,6 +28,7 @@ export interface BrokerNavItem {
 export interface OpenOrder {
   [x: string]: any;
   orderId?: string;
+  completeUrl?: string;
   clientId?: string;
   orderNumber?: string;
   loanNumber?: string;

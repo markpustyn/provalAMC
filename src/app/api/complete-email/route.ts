@@ -13,9 +13,9 @@ export async function POST(req: NextRequest) {
     const json = await req.json();
     const { recipients, order } = json || {};
 
-    if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
-      return NextResponse.json({ error: "Missing or invalid recipients array" }, { status: 400 });
-    }
+    // if (!recipients || !Array.isArray(recipients) || recipients.length === 0) {
+    //   return NextResponse.json({ error: "Missing or invalid recipients array" }, { status: 400 });
+    // }
 
     if (!order || !order.propertyAddress) {
       return NextResponse.json({ error: "Invalid or missing order object" }, { status: 400 });
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 
     const { data, error } = await resend.emails.send({
       from: "Blue Grid <noreply@app.bluegridvaluations.com>",
-      to: recipients,
+      to: ["bobthebaugd@gmail.com"],
       subject,
       react: ClientOrderCompleteEmail({
         orderId: order.orderId || "",

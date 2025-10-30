@@ -27,6 +27,7 @@ export type VendorNewOrderEmailProps = {
   lenderAddress?: string;
   lenderCity?: string;
   lenderZip?: string;
+  completeUrl?: string;
   loanNumber?: string;
 };
 

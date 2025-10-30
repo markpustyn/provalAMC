@@ -301,8 +301,17 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
           />
         )
         .toBlob();
+        
 
+      
       const url = URL.createObjectURL(blob);
+        const body = new FormData();
+        body.append('file', blob, `report-${id}.pdf`);
+        body.append('orderId', id);
+       await fetch('/api/complete-reports', {
+        method: "POST",
+        body
+       })
       const link = document.createElement("a");
       link.href = url;
       link.download = `report-${id}.pdf`;
@@ -324,6 +333,7 @@ const sendReport = async (orderId: string) => {
       .update(order)
       .set({ status: "Submitted" })
       .where(eq(order.orderId, orderId))
+ 
     toast("Report sent to client")
 
   } catch (err) {
@@ -343,7 +353,7 @@ const sendReport = async (orderId: string) => {
           onClick={() => generateReport(OrderDetails.orderId!)}
           disabled={loading}
         >
-          {loading ? "Building…" : "Download Report"}
+          {loading ? "Building…" : "Download & Upload Report"}
         </Button>
         <Button
           className="bg-blue-600 text-white"
