@@ -40,7 +40,7 @@ export default function CorrectionsNeededEmail({
                   <Img
                     src={logoUrl}
                     width="250"
-                    height="100"
+                    height="80"
                     alt="Blue Grid"
                     className="my-0"
                   />

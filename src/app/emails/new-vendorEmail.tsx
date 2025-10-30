@@ -41,7 +41,7 @@ export default function Email(): React.ReactElement {
             <Img
               src={`${baseUrl}/blackLogo.png`}
               width="250"
-              height="100"
+              height="80"
               alt="Blue Grid"
               className="mx-auto my-0"
             />

@@ -69,7 +69,7 @@ export default function ClientOrder({
                     <Img
                     src={`${baseUrl}/blackLogo.png`}
                     width="250"
-                    height="100"
+                    height="80"
                     alt="Blue Grid"
                     className="my-0 mb-10"
                     />

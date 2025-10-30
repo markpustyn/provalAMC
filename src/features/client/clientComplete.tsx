@@ -15,7 +15,7 @@ export default async function ClientComplete() {
   const data = (await db
     .select()
     .from(order)
-    .where(and(eq(order.clientId, sessionUserId), eq(order.status, 'Submitted')))
+    .where(and(eq(order.clientId, sessionUserId), eq(order.status, 'Complete')))
     
   ) as OpenOrder[];
 
