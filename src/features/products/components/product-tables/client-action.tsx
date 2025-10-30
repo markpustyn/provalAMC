@@ -58,19 +58,33 @@ export const ClinentActions: React.FC<CellActionProps> = ({ data }) => {
       window.print();
     };
   
-    async function toDataUrl(url: string): Promise<string> {
-    const res = await fetch(url, { mode: "cors" }); // must succeed (check S3 CORS)
-    if (!res.ok) throw new Error(`Image fetch failed: ${url}`);
-    const blob = await res.blob();
-    return await new Promise((resolve, reject) => {
-      const fr = new FileReader();
-      fr.onload = () => resolve(fr.result as string);
-      fr.onerror = reject;
-      fr.readAsDataURL(blob);
+async function toDataUrl(url: string): Promise<string> {
+        const res = await fetch(url, { 
+      mode: "no-cors",
+      cache: "no-cache"
     });
-  }
-  
-  
+    
+    // If no-cors doesn't work, try without mode specification
+    if (!res.ok || res.type === 'opaque') {
+      const res2 = await fetch(url, { cache: "no-cache" });
+      if (!res2.ok) throw new Error(`Image fetch failed: ${url}`);
+      const blob = await res2.blob();
+      return await new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result as string);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      });
+    }
+  if (!res.ok) throw new Error(`Image fetch failed: ${url}`);
+  const blob = await res.blob();
+  return await new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result as string);
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+  });
+}
   
   
 
