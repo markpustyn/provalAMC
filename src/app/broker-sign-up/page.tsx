@@ -1,5 +1,11 @@
+import Image from "next/image";
 import SignIn from "@/components/sign-up";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
 
 export default function BrokerSignUpPage() {
   return (
@@ -10,13 +16,25 @@ export default function BrokerSignUpPage() {
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 py-8 md:px-8">
         <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Left panel */}
+          {/* Left panel with logo */}
           <div className="hidden lg:flex flex-col justify-center gap-6 pr-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/blackLogo.png"
+                alt="Blue Grid Logo"
+                width={400}
+                height={150}
+                priority
+                className="object-contain"
+              />
+            </div>
             <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-              Broker Registration
+              New Vendor Registration
             </h1>
             <p className="max-w-md text-base text-muted-foreground">
-              Complete this form to begin your registration. After sign up, click on <strong>Profile</strong> to finish setting up your account. If work becomes available in your area, we will reach out to you by email.
+              Complete this form to begin your registration. After sign up, click on{" "}
+              <strong>Profile</strong> to finish setting up your account. If work becomes
+              available in your area, we will reach out to you by email.
             </p>
           </div>
 
@@ -26,9 +44,9 @@ export default function BrokerSignUpPage() {
               <CardHeader className="space-y-1">
                 <CardTitle className="text-3xl">Sign up</CardTitle>
               </CardHeader>
-              <CardContent className="pt-2">
+              <CardContent className="pt-2 space-y-2 text-center">
                 <SignIn />
-                <div className="mt-6 text-center text-sm text-black">
+                <p className="text-sm text-muted-foreground">
                   Already registered?{" "}
                   <a
                     href="/"
@@ -36,7 +54,7 @@ export default function BrokerSignUpPage() {
                   >
                     Sign in
                   </a>
-                </div>
+                </p>
               </CardContent>
             </Card>
           </div>

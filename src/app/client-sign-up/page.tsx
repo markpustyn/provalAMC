@@ -1,7 +1,7 @@
 // app/client/signup/page.tsx
 import ClientSignUpForm from "@/components/clientsign-up";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-
+import Image from "next/image";
 export default function SignInPage() {
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
@@ -11,23 +11,26 @@ export default function SignInPage() {
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 py-8 md:px-8">
         <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Left panel */}
+          {/* Left panel with logo */}
           <div className="hidden lg:flex flex-col justify-center gap-6 pr-6">
+            <div className="flex items-center gap-3 mb-4">
+              <Image
+                src="/blackLogo.png"
+                alt="Blue Grid Logo"
+                width={400}
+                height={150}
+                priority
+                className="object-contain"
+              />
+            </div>
             <h1 className="text-4xl font-semibold tracking-tight text-foreground">
-              Create your account
+              Client Registration
             </h1>
             <p className="max-w-md text-base text-muted-foreground">
-              Request property inspection services, stay informed on updates, and securely manage your files from one dashboard.
+              Complete this form to begin your registration. After sign up, click on{" "}
+              <strong>Profile</strong> to finish setting up your account. If work becomes
+              available in your area, we will reach out to you by email.
             </p>
-              <p className="max-w-md text-sm text-muted-foreground mt-4">
-                Have questions? Email us at{" "}
-                <a
-                  href="mailto:support@bluegridvaluations.com"
-                  className="text-black font-medium underline-offset-4 hover:underline"
-                >
-                  support@bluegridvaluations.com
-                </a>
-              </p>
           </div>
 
           {/* Form card */}
