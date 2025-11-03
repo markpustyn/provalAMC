@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       orderId?: string
       comments?: string
     }
-    if (!orderId) return new NextResponse('Missing orderId', { status: 400 })
+    if (!orderId) return new NextResponse('Error', { status: 400 })
 
     await db.insert(orderCorrections).values({ orderId, comments: comments ?? '' })
 
@@ -69,7 +69,7 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url)
     const id = searchParams.get('id')
-    if (!id) return new NextResponse('Missing id', { status: 400 })
+    if (!id) return new NextResponse('Error', { status: 400 })
 
     const rows = await db
       .select()

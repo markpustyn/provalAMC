@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     );
 
     if(!propId){
-      return NextResponse.json({error: 'Missing Data'}, {status: 400})
+      return NextResponse.json({error: 'Error'}, {status: 400})
     }
 
     const data = 

@@ -1,15 +1,14 @@
-import { fakeProducts } from '@/constants/mock-api';
 import { searchParamsCache } from '@/lib/searchparams';
 import { DataTable as ProductTable } from '@/components/ui/table/data-table';
 import { db } from '@/db/drizzle';
-import { desc, eq } from 'drizzle-orm';
-import { order, users } from '@/db/schema';
+import {  eq } from 'drizzle-orm';
+import { users } from '@/db/schema';
 import { AuthCredentials } from 'types';
-import { vendorColumns } from '../vendorColumns';
+import { clientColumns } from '../clientColumnst';
 
 type VendorListingPage = {};
 
-export default async function VendorListingPage({}: VendorListingPage) {
+export default async function ClientListingPage({}: VendorListingPage) {
   // Showcasing the use of search params cache in nested RSCs
   const page = searchParamsCache.get('page');
   const search = searchParamsCache.get('q');
@@ -23,12 +22,12 @@ export default async function VendorListingPage({}: VendorListingPage) {
     ...(categories && { categories: categories })
   };
 
-  const vendors = (await db.select().from(users).where(eq(users.role, "broker"))) as AuthCredentials[]
+  const vendors = (await db.select().from(users).where(eq(users.role, "client"))) as AuthCredentials[]
   const totalProducts = vendors.length
 
   return (
     <ProductTable
-      columns={vendorColumns}
+      columns={clientColumns}
       data={vendors}
       totalItems={totalProducts}
     />

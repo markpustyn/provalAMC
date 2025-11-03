@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     const orderId = searchParams.get("orderId");
 
     if (!orderId) {
-      return NextResponse.json({ error: 'Missing orderId' }, { status: 400 });
+      return NextResponse.json({ error: 'Error' }, { status: 400 });
     }
 
     const response = await s3.send(

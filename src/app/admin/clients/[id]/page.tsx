@@ -6,8 +6,7 @@ import { users, vendorFiles } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import Details from '../details';
 import { AuthCredentials } from 'types';
-import VendorFiles from '../vendorFiles';
-
+import OrdersList from '../ordersList';
 
 
 
@@ -25,7 +24,7 @@ const Page = async ({params}: {
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
         <Details vendorDetails={vendorDetails as AuthCredentials}></Details>
-        <VendorFiles vendorDetails={vendorDetails as AuthCredentials}></VendorFiles>
+        <OrdersList vendorDetails={vendorDetails as AuthCredentials}/>
         </Suspense>
       </div>
     </PageContainer>

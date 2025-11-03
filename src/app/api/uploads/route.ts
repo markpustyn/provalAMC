@@ -28,7 +28,7 @@ export async function GET(req: Request) {
     );
 
     if(!propId){
-      return NextResponse.json({error: 'Missing Data'}, {status: 400})
+      return NextResponse.json({error: 'Error'}, {status: 400})
     }
 
     const data = 
@@ -116,7 +116,6 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(results, { status: 201 });
   } catch (err) {
-    console.error("Upload error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }
 }
