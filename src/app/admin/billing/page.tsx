@@ -10,7 +10,6 @@ import Link from 'next/link';
 import { SearchParams } from 'nuqs/server';
 import { Suspense } from 'react';
 import ProductTableAction from '@/features/products/components/product-tables/product-table-action';
-import VendorListingPage from '@/features/products/components/vendorListingPage';
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { db } from '@/db/drizzle';

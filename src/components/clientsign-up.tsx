@@ -96,9 +96,13 @@ const form = useForm<RegisterFormValues>({
     
 
   return (
-    <div className="flex justify-center">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div className="flex justify-center p-4 w-full">
+  <Form {...form}>
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="w-full max-w-3xl"
+    >
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left w-full">
             <FormField
               control={form.control}
               name="fname"
@@ -106,7 +110,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="First Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -119,7 +123,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Last Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -132,7 +136,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +149,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Phone Number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,7 +163,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="" {...field} />
+                    <Input type="password" placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +176,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="" {...field} />
+                    <Input type="password" placeholder="Confirm Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,7 +189,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Street</FormLabel>
                   <FormControl>
-                    <Input {...field} ref={addressRef}/>
+                    <Input {...field} ref={addressRef} placeholder="Street" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -198,7 +202,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>City</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="City" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -211,7 +215,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>State</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="State" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -224,7 +228,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Zip</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Zip" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -237,7 +241,7 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Company Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Company" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -250,14 +254,16 @@ const form = useForm<RegisterFormValues>({
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Role" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-
-            <Button type="submit">Sign up</Button>
+            </div>
+            <div className="mt-5 flex justify-end">
+          <Button type="submit" className="text-white px-6 py-2 rounded-md w-1/2 border-white bg-blue-600 hover:bg-blue-700">Sign up</Button>
+        </div>
           </form>
         </Form>
 

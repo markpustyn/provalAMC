@@ -4,9 +4,9 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import Image from "next/image";
 export default function SignInPage() {
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-auto">
       {/* backdrop */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_40%_at_50%_-10%,hsl(var(--primary)/0.15),transparent),radial-gradient(40%_40%_at_100%_0%,hsl(var(--muted-foreground)/0.12),transparent)]" />
+      <div className="bg-[radial-gradient(60%_40%_at_50%_-10%,hsl(var(--primary)/0.15),transparent),radial-gradient(40%_40%_at_100%_0%,hsl(var(--muted-foreground)/0.12),transparent)]" />
       <div className="absolute inset-0 opacity-40 [mask-image:radial-gradient(60%_60%_at_50%_40%,black,transparent)] bg-[linear-gradient(to_right,transparent_0,transparent_24px,rgba(0,0,0,0.06)_25px),linear-gradient(to_bottom,transparent_0,transparent_24px,rgba(0,0,0,0.06)_25px)] bg-[size:26px_26px]" />
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 py-8 md:px-8">
@@ -35,7 +35,7 @@ export default function SignInPage() {
 
           {/* Form card */}
           <div className="flex items-center justify-center">
-            <Card className="w-full max-w-xl shadow-xl rounded-3xl border border-border/60 backdrop-blur-sm">
+            <Card className="w-full max-w-xl shadow-xl rounded-3xl border border-border/60">
               <CardHeader className="space-y-1">
                 <CardTitle className="text-2xl">Client Sign up</CardTitle>
               </CardHeader>
