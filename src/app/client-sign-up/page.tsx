@@ -1,8 +1,13 @@
-// app/client/signup/page.tsx
-import ClientSignUpForm from "@/components/clientsign-up";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import Image from "next/image";
-export default function SignInPage() {
+import ClientSignUpForm from "@/components/clientsign-up";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+
+export default function ClientSignUpPage() {
   return (
     <div className="relative min-h-screen w-full overflow-auto">
       {/* backdrop */}
@@ -11,42 +16,44 @@ export default function SignInPage() {
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-7xl items-center px-4 py-8 md:px-8">
         <div className="grid w-full grid-cols-1 gap-8 lg:grid-cols-2">
-          {/* Left panel with logo */}
-          <div className="hidden lg:flex flex-col justify-center gap-6 pr-6">
-            <div className="flex items-center gap-3 mb-4">
-              <Image
-                src="/blackLogo.png"
-                alt="Blue Grid Logo"
-                width={400}
-                height={150}
-                priority
-                className="object-contain"
-              />
-            </div>
-            <h1 className="text-4xl font-semibold tracking-tight text-foreground">
+          {/* Left panel */}
+          <div className="flex flex-col items-center lg:items-start justify-center text-center lg:text-left gap-4 lg:gap-6">
+            <Image
+              src="/blackLogo.png"
+              alt="Blue Grid Logo"
+              width={280}
+              height={120}
+              priority
+              className="object-contain mx-auto lg:mx-0"
+            />
+            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-foreground">
               Client Registration
             </h1>
-            <p className="max-w-md text-base text-muted-foreground">
+            <p className="max-w-md text-sm sm:text-base text-muted-foreground">
               Complete this form to begin your registration. After sign up, click on{" "}
-              <strong>Profile</strong> to finish setting up your account. If work becomes
-              available in your area, we will reach out to you by email.
+              <strong>Profile</strong> to finish setting up your account. Once your
+              account is approved, you will be able to place and track property inspection
+              orders directly through our platform.
             </p>
           </div>
 
           {/* Form card */}
           <div className="flex items-center justify-center">
-            <Card className="w-full max-w-xl shadow-xl rounded-3xl border border-border/60">
-              <CardHeader className="space-y-1">
-                <CardTitle className="text-2xl">Client Sign up</CardTitle>
+            <Card className="w-full max-w-md sm:max-w-lg md:max-w-xl shadow-xl rounded-3xl border border-border/60">
+              <CardHeader className="space-y-1 text-center">
+                <CardTitle className="text-2xl sm:text-3xl">Sign up</CardTitle>
               </CardHeader>
-              <CardContent className="pt-2">
+              <CardContent className="pt-2 space-y-3 text-center">
                 <ClientSignUpForm />
-                <div className="mt-6 text-center text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   Already have an account?{" "}
-                  <a href="/" className="font-medium text-black underline-offset-4 hover:underline">
+                  <a
+                    href="/"
+                    className="font-medium underline-offset-4 hover:underline text-black"
+                  >
                     Sign in
                   </a>
-                </div>
+                </p>
               </CardContent>
             </Card>
           </div>

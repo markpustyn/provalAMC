@@ -96,13 +96,10 @@ const form = useForm<RegisterFormValues>({
     
 
   return (
-<div className="flex justify-center p-4 w-full">
-  <Form {...form}>
-    <form
-      onSubmit={form.handleSubmit(onSubmit)}
-      className="w-full max-w-3xl"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left w-full">
+    <div className="flex justify-center">
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
             <FormField
               control={form.control}
               name="fname"
@@ -262,7 +259,7 @@ const form = useForm<RegisterFormValues>({
             />
             </div>
             <div className="mt-5 flex justify-end">
-          <Button type="submit" className="text-white px-6 py-2 rounded-md w-1/2 border-white bg-blue-600 hover:bg-blue-700">Sign up</Button>
+          <Button type="submit" className="text-white px-6 py-2 rounded-md w-full sm:w-1/2 border-white bg-blue-600 hover:bg-blue-700">Sign up</Button>
         </div>
           </form>
         </Form>

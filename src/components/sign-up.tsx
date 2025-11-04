@@ -266,7 +266,7 @@ const form = useForm<RegisterFormValues>({
             />
             </div>
         <div className="mt-5 flex justify-end">
-          <Button type="submit" className="text-white px-6 py-2 rounded-md w-1/2 border-white bg-blue-600 hover:bg-blue-700">Sign up</Button>
+          <Button type="submit" className="text-white px-6 py-2 rounded-md w-full sm:w-1/2 border-white bg-blue-600 hover:bg-blue-700">Sign up</Button>
         </div>
           </form>
         </Form>
