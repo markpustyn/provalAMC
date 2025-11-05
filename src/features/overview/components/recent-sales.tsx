@@ -1,99 +1,77 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-} from '@/components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
+import { db } from "@/db/drizzle";
+import { users } from "@/db/schema";
+import { desc, eq, count } from "drizzle-orm";
 
-export function RecentSales() {
+export async function RecentSales() {
+  // total vendors
+  const [{ total }] = await db
+    .select({ total: count() })
+    .from(users)
+    .where(eq(users.role, "broker"));
+
+  // 4 most recent vendors
+  const vendors = await db
+    .select({
+      id: users.id,
+      fname: users.fname,
+      lname: users.lname,
+      email: users.email,
+      createdAt: users.createdAt,
+    })
+    .from(users)
+    .where(eq(users.role, "broker"))
+    .orderBy(desc(users.createdAt))
+    .limit(5);
+
   return (
-    <Card>
+    <Card className="relative">
+      {/* count badge in top left */}
+      <span className="absolute right-3 top-3 rounded-full bg-muted px-2 py-0.5 text-xs font-medium">
+        {total} total
+      </span>
+
       <CardHeader>
         <CardTitle>Vendors</CardTitle>
       </CardHeader>
+
       <CardContent>
-        <div className='space-y-8'>
-          <div className='flex items-center'>
-            <Avatar className='h-9 w-9'>
-              <AvatarImage
-                src='https://api.slingacademy.com/public/sample-users/1.png'
-                alt='Avatar'
-              />
-              <AvatarFallback>OM</AvatarFallback>
-            </Avatar>
-            <div className='ml-4 space-y-1'>
-              <p className='text-sm font-medium leading-none'>Olivia Martin</p>
-              <p className='text-sm text-muted-foreground'>
-                olivia.martin@email.com
-              </p>
+        <div className="space-y-6">
+          {vendors.map((v) => (
+            <div key={v.id} className="flex items-center">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={""} alt={"Avatar"} />
+                <AvatarFallback>
+                  {(v.fname ?? "NA")
+                    .split(" ")
+                    .map((s) => s[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+
+              <div className="ml-4 space-y-0.5">
+                <p className="text-sm font-medium leading-none">
+                  {v.fname ?? "Unknown User"}{v.lname ?? "Unknown User"}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {v.email ?? "no email"}
+                </p>
+              </div>
+
+              <div className="ml-auto text-xs text-muted-foreground">
+                {v.createdAt
+                  ? new Date(v.createdAt).toLocaleDateString()
+                  : ""}
+              </div>
             </div>
-            <div className='ml-auto font-medium'>+$1,999.00</div>
-          </div>
-          <div className='flex items-center'>
-            <Avatar className='flex h-9 w-9 items-center justify-center space-y-0 border'>
-              <AvatarImage
-                src='https://api.slingacademy.com/public/sample-users/2.png'
-                alt='Avatar'
-              />
-              <AvatarFallback>JL</AvatarFallback>
-            </Avatar>
-            <div className='ml-4 space-y-1'>
-              <p className='text-sm font-medium leading-none'>Jackson Lee</p>
-              <p className='text-sm text-muted-foreground'>
-                jackson.lee@email.com
-              </p>
-            </div>
-            <div className='ml-auto font-medium'>+$39.00</div>
-          </div>
-          <div className='flex items-center'>
-            <Avatar className='h-9 w-9'>
-              <AvatarImage
-                src='https://api.slingacademy.com/public/sample-users/3.png'
-                alt='Avatar'
-              />
-              <AvatarFallback>IN</AvatarFallback>
-            </Avatar>
-            <div className='ml-4 space-y-1'>
-              <p className='text-sm font-medium leading-none'>
-                Isabella Nguyen
-              </p>
-              <p className='text-sm text-muted-foreground'>
-                isabella.nguyen@email.com
-              </p>
-            </div>
-            <div className='ml-auto font-medium'>+$299.00</div>
-          </div>
-          <div className='flex items-center'>
-            <Avatar className='h-9 w-9'>
-              <AvatarImage
-                src='https://api.slingacademy.com/public/sample-users/4.png'
-                alt='Avatar'
-              />
-              <AvatarFallback>WK</AvatarFallback>
-            </Avatar>
-            <div className='ml-4 space-y-1'>
-              <p className='text-sm font-medium leading-none'>William Kim</p>
-              <p className='text-sm text-muted-foreground'>will@email.com</p>
-            </div>
-            <div className='ml-auto font-medium'>+$99.00</div>
-          </div>
-          <div className='flex items-center'>
-            <Avatar className='h-9 w-9'>
-              <AvatarImage
-                src='https://api.slingacademy.com/public/sample-users/5.png'
-                alt='Avatar'
-              />
-              <AvatarFallback>SD</AvatarFallback>
-            </Avatar>
-            <div className='ml-4 space-y-1'>
-              <p className='text-sm font-medium leading-none'>Sofia Davis</p>
-              <p className='text-sm text-muted-foreground'>
-                sofia.davis@email.com
-              </p>
-            </div>
-            <div className='ml-auto font-medium'>+$39.00</div>
-          </div>
+          ))}
+
+          {vendors.length === 0 && (
+            <p className="text-sm text-muted-foreground">No vendors yet</p>
+          )}
         </div>
       </CardContent>
     </Card>

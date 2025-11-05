@@ -77,7 +77,7 @@ export const navItems: NavItem[] = [
 ];
 export const brokerNav: BrokerNavItem[] = [
   {
-    title: 'Avalible Orders',
+    title: 'Available Orders',
     url: '/broker/dashboard',
     icon: 'avaliable',
     isActive: false,

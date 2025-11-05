@@ -33,7 +33,7 @@ export default async function Page(props: pageProps) {
       <div className='flex flex-1 flex-col space-y-4'>
         <div className='flex items-start justify-between'>
           <Heading
-            title='Avaliable Orders'
+            title='Available Orders'
             description=''
           />
         </div>
