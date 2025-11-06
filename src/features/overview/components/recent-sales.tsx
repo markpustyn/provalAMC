@@ -23,7 +23,7 @@ export async function RecentSales() {
     .from(users)
     .where(eq(users.role, "broker"))
     .orderBy(desc(users.createdAt))
-    .limit(5);
+    .limit(6);
 
   return (
     <Card className="relative">
