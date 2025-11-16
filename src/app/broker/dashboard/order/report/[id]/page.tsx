@@ -6,7 +6,7 @@ import { order } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import { OpenOrder } from 'types';
 
-import PcrForm from '@/components/forms/pcrForm';
+import NewForm30 from '@/components/forms/form30';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
@@ -28,7 +28,7 @@ const Page = async ({params}: { params: {id: string}}) => {
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
         {/* <PropertyDetails OrderDetails={orderDetails as OpenOrder}></PropertyDetails> */}
-        <PcrForm OrderDetails={orderDetails as OpenOrder} session={session}/>
+        <NewForm30 OrderDetails={orderDetails as OpenOrder} session={session}/>
         </Suspense>
       </div>
     </PageContainer>

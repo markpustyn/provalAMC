@@ -38,10 +38,10 @@ const FormSchema = z.object({
   commonElements: z.string().optional(),
 });
 const items = [
-  { id: "single", label: "Single Family" },
-  { id: "mfr", label: "Multi Family" },
-  { id: "condo", label: "Condo" },
-  { id: "land", label: "Vacant Land" },
+  { id: "Single Family", label: "Single Family" },
+  { id: "Multi Family", label: "Multi Family" },
+  { id: "Condo", label: "Condo" },
+  { id: "Vacant Land", label: "Vacant Land" },
 ];
 
 export default function PcrForm({ OrderDetails, session }) {

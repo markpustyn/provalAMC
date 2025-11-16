@@ -79,24 +79,23 @@ function sortByPriority(images: string[], tags: string[]) {
 }
 
 async function toDataUrl(url: string): Promise<string> {
-        const res = await fetch(url, { 
-      mode: "no-cors",
-      cache: "no-cache"
+  const res = await fetch(url, {
+    mode: "no-cors",
+    cache: "no-cache",
+  });
+
+  if (!res.ok || res.type === "opaque") {
+    const res2 = await fetch(url, { cache: "no-cache" });
+    if (!res2.ok) throw new Error(`Image fetch failed: ${url}`);
+    const blob2 = await res2.blob();
+    return await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result as string);
+      fr.onerror = reject;
+      fr.readAsDataURL(blob2);
     });
-    
-    // If no-cors doesn't work, try without mode specification
-    if (!res.ok || res.type === 'opaque') {
-      const res2 = await fetch(url, { cache: "no-cache" });
-      if (!res2.ok) throw new Error(`Image fetch failed: ${url}`);
-      const blob = await res2.blob();
-      return await new Promise((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onload = () => resolve(fr.result as string);
-        fr.onerror = reject;
-        fr.readAsDataURL(blob);
-      });
-    }
-  if (!res.ok) throw new Error(`Image fetch failed: ${url}`);
+  }
+
   const blob = await res.blob();
   return await new Promise((resolve, reject) => {
     const fr = new FileReader();
@@ -125,33 +124,54 @@ export function PropertyReport({
 
   return (
     <div className="mx-auto max-w-4xl p-6 bg-white text-black dark:bg-black">
-
       {/* ADDRESS */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Address</h2>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">
+          Address
+        </h2>
         <div className="space-y-1 text-xl">
-          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Street:</span><span>{orderDetails?.propertyAddress || "N/A"}</span></div>
-          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">City/State/Zip:</span><span>{`${orderDetails?.propertyCity || "N/A"}, ${orderDetails?.propertyState || "N/A"} ${orderDetails?.propertyZip || "N/A"}`}</span></div>
-          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Inspection Date:</span><span>{orderDetails?.requestedDueDate || "N/A"}</span></div>
-          <div className="flex justify-between text-gray-600 dark:text-white"><span className="font-semibold ">Order Type:</span><span>{orderDetails?.mainProduct || "N/A"} PCR</span></div>
+          <div className="flex justify-between text-gray-600 dark:text-white">
+            <span className="font-semibold ">Street:</span>
+            <span>{orderDetails?.propertyAddress || "N/A"}</span>
+          </div>
+          <div className="flex justify-between text-gray-600 dark:text-white">
+            <span className="font-semibold ">City/State/Zip:</span>
+            <span>{`${orderDetails?.propertyCity || "N/A"}, ${
+              orderDetails?.propertyState || "N/A"
+            } ${orderDetails?.propertyZip || "N/A"}`}</span>
+          </div>
+          <div className="flex justify-between text-gray-600 dark:text-white">
+            <span className="font-semibold ">Inspection Date:</span>
+            <span>{orderDetails?.requestedDueDate || "N/A"}</span>
+          </div>
+          <div className="flex justify-between text-gray-600 dark:text-white">
+            <span className="font-semibold ">Order Type:</span>
+            <span>{orderDetails?.mainProduct || "N/A"} PCR</span>
+          </div>
         </div>
       </section>
 
       {/* RATING + FRONT PHOTO */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div className="rounded-2xl border border-black p-4">
-          <h3 className="text-2xl font-semibold text-black dark:text-white mb-2">Overall Rating</h3>
+          <h3 className="text-2xl font-semibold text-black dark:text-white mb-2">
+            Overall Rating
+          </h3>
           <div className="flex flex-col items-center justify-center mt-4">
-            <span className={classNames("mt-2 text-3xl px-3 py-1 rounded-full", palette.bg, palette.fg)}>
+            <span
+              className={classNames(
+                "mt-2 text-3xl px-3 py-1 rounded-full",
+                palette.bg,
+                palette.fg
+              )}
+            >
               {rLabel}
             </span>
           </div>
           <div className="mt-4 space-y-1 text-md text-gray-600 dark:text-white">
+            <div>Type: {gv("propertyType")} • Stories: {gv("stories")}</div>
             <div>
-              Type: {gv("propertyType")} • Stories: {gv("stories")}
-            </div>
-            <div>
-              Condition: {gv("subjectCondition")} • Repairs: {gv("repairsNeeded")}
+              Condition: {gv("subjectCondition")}
             </div>
           </div>
         </div>
@@ -159,7 +179,11 @@ export function PropertyReport({
         <div className="rounded-2xl border border-black p-3 flex items-center justify-center min-h-[175px]">
           {front?.image ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={front.image} alt={front.tag || "Front"} className="h-72 w-full object-cover rounded-xl" />
+            <img
+              src={front.image}
+              alt={front.tag || "Front"}
+              className="h-72 w-full object-cover rounded-xl"
+            />
           ) : (
             <div className="text-sm text-gray-500 dark:text-white">No image</div>
           )}
@@ -168,24 +192,37 @@ export function PropertyReport({
 
       {/* PROPERTY INFORMATION */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-2xl font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Property Information</h2>
+        <h2 className="text-2xl font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">
+          Property Information
+        </h2>
         <div className="space-y-1 text-xl">
-          {([
-            ["Property Type", gv("propertyType")],
-            ["Stories", gv("stories")],
-            ["Occupancy", gv("occupancy")],
-            ["Neighborhood", gv("neighborhood")],
-            ["View Factors", gv("viewFactors")],
-            ["Subject Condition", gv("subjectCondition")],
-            ["Neighborhood Conformity", gv("neighborhoodConformity")],
-            ["Common Elements", gv("commonElements")],
-            ["Repairs Needed", gv("repairsNeeded")],
-            ["Items", gv("items")],
-            ["Date Assigned", gv("date")],
-          ] as const).map(([label, value], i) => (
+          {(
+            [
+              ["Property Type", gv("propertyType")],
+              ["Stories", gv("stories")],
+              ["Occupancy", gv("occupancy")],
+              ["Occupied By", gv("occupiedBy")],
+              ["Neighborhood", gv("neighborhood")],
+              ["Neighborhood Condition", gv("neighborhoodCondition")],
+              ["View Factors", gv("viewFactors")],
+              ["Subject Condition", gv("subjectCondition")],
+              ["Neighborhood Conformity", gv("neighborhoodConformity")],
+              ["Common Elements", gv("commonElements")],
+              ["Items Present", gv("signage")],
+              ["Items Present Comment", gv("signageComment")],
+              ["Structural Issues Comment", gv("structuralComment")],
+              ["Detached Structures", gv("detachStructures")],
+              ["Items", gv("items")],
+              ["Date Assigned", gv("date")],
+            ] as const
+          ).map(([label, value], i) => (
             <div key={i} className="flex justify-between">
-              <span className="font-semibold text-gray-600 dark:text-white">{label}:</span>
-              <span className="text-gray-900 dark:text-white">{String(value)}</span>
+              <span className="font-semibold text-gray-600 dark:text-white">
+                {label}:
+              </span>
+              <span className="text-gray-900 dark:text-white">
+                {String(value)}
+              </span>
             </div>
           ))}
         </div>
@@ -193,23 +230,46 @@ export function PropertyReport({
 
       {/* VENDOR INFO */}
       <section className="border-b border-black pb-4 mb-4">
-        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Vendor Information</h2>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">
+          Vendor Information
+        </h2>
         <div className="space-y-1 text-xl">
-          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">Name</span><span>{vendorDetails?.fname} {vendorDetails?.lname}</span></div>
-          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">License</span><span>{vendorDetails?.licenseNum} {vendorDetails?.state}</span></div>
-          <div className="flex justify-between dark:text-white text-gray-600"><span className="font-semibold ">Company</span><span>{vendorDetails?.companyName}</span></div>
+          <div className="flex justify-between dark:text-white text-gray-600">
+            <span className="font-semibold ">Name</span>
+            <span>
+              {vendorDetails?.fname} {vendorDetails?.lname}
+            </span>
+          </div>
+          <div className="flex justify-between dark:text-white text-gray-600">
+            <span className="font-semibold ">License</span>
+            <span>
+              {vendorDetails?.licenseNum} {vendorDetails?.state}
+            </span>
+          </div>
+          <div className="flex justify-between dark:text-white text-gray-600">
+            <span className="font-semibold ">Company</span>
+            <span>{vendorDetails?.companyName}</span>
+          </div>
         </div>
       </section>
 
       {/* IMAGES */}
       <section className="border-b border-black pb-2">
-        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">Property Photos</h2>
+        <h2 className="text-[28px] font-bold text-black dark:text-white pl-2 border-l-4 border-[#256ccb] mb-3">
+          Property Photos
+        </h2>
         <div className="space-y-6">
           {sorted.map((it, i) => (
             <figure key={`${it.idx}-${i}`} className="w-full">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={it.image} alt={it.tag || `Photo ${i + 1}`} className="w-full h-[350px] object-contain rounded-xl border" />
-              <figcaption className="mt-2 text-center text-xl font-medium dark:text-white">{it.tag || ""}</figcaption>
+              <img
+                src={it.image}
+                alt={it.tag || `Photo ${i + 1}`}
+                className="w-full h-[350px] object-contain rounded-xl border"
+              />
+              <figcaption className="mt-2 text-center text-xl font-medium dark:text-white">
+                {it.tag || ""}
+              </figcaption>
             </figure>
           ))}
         </div>
@@ -260,7 +320,6 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
         console.error(e);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [OrderDetails.orderId]);
 
   const generateReport = async (id: string) => {
@@ -287,31 +346,27 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
       const base64Images = await Promise.all(urls.map(toDataUrl));
       const tags: string[] = imageRecords.map((r) => r.imgTag ?? "");
       const rating = ratingAssesment(orderRecord);
-      
-      const blob = await ReactPDF
-        .pdf(
-          <GeneratePdf
-            rating={rating}
-            vendorDetails={orderRecord.vendor}
-            orderDetails={OrderDetails}
-            orderData={orderRecord.form}
-            images={base64Images}
-            tags={tags}
-            logoSrc="/blackLogo.png"
-          />
-        )
-        .toBlob();
-        
 
-      
+      const blob = await ReactPDF.pdf(
+        <GeneratePdf
+          rating={rating}
+          vendorDetails={orderRecord.vendor}
+          orderDetails={OrderDetails}
+          orderData={orderRecord.form}
+          images={base64Images}
+          tags={tags}
+          logoSrc="/blackLogo.png"
+        />
+      ).toBlob();
+
       const url = URL.createObjectURL(blob);
-        const body = new FormData();
-        body.append('file', blob, `report-${id}.pdf`);
-        body.append('orderId', id);
-       await fetch('/api/complete-reports', {
+      const body = new FormData();
+      body.append("file", blob, `report-${id}.pdf`);
+      body.append("orderId", id);
+      await fetch("/api/complete-reports", {
         method: "POST",
-        body
-       })
+        body,
+      });
       const link = document.createElement("a");
       link.href = url;
       link.download = `report-${id}.pdf`;
@@ -326,59 +381,59 @@ export function CompleteReport({ OrderDetails }: { OrderDetails: OpenOrder }) {
     }
   };
 
-const sendReport = async (orderId: string) => {
-  try {
-    setLoading(true)
-    const [row] = await db
-      .update(order)
-      .set({ status: "Complete" })
-      .where(eq(order.orderId, orderId))
-      .returning({
-        clientEmail: order.loanOfficerEmail,
-        orderId: order.orderId,
-        mainProduct: order.mainProduct,
-        propertyAddress: order.propertyAddress,
-        propertyCity: order.propertyCity,
-        propertyState: order.propertyState,
-        propertyZip: order.propertyZip,
-        lender: order.lender,
-        completeUrl: order.completeUrl,
+  const sendReport = async (orderId: string) => {
+    try {
+      setLoading(true);
+      const [row] = await db
+        .update(order)
+        .set({ status: "Complete" })
+        .where(eq(order.orderId, orderId))
+        .returning({
+          clientEmail: order.loanOfficerEmail,
+          orderId: order.orderId,
+          mainProduct: order.mainProduct,
+          propertyAddress: order.propertyAddress,
+          propertyCity: order.propertyCity,
+          propertyState: order.propertyState,
+          propertyZip: order.propertyZip,
+          lender: order.lender,
+          completeUrl: order.completeUrl,
+        });
+
+      const res = await fetch("/api/complete-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          recipients: [row.clientEmail],
+          order: {
+            orderId: orderId,
+            product: row.mainProduct,
+            propertyAddress: row.propertyAddress,
+            propertyCity: row.propertyCity,
+            propertyState: row.propertyState,
+            propertyZip: row.propertyZip,
+            clientName: row.lender,
+            mainProduct: row.mainProduct,
+            completedAt: new Date().toISOString(),
+            downloadUrl: row.completeUrl,
+            dashboardUrl: "https://app.bluegridvaluations.com/client/dashboard",
+            supportEmail: "support@bluegridvaluations.com",
+            supportPhone: "(555) 123-4567",
+          },
+        }),
       });
 
-     const res = await fetch("/api/complete-email", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        recipients: [row.clientEmail],
-        order: {
-          orderId: orderId,
-          product: row.mainProduct,
-          propertyAddress: row.propertyAddress,
-          propertyCity: row.propertyCity,
-          propertyState: row.propertyState,
-          propertyZip: row.propertyZip,
-          clientName: row.lender,
-          mainProduct: row.mainProduct,
-          completedAt: new Date().toISOString(),
-          downloadUrl: row.completeUrl,
-          dashboardUrl: "https://app.bluegridvaluations.com/client/dashboard",
-          supportEmail: "support@bluegridvaluations.com",
-          supportPhone: "(555) 123-4567",
-        },
-      }),
-    });
-      
-    toast("Report sent to client")
+      toast("Report sent to client");
+    } catch (err) {
+      console.error("Failed to send report", err);
+      toast("Error sending report");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  } catch (err) {
-    console.error("Failed to send report", err)
-    toast("Error sending report")
-  } finally {
-    setLoading(false)
-  }
-}
   return (
     <div className="space-y-10 w-full max-w-5xl mx-auto px-6 py-10">
       {/* Top Buttons */}
@@ -414,5 +469,4 @@ const sendReport = async (orderId: string) => {
   );
 }
 
-// Named exports are available for flexible imports
 export default CompleteReport;

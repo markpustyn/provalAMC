@@ -12,16 +12,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-    justifyContent: 'space-between', // optional: spreads logo + title block
+    justifyContent: 'space-between',
   },
   logo: { 
     width: 200, 
     height: 50, 
     marginRight: 5
-},
+  },
   titleBlock: {
     flexGrow: 1,
-    alignItems: 'flex-end', // <- right-align children inside the block
+    alignItems: 'flex-end',
   },
   reportTitle: {
     fontSize: 18,
@@ -33,21 +33,21 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#000000',
     marginTop: 2,
-    textAlign: 'right', // <- ensure the address line is right-aligned
+    textAlign: 'right',
   },
 
   /* ===== SECTIONS ===== */
   section: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 14,
+    marginBottom: 14,
     borderBottomWidth: 1,
     borderBottomColor: '#000000',
     borderBottomStyle: 'solid',
     paddingBottom: 10,
   },
   sectionTitle: {
-    fontSize: 16,
-    marginBottom: 6,
+    fontSize: 18,
+    marginBottom: 8,
     fontWeight: 'bold',
     color: '#000000',
     paddingLeft: 8,
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     borderLeftColor: '#256ccb',
     borderLeftStyle: 'solid',
   },
+
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -68,8 +69,47 @@ const styles = StyleSheet.create({
   detailValue: {
     color: '#333',
   },
+  detailAddress: {
+    color: '#000000',
+    fontSize: 12,
+    marginTop: 2,
+  },
 
-  /* keep your existing text + image styles */
+  /* nicer info rows */
+  infoBlock: {
+    marginTop: 4,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    backgroundColor: '#f5f7fb',
+    borderRadius: 6,
+    paddingVertical: 6,
+    paddingHorizontal: 8,
+    marginBottom: 6,
+  },
+  infoLabel: {
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#222222',
+  },
+  infoValue: {
+    fontSize: 13,
+    color: '#333333',
+    marginLeft: 12,
+    flexShrink: 1,
+    textAlign: 'right',
+  },
+  notesText: {
+    fontSize: 13,
+    color: '#333333',
+    backgroundColor: '#f5f7fb',
+    marginTop: 4,
+    lineHeight: 1.4,
+  },
+
+  /* text + image styles */
   text: {
     fontSize: 12,
     marginBottom: 4,
@@ -87,14 +127,14 @@ const styles = StyleSheet.create({
     height: 350,
     objectFit: 'contain',
     marginBottom: 10,
-    borderRadius: 8
+    borderRadius: 8,
   },
   frontImage: {
     width: '100%',
     height: 300,
     borderRadius: 8,
   },
-    splitRow: {
+  splitRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -108,14 +148,14 @@ const styles = StyleSheet.create({
   half: { width: '48%' },
 
   ratingHeader: { 
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 600,
     color: '#000000', 
     marginBottom: 6, 
-    marginTop: 6
-},
+    marginTop: 2,
+  },
   ratingBox: {
-    marginTop: 20,
+    marginTop: 25,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -160,16 +200,15 @@ export const GeneratePdf = ({
     parsedData = {};
   }
 
-  // ---- sorting unchanged except for your priority map ----
+  // ---- image sorting (unchanged) ----
   let sortedImgs = images.map((img, i) => ({ image: img, tag: tags?.[i] ?? '', idx: i }));
   const priority: Record<string, number> = {
-
-    'Front': 1,
+    Front: 1,
     'Left Side': 2,
     'Right Side': 3,
     'Street Left': 4,
     'Street Right': 5,
-    'Address': 6,
+    Address: 6,
     'Across the Street': 7,
     'Street Sign': 8,
   };
@@ -177,10 +216,9 @@ export const GeneratePdf = ({
     const priA = priority[a.tag] ?? 99;
     const priB = priority[b.tag] ?? 99;
     if (priA !== priB) return priA - priB;
-    return a.idx - b.idx; // stable within same priority
+    return a.idx - b.idx;
   });
 
-  // Helpers to pick fields if present
   const rLabel = (rating?.rating || 'Unknown').toString();
   const colorMap: Record<string, { bg: string; fg: string }> = {
     Good:      { bg: '#E6F4EA', fg: '#1E7B34' },
@@ -192,6 +230,17 @@ export const GeneratePdf = ({
   const palette = colorMap[rLabel] || colorMap.Unknown;
 
   const gv = (k: string) => (parsedData?.[k] ?? 'N/A');
+  const gl = (k: string) => {
+    const v = parsedData?.[k];
+    if (Array.isArray(v)) return v.join(', ');
+    return v ?? 'N/A';
+  };
+
+  // Prefer inspection date from the form, fall back to requestedDueDate
+  const inspectionDate =
+    gv('date') !== 'N/A'
+      ? gv('date')
+      : orderDetails?.requestedDueDate || 'N/A';
 
   return (
     <Document>
@@ -201,100 +250,150 @@ export const GeneratePdf = ({
           {logoSrc ? <Image src={logoSrc} style={styles.logo} /> : <View style={styles.logo} />}
           <View style={styles.titleBlock}>
             <Text style={styles.reportTitle}>Property Condition Report</Text>
+            <Text style={styles.detailAddress}>
+              {orderDetails?.propertyAddress || 'N/A'}{' '}
+              {(orderDetails?.propertyCity || 'N/A') +
+                ', ' +
+                (orderDetails?.propertyState || 'N/A') +
+                ' ' +
+                (orderDetails?.propertyZip || 'N/A')}
+            </Text>
           </View>
         </View>
 
-        {/* ===== ADDRESS ===== */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Address</Text>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Street:</Text>
-            <Text style={styles.detailValue}>{orderDetails?.propertyAddress || 'N/A'}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>City/State/Zip:</Text>
-            <Text style={styles.detailValue}>
-              {(orderDetails?.propertyCity || 'N/A') + ', ' + (orderDetails?.propertyState || 'N/A') + ' ' + (orderDetails?.propertyZip || 'N/A')}
-            </Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Inspection Date:</Text>
-            <Text style={styles.detailValue}>
-              {(orderDetails?.requestedDueDate)}
-            </Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Property:</Text>
-            <Text style={styles.detailValue}>
-              {(orderDetails?.propertyType)}
-            </Text>
-          </View>
-        </View>
+        {/* ===== RATING + FRONT PHOTO ===== */}
         <View style={styles.splitRow}>
           {/* Rating card */}
-          <View style={[styles.card, styles.half, {padding: 5,}]}>
-            <Text style={styles.ratingHeader}>Overall Rating</Text>
+          <View style={[styles.card, styles.half, { padding: 5 }]}>
+            <Text style={styles.ratingHeader}>Property Rating</Text>
             <View style={styles.ratingBox}>
               <Text style={[styles.pill, { backgroundColor: palette.bg, color: palette.fg }]}>
                 {rLabel}
               </Text>
             </View>
-            <View style={{ marginTop: 15 }}>
+            <View style={{ marginTop: 55 }}>
               <Text style={{ fontSize: 10, color: '#555' }}>
                 Type: {gv('propertyType')} • Stories: {gv('stories')}
               </Text>
               <Text style={{ fontSize: 10, color: '#555', marginTop: 2 }}>
-                Condition: {gv('subjectCondition')} • Repairs: {gv('repairsNeeded')}
+                Condition: {gv('subjectCondition')}
               </Text>
             </View>
           </View>
 
           {/* Front photo card */}
           <View style={[styles.card, styles.half]}>
-              <>
-                <Image src={sortedImgs[0].image} style={styles.frontImage} />
-              </>
+            <>
+              <Image src={sortedImgs[0].image} style={styles.frontImage} />
+            </>
           </View>
         </View>
 
-        {/* ===== PROPERTY INFORMATION ===== */}
+        {/* ===== PROPERTY INFORMATION (BASIC FACTS) ===== */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Property Information</Text>
-          {[
-            ['Property Type', gv('propertyType')],
-            ['Stories', gv('stories')],
-            ['Occupancy', gv('occupancy')],
-            ['Neighborhood', gv('neighborhood')],
-            ['View Factors', gv('viewFactors')],
-            ['Subject Condition', gv('subjectCondition')],
-            ['Neighborhood Conformity', gv('neighborhoodConformity')],
-            ['Common Elements', gv('commonElements')],
-            ['Repairs Needed', gv('repairsNeeded')],
-            ['Items', gv('items')],
-            ['Date Assigned', gv('date')],
-          ].map(([label, value], i) => (
-            <View style={styles.detailRow} key={i}>
-              <Text style={styles.detailLabel}>{label}:</Text>
-              <Text style={styles.detailValue}>{String(value)}</Text>
+          <View style={styles.infoBlock}>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Classification</Text>
+              <Text style={styles.infoValue}>{gv('propertyType') || "N/A"}</Text>
             </View>
-          ))}
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Property Type</Text>
+              <Text style={styles.infoValue}>{gl('items') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Stories</Text>
+              <Text style={styles.infoValue}>{gv('stories') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Occupancy</Text>
+              <Text style={styles.infoValue}>{gv('occupancy') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Occupied By</Text>
+              <Text style={styles.infoValue}>{gv('occupiedBy') || "N/A"}</Text>
+            </View>
+          </View>
         </View>
 
+        {/* ===== PROPERTY CONDITION ===== */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Property Condition</Text>
+          <View style={styles.infoBlock}>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>General Condition</Text>
+              <Text style={styles.infoValue}>{gv('subjectCondition') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Neighborhood Condition</Text>
+              <Text style={styles.infoValue}>{gv('neighborhoodCondition') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Neighborhood Conformity</Text>
+              <Text style={styles.infoValue}>{gv('neighborhoodConformity') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>View Factors / Structural Issues</Text>
+              <Text style={styles.infoValue}>{gl('viewFactors') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Common Elements</Text>
+              <Text style={styles.infoValue}>{gv('commonElements') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Items Present</Text>
+              <Text style={styles.infoValue}>{gl('signage') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Comment</Text>
+              <Text style={styles.infoValue}>{gv('signageComment') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Damage To Property</Text>
+              <Text style={styles.infoValue}>{gl('neighborhood') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Structural Issues Comment</Text>
+              <Text style={styles.infoValue}>{gv('structuralComment') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Detached Structures</Text>
+              <Text style={styles.infoValue}>{gv('detachStructures') || "N/A"}</Text>
+            </View>
+            <View style={styles.infoRow}>
+              <Text style={styles.infoLabel}>Inspection Date</Text>
+              <Text style={styles.infoValue}>{inspectionDate || "N/A"}</Text>
+            </View>
+          </View>
+        </View>
 
+        {/* ===== ADDITIONAL NOTES ===== */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Additional Notes</Text>
+          <Text style={styles.notesText}>
+            {gv('notes') || "N/A"}
+          </Text>
+        </View>
+
+        {/* ===== VENDOR INFORMATION ===== */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Vendor Information</Text>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Name</Text>
-              <Text style={styles.detailValue}>{vendorDetails.fname} {vendorDetails.lname}</Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>License</Text>
-              <Text style={styles.detailValue}>{vendorDetails.licenseNum} {vendorDetails.state} </Text>
-            </View>
-            <View style={styles.detailRow}>
-              <Text style={styles.detailLabel}>Company</Text>
-              <Text style={styles.detailValue}>{vendorDetails.companyName}</Text>
-            </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Name</Text>
+            <Text style={styles.detailValue}>
+              {vendorDetails.fname} {vendorDetails.lname}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>License</Text>
+            <Text style={styles.detailValue}>
+              {vendorDetails.licenseNum} {vendorDetails.state}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Company</Text>
+            <Text style={styles.detailValue}>{vendorDetails.companyName}</Text>
+          </View>
         </View>
 
         {/* ===== IMAGES ===== */}

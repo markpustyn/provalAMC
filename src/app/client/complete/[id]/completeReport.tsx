@@ -150,9 +150,6 @@ export function PropertyReport({
             <div>
               Type: {gv("propertyType")} • Stories: {gv("stories")}
             </div>
-            <div>
-              Condition: {gv("subjectCondition")} • Repairs: {gv("repairsNeeded")}
-            </div>
           </div>
         </div>
 
@@ -179,7 +176,6 @@ export function PropertyReport({
             ["Subject Condition", gv("subjectCondition")],
             ["Neighborhood Conformity", gv("neighborhoodConformity")],
             ["Common Elements", gv("commonElements")],
-            ["Repairs Needed", gv("repairsNeeded")],
             ["Items", gv("items")],
             ["Date Assigned", gv("date")],
           ] as const).map(([label, value], i) => (

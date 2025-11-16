@@ -120,7 +120,6 @@ export type InspectionForm = {
   viewFactors: string;
   neighborhood: string;
   propertyType: string;
-  repairsNeeded: string;
   commonElements: string;
   subjectCondition: string;
   neighborhoodConformity: string;
