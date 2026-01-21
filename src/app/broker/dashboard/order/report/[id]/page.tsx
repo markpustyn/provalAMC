@@ -24,7 +24,7 @@ const Page = async ({params}: { params: {id: string}}) => {
   }
 
   return (
-    <PageContainer scrollable>
+    <PageContainer scrollable={false}>
       <div className='flex-1 space-y-4'>
         <Suspense fallback={<FormCardSkeleton />}>
         {/* <PropertyDetails OrderDetails={orderDetails as OpenOrder}></PropertyDetails> */}

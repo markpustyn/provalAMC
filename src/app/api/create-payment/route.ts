@@ -2,8 +2,8 @@ import { stripe } from "@/lib/stripe"
 import { NextRequest, NextResponse } from "next/server"
 
 const PRODUCT_PRICES: Record<string, number> = {
-  RushExterior: 3500,
-  Exterior: 3000,
+  RushExterior: 4500,
+  Exterior: 4000,
   Interior: 7500,
 };
 

@@ -171,8 +171,8 @@ export default function MainProduct() {
     }
   };
   const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
-  RushExterior: { label: "Rush Three Day Exterior", amountCents: 3500 },
-  Exterior:     { label: "Exterior Inspection",      amountCents: 3000 },
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 4500 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 4000 },
   Interior:     { label: "Interior Inspection",      amountCents: 7500 },
 };
 const mainProduct = form.watch("mainProduct");
@@ -335,8 +335,8 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                         <FormControl>
                           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                              { value: "RushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$35", date: addDays(3) },
-                              { value: "Exterior", label: "Exterior Property Inspection", price: "$30", date: addDays(5) },
+                              { value: "RushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$45", date: addDays(3) },
+                              { value: "Exterior", label: "Exterior Property Inspection", price: "$40", date: addDays(5) },
                               { value: "Interior", label: "Interior Property Inspection", price: "$75", date: addDays(6) },
                             ].map((opt) => (
                               <button

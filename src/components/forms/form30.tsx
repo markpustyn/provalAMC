@@ -25,27 +25,40 @@ import { useRouter } from "next/navigation";
 const FormSchema = z.object({
   inspector: z.string().min(1, "Inspector name is required"),
   date: z.string().min(1, "Inspection date is required"),
-  notes: z.string().optional(),
-  items: z.array(z.string()).min(1, "Select at least one property type"),
-  subjectCondition: z.string().optional(),
-  occupancy: z.string().optional(),
-  occupiedBy: z.string().optional(),
-  propertyType: z.string().optional(),
-  stories: z.string().optional(),
-  neighborhood: z.array(z.string()).optional(),
-  neighborhoodConformity: z.string().optional(),
-  neighborhoodCondition: z.string().optional(),
-  viewFactors: z.string().optional(),
-  commonElements: z.string().optional(),
-  signage: z.string().optional(),
-  detachStructures: z.string().optional(),
-});
+
+  notes: z.string().min(1, "Notes are required"),
+
+  propertyType: z.string().min(1, "Select property type"),
+
+  propertyUse: z.string().min(1, "Property type is required"),
+
+  subjectCondition: z.string().min(1, "Subject condition is required"),
+  occupancy: z.string().min(1, "Occupancy is required"),
+  occupiedBy: z.string().min(1, "Occupied by is required"),
+
+
+  stories: z.string().min(1, "Stories is required"),
+
+  significantDamages: z.string().min(1, "Significant damages is required"),
+
+  structuralIssues: z.array(z.string()).min(1, "Select at least one structural issue"),
+  structuralIssuesNotes: z.string().optional(),
+
+  neighborhoodConformity: z.string().min(1, "Neighborhood conformity is required"),
+  neighborhoodCondition: z.string().min(1, "Neighborhood condition is required"),
+
+  signage: z.array(z.string()).min(1, "Select at least one item present"),
+  signageNotes: z.string().optional(),
+
+  detachStructures: z.string().min(1, "Detached structures is required"),
+})
 
 const items = [
-  { id: "single", label: "Single Family" },
-  { id: "mfr", label: "Multi Family" },
-  { id: "condo", label: "Condo" },
-  { id: "land", label: "Vacant Land" },
+  { id: "Single Family", label: "Single Family" },
+  { id: "Multi Family", label: "Multi Family" },
+  { id: "Condo", label: "Condo" },
+  { id: "Vacant Land", label: "Vacant Land" },
+  { id: "Mixed Use", label: "Mixed Use" },
 ];
 
 export default function NewForm30({ OrderDetails, session }) {
@@ -70,21 +83,38 @@ export default function NewForm30({ OrderDetails, session }) {
       inspector: '',
       date: '',
       notes: '',
-      items: [],
+      propertyUse: '',
+      propertyType: '',
       subjectCondition: '',
       occupancy: '',
       occupiedBy: '',
-      signage: '',
-      propertyType: '',
       stories: '',
-      neighborhood: [],
+      significantDamages: '',
+      structuralIssues: [],
+      structuralIssuesNotes: '',
       neighborhoodConformity: '',
       neighborhoodCondition: '',
-      viewFactors: '',
-      commonElements: '',
+      signage: [],
+      signageNotes: '',
       detachStructures: '',
     },
   })
+  const structuralOptions = [
+  { id: "Boarded Up Windows", label: "Boarded Up Windows" },
+  { id: "Boarded Up Doors", label: "Boarded Up Doors" },
+  { id: "Damage to Foundation", label: "Damage to Foundation" },
+  { id: "Disconnected Gutters", label: "Disconnected Gutters" },
+  { id: "Tarp on Roof", label: "Tarp on Roof" },
+  { id: "No Issues Visible", label: "None" },
+]
+const signageOptions = [
+  { id: "For Sale Sign", label: "For Sale Sign" },
+  { id: "Exterior Damage", label: "Exterior Damage" },
+  { id: "Deferred Lawn Maintenance", label: "Deferred Lawn Maintenance" },
+  { id: "Abandoned Vehicles", label: "Abandoned Vehicles" },
+  { id: "None Noted", label: "None" },
+]
+
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
@@ -171,9 +201,9 @@ export default function NewForm30({ OrderDetails, session }) {
                 name="inspector"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='font-bold text-lg'>Inspector Name</FormLabel>
+                    <FormLabel className='font-bold text-lg'>Vendor Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter inspector name" {...field} />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -197,121 +227,111 @@ export default function NewForm30({ OrderDetails, session }) {
           </div>
 
           {/* Property Classification Section */}
-          <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
-            <h3 className="text-2xl font-bold border-b-2 border-blue-600 pb-2 mb-6">Property Classification</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              <FormField
-                control={form.control}
-                name="items"
-                render={() => (
-                  <FormItem>
-                    <FormLabel className='font-bold text-lg'>Property Type</FormLabel>
-                    <FormDescription>Select all applicable types</FormDescription>
-                    <div className="space-y-3 mt-2">
-                      {items.map((item) => (
-                        <FormField
-                          key={item.id}
-                          control={form.control}
-                          name="items"
-                          render={({ field }) => (
-                            <FormItem className="flex flex-row items-center space-x-3 space-y-0">
-                              <FormControl>
-                                <Checkbox
-                                  checked={field.value?.includes(item.id)}
-                                  onCheckedChange={(checked) => {
-                                    return checked
-                                      ? field.onChange([...field.value, item.id])
-                                      : field.onChange(
-                                          field.value?.filter( 
-                                            (value) => value !== item.id
-                                          )
-                                        )
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel className="text-sm font-normal cursor-pointer">{item.label}</FormLabel>
-                            </FormItem>
-                          )}
-                        />
-                      ))}
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+<div className="bg-white border-2 border-gray-200 rounded-lg p-6">
+  <h3 className="text-2xl font-bold border-b-2 border-blue-600 pb-2 mb-6">
+    Property Classification
+  </h3>
 
-              <FormField
-                control={form.control}
-                name="propertyType"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='font-bold text-lg'>Property Use</FormLabel>
-                    <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        className="flex flex-col space-y-2"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="Residential" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">Residential</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="Commercial" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">Commercial</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="Industrial" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">Industrial</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="Agricultural" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">Agricultural</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="Mixed Use" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">Mixed Use</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {/* Property Type (single select) */}
+        <FormField
+          control={form.control}
+          name="propertyType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold text-lg">Property Type</FormLabel>
+              <FormDescription>Select one type</FormDescription>
 
-              <FormField
-                control={form.control}
-                name="stories"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='font-bold text-lg'>Number of Stories</FormLabel>
+              <div className="space-y-3 mt-2">
+                {items.map((item) => (
+                  <FormItem
+                    key={item.id}
+                    className="flex flex-row items-center space-x-3 space-y-0"
+                  >
                     <FormControl>
-                      <RadioGroup
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        className="flex flex-col space-y-2"
-                      >
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="1" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">1</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="2" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">2</FormLabel>
-                        </FormItem>
-                        <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="3+" /></FormControl>
-                          <FormLabel className="font-normal cursor-pointer">3+</FormLabel>
-                        </FormItem>
-                      </RadioGroup>
+                      <Checkbox
+                        checked={field.value === item.id}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked ? item.id : "")
+                        }}
+                      />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormLabel
+                      className="text-sm font-normal cursor-pointer"
+                      onClick={() => field.onChange(item.id)}
+                    >
+                      {item.label}
+                    </FormLabel>
                   </FormItem>
-                )}
-              />
-            </div>
-          </div>
+                ))}
+              </div>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+    {/* Property Use (different field name) */}
+    <FormField
+      control={form.control}
+      name="propertyUse"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="font-bold text-lg">Property Use</FormLabel>
+          <FormControl>
+            <RadioGroup
+              onValueChange={field.onChange}
+              value={field.value}
+              className="flex flex-col space-y-2"
+            >
+              {["Residential", "Commercial", "Industrial", "Agricultural", "Mixed Use"].map(
+                (v) => (
+                  <FormItem key={v} className="flex items-center space-x-3 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value={v} />
+                    </FormControl>
+                    <FormLabel className="font-normal cursor-pointer">{v}</FormLabel>
+                  </FormItem>
+                )
+              )}
+            </RadioGroup>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+
+    {/* Stories */}
+    <FormField
+      control={form.control}
+      name="stories"
+      render={({ field }) => (
+        <FormItem>
+          <FormLabel className="font-bold text-lg">Number of Stories</FormLabel>
+          <FormControl>
+            <RadioGroup
+              onValueChange={field.onChange}
+              value={field.value}
+              className="flex flex-col space-y-2"
+            >
+              {["1", "2", "3+"].map((v) => (
+                <FormItem key={v} className="flex items-center space-x-3 space-y-0">
+                  <FormControl>
+                    <RadioGroupItem value={v} />
+                  </FormControl>
+                  <FormLabel className="font-normal cursor-pointer">{v}</FormLabel>
+                </FormItem>
+              ))}
+            </RadioGroup>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
+  </div>
+</div>
+
 
           {/* Property Condition Section */}
           <div className="bg-white border-2 border-gray-200 rounded-lg p-6">
@@ -331,33 +351,39 @@ export default function NewForm30({ OrderDetails, session }) {
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="C1: New or like-new with no signs of wear." />
+                          <RadioGroupItem value="C1: New or like-new with no wear or repairs needed" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">C1: New with no signs of wear.</FormLabel>
+                        <FormLabel className="font-normal cursor-pointer">C1: New or like-new with no wear or repairs needed</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="C2: Recently renovated with no deferred maintenance." />
+                          <RadioGroupItem value="C2: Minimal wear and no significant deferred maintenance" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">C2: Recently renovated with no deferred maintenance.</FormLabel>
+                        <FormLabel className="font-normal cursor-pointer">C2: Minimal wear and no significant deferred maintenance</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="C3: Well-maintained with limited wear from normal use." />
+                          <RadioGroupItem value="C3: Normal wear and tear and all components functional " />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">C3: Well-maintained with limited wear from normal use.</FormLabel>
+                        <FormLabel className="font-normal cursor-pointer">C3: Normal wear and tear and all components functional</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="C4: Adequately maintained, needing minor repairs." />
+                          <RadioGroupItem value="C4: Livable but shows deferred maintenance" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">C4: Adequately maintained, needing minor repairs.</FormLabel>
+                        <FormLabel className="font-normal cursor-pointer">C4: Livable but shows deferred maintenance</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="C5: Significant repairs needed due to deferred maintenance." />
+                          <RadioGroupItem value="C5: Major repairs needed; condition impacts livability" />
                         </FormControl>
-                        <FormLabel className="font-normal cursor-pointer">C5: Significant repairs needed due to deferred maintenance.</FormLabel>
+                        <FormLabel className="font-normal cursor-pointer">C5: Major repairs needed; condition impacts livability</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="C6: Severely damaged or uninhabitable" />
+                        </FormControl>
+                        <FormLabel className="font-normal cursor-pointer">C6: Severely damaged or uninhabitable</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -442,38 +468,46 @@ export default function NewForm30({ OrderDetails, session }) {
             
             <div className="space-y-6">
               <FormField
-                control={form.control}
-                name="signage"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='font-bold text-lg'>Items Present (Observations)</FormLabel>
-                    <FormDescription>Check all that apply</FormDescription>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="forSaleSign" />
-                        <Label htmlFor="forSaleSign" className="font-normal cursor-pointer">For Sale Sign</Label>
+                  control={form.control}
+                  name="signage"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                        {signageOptions.map((opt) => (
+                          <div key={opt.id} className="flex items-center space-x-3">
+                            <Checkbox
+                              id={opt.id}
+                              checked={(field.value ?? []).includes(opt.id)}
+                              onCheckedChange={(checked) => {
+                                const cur = field.value ?? []
+                                field.onChange(
+                                  checked ? [...cur, opt.id] : cur.filter((v) => v !== opt.id)
+                                )
+                              }}
+                            />
+                            <Label htmlFor={opt.id} className="font-normal cursor-pointer">
+                              {opt.label}
+                            </Label>
+                          </div>
+                        ))}
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="exteriorDamage" />
-                        <Label htmlFor="exteriorDamage" className="font-normal cursor-pointer">Exterior Damage</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="lawnMaintenance" />
-                        <Label htmlFor="lawnMaintenance" className="font-normal cursor-pointer">Deferred Lawn Maintenance</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="abandonedVehicles" />
-                        <Label htmlFor="abandonedVehicles" className="font-normal cursor-pointer">Abandoned Vehicles</Label>
-                      </div>
-                    </div>
-                    <FormControl>
-                      <Textarea rows={2} placeholder="Additional comments..." {...field} className="mt-3" />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
+              <FormField
+              control={form.control}
+              name="signageNotes"
+              render={({ field }) => (
+                <FormItem className="mt-3">
+                  <FormControl>
+                    <Textarea rows={2} placeholder="Additional comments..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
               <FormField
                 control={form.control}
                 name="detachStructures"
@@ -503,7 +537,7 @@ export default function NewForm30({ OrderDetails, session }) {
                           <FormLabel className="font-normal cursor-pointer">Other</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
-                          <FormControl><RadioGroupItem value="N/A" /></FormControl>
+                          <FormControl><RadioGroupItem value="None" /></FormControl>
                           <FormLabel className="font-normal cursor-pointer">N/A</FormLabel>
                         </FormItem>
                       </RadioGroup>
@@ -520,31 +554,69 @@ export default function NewForm30({ OrderDetails, session }) {
             <h3 className="text-2xl font-bold border-b-2 border-blue-600 pb-2 mb-6">Structural Assessment</h3>
             
             <div className="space-y-6">
-              <FormField
+                <FormField
+                  control={form.control}
+                  name="significantDamages"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-bold text-lg">
+                        Significant Damages
+                      </FormLabel>
+                      <FormDescription>Select one</FormDescription>
+
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
+                        {["Fire", "Vandalism", "Wind", "Water", "None"].map((item) => (
+                          <div key={item} className="flex items-center space-x-3">
+                            <Checkbox
+                              checked={field.value === item}
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked ? item : "")
+                              }}
+                            />
+                            <Label className="font-normal cursor-pointer">
+                              {item}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+             <FormField
                 control={form.control}
-                name="neighborhood"
+                name="structuralIssues" // string[]
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className='font-bold text-lg'>Significant Damages</FormLabel>
+                    <FormLabel className="font-bold text-lg">Structural Issues</FormLabel>
                     <FormDescription>Check all that apply</FormDescription>
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-2">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="fire" />
-                        <Label htmlFor="fire" className="font-normal cursor-pointer">Fire</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="vandalism" />
-                        <Label htmlFor="vandalism" className="font-normal cursor-pointer">Vandalism</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="wind" />
-                        <Label htmlFor="wind" className="font-normal cursor-pointer">Wind</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="water" />
-                        <Label htmlFor="water" className="font-normal cursor-pointer">Water</Label>
-                      </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
+                      {structuralOptions.map((opt) => (
+                        <div key={opt.id} className="flex items-center space-x-3">
+                          <Checkbox
+                            id={opt.id}
+                            checked={field.value?.includes(opt.id)}
+                            onCheckedChange={(checked) => {
+                              const next = checked
+                                ? [...(field.value ?? []), opt.id]
+                                : (field.value ?? []).filter((v) => v !== opt.id)
+
+                              // optional: make "None" exclusive
+                              if (opt.id === "noIssues" && checked) field.onChange(["noIssues"])
+                              else if (checked && next.includes("noIssues"))
+                                field.onChange(next.filter((v) => v !== "noIssues"))
+                              else field.onChange(next)
+                            }}
+                          />
+                          <Label htmlFor={opt.id} className="font-normal cursor-pointer">
+                            {opt.label}
+                          </Label>
+                        </div>
+                      ))}
                     </div>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -552,39 +624,11 @@ export default function NewForm30({ OrderDetails, session }) {
 
               <FormField
                 control={form.control}
-                name="viewFactors"
+                name="structuralIssuesNotes"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className='font-bold text-lg'>Structural Issues</FormLabel>
-                    <FormDescription>Check all that apply</FormDescription>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2">
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="boardedWindows" />
-                        <Label htmlFor="boardedWindows" className="font-normal cursor-pointer">Boarded Up Windows</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="boardedDoors" />
-                        <Label htmlFor="boardedDoors" className="font-normal cursor-pointer">Boarded Up Doors</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="foundationDamage" />
-                        <Label htmlFor="foundationDamage" className="font-normal cursor-pointer">Damage to Foundation</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="gutters" />
-                        <Label htmlFor="gutters" className="font-normal cursor-pointer">Disconnected Gutters</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="tarp" />
-                        <Label htmlFor="tarp" className="font-normal cursor-pointer">Tarp on Roof</Label>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <Checkbox id="noIssues" />
-                        <Label htmlFor="noIssues" className="font-normal cursor-pointer">None</Label>
-                      </div>
-                    </div>
+                  <FormItem className="mt-3">
                     <FormControl>
-                      <Textarea rows={3} placeholder="Additional structural comments..." {...field} className="mt-3" />
+                      <Textarea rows={3} placeholder="Additional structural comments..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

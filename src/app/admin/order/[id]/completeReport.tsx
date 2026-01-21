@@ -35,12 +35,20 @@ export type PropertyReportProps = {
 
 // ---------- Helpers ----------
 const colorMap: Record<string, { bg: string; fg: string }> = {
-  Good: { bg: "bg-green-50", fg: "text-green-700" },
-  Moderate: { bg: "bg-orange-50", fg: "text-orange-700" },
-  Elevated: { bg: "bg-red-50", fg: "text-red-700" },
-  High: { bg: "bg-rose-50", fg: "text-rose-700" },
-  Unknown: { bg: "bg-gray-100", fg: "text-gray-600" },
-};
+  "No Potential Risks Noted": {
+    bg: "bg-green-50",
+    fg: "text-green-700",
+  },
+  "Potential Risks Identified": {
+    bg: "bg-yellow-50",
+    fg: "text-yellow-700",
+  },
+  Unknown: {
+    bg: "bg-gray-100",
+    fg: "text-gray-600",
+  },
+}
+
 
 function safeParse(data: any): Record<string, any> {
   try {
@@ -197,24 +205,34 @@ export function PropertyReport({
         </h2>
         <div className="space-y-1 text-xl">
           {(
-            [
-              ["Property Type", gv("propertyType")],
-              ["Stories", gv("stories")],
-              ["Occupancy", gv("occupancy")],
-              ["Occupied By", gv("occupiedBy")],
-              ["Neighborhood", gv("neighborhood")],
-              ["Neighborhood Condition", gv("neighborhoodCondition")],
-              ["View Factors", gv("viewFactors")],
-              ["Subject Condition", gv("subjectCondition")],
-              ["Neighborhood Conformity", gv("neighborhoodConformity")],
-              ["Common Elements", gv("commonElements")],
-              ["Items Present", gv("signage")],
-              ["Items Present Comment", gv("signageComment")],
-              ["Structural Issues Comment", gv("structuralComment")],
-              ["Detached Structures", gv("detachStructures")],
-              ["Items", gv("items")],
-              ["Date Assigned", gv("date")],
-            ] as const
+[
+    ["Inspector", gv("inspector")],
+    ["Inspection Date", gv("date")],
+
+    ["Property Type", gv("propertyType")],
+    ["Property Use", gv("propertyUse")],
+    ["Stories", gv("stories")],
+
+    ["Subject Condition", gv("subjectCondition")],
+
+    ["Occupancy", gv("occupancy")],
+    ["Occupied By", gv("occupiedBy")],
+
+    ["Significant Damages", gv("significantDamages")],
+
+    ["Structural Issues", gv("structuralIssues")],
+    ["Structural Issues Notes", gv("structuralIssuesNotes")],
+
+    ["Items Present", gv("signage")],
+    ["Items Present Notes", gv("signageNotes")],
+
+    ["Neighborhood Conformity", gv("neighborhoodConformity")],
+    ["Neighborhood Condition", gv("neighborhoodCondition")],
+
+    ["Detached Structures", gv("detachStructures")],
+
+    ["Additional Notes", gv("notes")],
+  ] as const
           ).map(([label, value], i) => (
             <div key={i} className="flex justify-between">
               <span className="font-semibold text-gray-600 dark:text-white">
