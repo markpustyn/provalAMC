@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#dddddd',
     paddingLeft: 6,
   },
+
   photoTitle: {
     fontSize: 15,
     marginBottom: 21,
@@ -116,6 +117,18 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginTop: 4,
     lineHeight: 1.3,
+  },
+  disclaimerText: {
+    fontSize: 8,
+    color: '#333333',
+    lineHeight: 1.3,
+  },
+  disclaimerTitle: {
+    fontSize: 10,
+    marginBottom: 6,
+    color: '#000000',
+    backgroundColor: '#dddddd',
+    paddingLeft: 6,
   },
 
   /* text + image styles */
@@ -422,6 +435,23 @@ const colorMap: Record<string, { bg: string; fg: string }> = {
             </View>
           ))}
         </View>
+      </Page>
+      <Page size="A4" style={styles.page}>
+  <View style={styles.section}>
+    <Text style={styles.disclaimerTitle}>Disclaimer</Text>
+    <Text style={styles.disclaimerText}>
+This Property Condition Report is based on a limited exterior only visual inspection performed in accordance with the agreed scope of work. The inspection is not a full property inspection and should not be relied upon to identify all defects or conditions.
+
+The report does not evaluate life expectancy of components, latent defects, construction quality, or internal systems. No assessment is made of structural integrity, foundation, roof systems, electrical systems, mechanical systems, plumbing systems, environmental conditions, or code compliance.
+
+Observations are limited to conditions visible at the time of inspection without the use of tools, testing, disassembly, or entry into the interior of the property.
+
+This report is intended solely to assist the client in making property related decisions within applicable regulatory requirements. It is prepared exclusively for the use of the client identified in the report and may not be relied upon by any other party.
+
+Reproduction or distribution of this report without written authorization is prohibited.
+    </Text>
+  </View>
+
       </Page>
     </Document>
   );
