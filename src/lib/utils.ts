@@ -49,8 +49,8 @@ export function formatDateMDY(
   }).format(d);
 }
 const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
-  RushExterior: { label: "Rush Three Day Exterior", amountCents: 4500 },
-  Exterior:     { label: "Exterior Inspection",      amountCents: 4000 },
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 400 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 3500 },
   Interior:     { label: "Interior Inspection",      amountCents: 7500 },
 };
 type ProductKey = keyof typeof PRODUCT_CATALOG;

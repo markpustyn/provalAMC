@@ -171,8 +171,8 @@ export default function MainProduct() {
     }
   };
   const PRODUCT_CATALOG: Record<string, { label: string; amountCents: number }> = {
-  RushExterior: { label: "Rush Three Day Exterior", amountCents: 4500 },
-  Exterior:     { label: "Exterior Inspection",      amountCents: 4000 },
+  RushExterior: { label: "Rush Three Day Exterior", amountCents: 4000 },
+  Exterior:     { label: "Exterior Inspection",      amountCents: 3500 },
   Interior:     { label: "Interior Inspection",      amountCents: 7500 },
 };
 const mainProduct = form.watch("mainProduct");
