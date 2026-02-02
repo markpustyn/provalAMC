@@ -335,8 +335,8 @@ const amountCents = mainProduct ? PRODUCT_CATALOG[mainProduct]?.amountCents ?? 0
                         <FormControl>
                           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {[
-                              { value: "RushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$45", date: addDays(3) },
-                              { value: "Exterior", label: "Exterior Property Inspection", price: "$40", date: addDays(5) },
+                              { value: "RushExterior", label: "Rush Three Day Exterior Property Inspection", price: "$40", date: addDays(3) },
+                              { value: "Exterior", label: "Exterior Property Inspection", price: "$35", date: addDays(5) },
                               { value: "Interior", label: "Interior Property Inspection", price: "$75", date: addDays(6) },
                             ].map((opt) => (
                               <button
