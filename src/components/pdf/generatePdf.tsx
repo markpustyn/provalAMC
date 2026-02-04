@@ -151,22 +151,25 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 8,
   },
-  frontImage: {
-    width: '100%',
-    height: 300,
-    borderRadius: 8,
-  },
+frontImage: {
+  width: '100%',
+  height: 300,
+  borderRadius: 8,        // match card
+  objectFit: 'cover',
+},
   splitRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  card: {
-    borderWidth: 1,
-    borderColor: '#000000',
-    borderStyle: 'solid',
-    height: '175px',
-    borderRadius: 8,
-  },
+card: {
+  borderWidth: 1,
+  borderColor: '#E6E6E6',
+  borderStyle: 'solid',
+  height: 175,
+  borderRadius: 8,        // ↓ less rounded
+  backgroundColor: '#FFFFFF',
+},
+
   half: { width: '48%' },
 
   ratingHeader: {
@@ -321,7 +324,7 @@ const colorMap: Record<string, { bg: string; fg: string }> = {
         </View>
 
         {/* Keep these on page 1 */}
-        <View style={styles.section} wrap={false}>
+        <View style={[styles.section, { paddingTop: 12 }]} wrap={false}>
           <Text style={styles.sectionTitle}>Property Information</Text>
           <View style={styles.infoBlock}>
             <View style={styles.infoRow}>
@@ -427,7 +430,7 @@ const colorMap: Record<string, { bg: string; fg: string }> = {
 
         {/* Images keep same styling and can continue to next pages naturally */}
         <View style={styles.section}>
-          <Text style={styles.photoTitle}>Property Photos</Text>
+          <Text style={styles.photoTitle}>Subject Property Photos</Text>
           {sortedImgs.map((it, i) => (
             <View key={i}>
               <Image src={it.image} style={styles.image} />
