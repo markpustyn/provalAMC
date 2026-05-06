@@ -15,10 +15,15 @@ async function Profile() {
 
   if (!state) throw new Error("User state is missing");
 
+  console.log("User state:", state); // Debug log
+  console.log(":", zipCodes.stateId); // Debug log
+
+
   const counties = await db
     .selectDistinct({ county: zipCodes.countyName })
     .from(zipCodes)
-    .where(eq(zipCodes.stateName, state));
+    .where(eq(zipCodes.stateId, state));
+
 
   return (
         <PageContainer scrollable={true}>

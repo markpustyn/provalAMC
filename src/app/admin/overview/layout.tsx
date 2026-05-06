@@ -1,154 +1,151 @@
+import PageContainer from '@/components/layout/page-container'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { db } from '@/db/drizzle'
+import { users } from '@/db/schema'
+import { auth } from '@/lib/auth'
+import { eq } from 'drizzle-orm'
+import { redirect } from 'next/navigation'
+import React from 'react'
 
-import PageContainer from '@/components/layout/page-container';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { db } from '@/db/drizzle';
-import { users } from '@/db/schema';
-import { auth } from '@/lib/auth';
-import { eq } from 'drizzle-orm';
-import { redirect } from 'next/navigation';
-import React from 'react';
+const sampleStats = {
+  openOrders: 24,
+  existingOrders: 128,
+  newOrders: 7,
+  vendors: 36,
+  completedReports: 89,
+  pendingReview: 12,
+  overdueOrders: 4,
+  monthlyOrders: 52
+}
 
-export default async function OverViewLayout({
-  sales,
-  pie_stats,
+export default async function AdminDashboardLayout({
+  open_orders,
+  existing_orders,
+  new_orders,
+  history,
+  vendors,
   bar_stats,
-  area_stats
+  area_stats,
+  pie_stats
 }: {
-  sales: React.ReactNode;
-  pie_stats: React.ReactNode;
-  bar_stats: React.ReactNode;
-  area_stats: React.ReactNode;
+  open_orders: React.ReactNode
+  existing_orders: React.ReactNode
+  new_orders: React.ReactNode
+  history: React.ReactNode
+  vendors: React.ReactNode
+  bar_stats: React.ReactNode
+  area_stats: React.ReactNode
+  pie_stats: React.ReactNode
 }) {
-const session = await auth()
-    if (!session?.user?.id) redirect("/sign-in");
-    
-    const isAdmin = await db
-      .select({ role: users.role })
-      .from(users)
-      .where(eq(users.id, session.user.id))
-      .limit(1)
-      .then((res) => res[0]?.role === "admin");
-  
-    if (!isAdmin) redirect("/broker/dashboard");
+  const session = await auth()
+
+  if (!session?.user?.id) redirect('/sign-in')
+
+  const isAdmin = await db
+    .select({ role: users.role })
+    .from(users)
+    .where(eq(users.id, session.user.id))
+    .limit(1)
+    .then((res) => res[0]?.role === 'admin')
+
+  if (!isAdmin) redirect('/broker/dashboard')
+
   return (
     <PageContainer>
-      <div className='flex flex-1 flex-col space-y-2'>
-        <div className='flex items-center justify-between space-y-2'>
-          <h2 className='text-2xl font-bold tracking-tight'>
-            Hi, Welcome back 👋
-          </h2>
+      <div className='flex flex-1 flex-col space-y-4'>
+        <div>
+          <h1 className='text-2xl font-bold tracking-tight'>
+            Blue Grid Admin Dashboard
+          </h1>
+          <p className='text-sm text-muted-foreground'>
+            Manage orders, vendors, inspections, and report activity.
+          </p>
         </div>
+
         <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>
-                Total Revenue
-              </CardTitle>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                className='h-4 w-4 text-muted-foreground'
-              >
-                <path d='M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>$45,231.89</div>
-              <p className='text-xs text-muted-foreground'>
-                +20.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>
-                Subscriptions
-              </CardTitle>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                className='h-4 w-4 text-muted-foreground'
-              >
-                <path d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2' />
-                <circle cx='9' cy='7' r='4' />
-                <path d='M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75' />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>+2350</div>
-              <p className='text-xs text-muted-foreground'>
-                +180.1% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Sales</CardTitle>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                className='h-4 w-4 text-muted-foreground'
-              >
-                <rect width='20' height='14' x='2' y='5' rx='2' />
-                <path d='M2 10h20' />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>+12,234</div>
-              <p className='text-xs text-muted-foreground'>
-                +19% from last month
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-              <CardTitle className='text-sm font-medium'>Active Now</CardTitle>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 24 24'
-                fill='none'
-                stroke='currentColor'
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                strokeWidth='2'
-                className='h-4 w-4 text-muted-foreground'
-              >
-                <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              <div className='text-2xl font-bold'>+573</div>
-              <p className='text-xs text-muted-foreground'>
-                +201 since last hour
-              </p>
-            </CardContent>
-          </Card>
+          <StatsCard
+            title='Open Orders'
+            value={sampleStats.openOrders}
+            description='Orders currently in progress'
+          />
+
+          <StatsCard
+            title='Existing Orders'
+            value={sampleStats.existingOrders}
+            description='Total active client orders'
+          />
+
+          <StatsCard
+            title='New Orders'
+            value={sampleStats.newOrders}
+            description='Orders submitted today'
+          />
+
+          <StatsCard
+            title='Vendors'
+            value={sampleStats.vendors}
+            description='Active inspection vendors'
+          />
+
+          <StatsCard
+            title='Completed Reports'
+            value={sampleStats.completedReports}
+            description='Reports completed this month'
+          />
+
+          <StatsCard
+            title='Pending Review'
+            value={sampleStats.pendingReview}
+            description='Reports waiting for admin review'
+          />
+
+          <StatsCard
+            title='Overdue Orders'
+            value={sampleStats.overdueOrders}
+            description='Orders past the due date'
+          />
+
+          <StatsCard
+            title='Monthly Orders'
+            value={sampleStats.monthlyOrders}
+            description='New orders created this month'
+          />
         </div>
-        <div className='grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7'>
-          <div className='col-span-4'>{bar_stats}</div>
-          <div className='col-span-4 md:col-span-3'>
-            {/* sales arallel routes */}
-            {sales}
-          </div>
-          <div className='col-span-4'>{area_stats}</div>
-          <div className='col-span-4 md:col-span-3'>{pie_stats}</div>
+
+        <div className='grid grid-cols-1 gap-4 lg:grid-cols-7'>
+          <div className='lg:col-span-7'>{area_stats}</div>
+
+          <div className='lg:col-span-4'>{open_orders}</div>
+          <div className='lg:col-span-3'>{new_orders}</div>
+
+          <div className='lg:col-span-4'>{existing_orders}</div>
+          <div className='lg:col-span-3'>{vendors}</div>
+
+          <div className='lg:col-span-7'>{history}</div>
         </div>
       </div>
     </PageContainer>
-  );
+  )
+}
+
+function StatsCard({
+  title,
+  value,
+  description
+}: {
+  title: string
+  value: number
+  description: string
+}) {
+  return (
+    <Card>
+      <CardHeader className='pb-2'>
+        <CardTitle className='text-sm font-medium'>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className='text-2xl font-bold'>{value}</div>
+        <p className='text-xs text-muted-foreground'>{description}</p>
+      </CardContent>
+    </Card>
+  )
 }

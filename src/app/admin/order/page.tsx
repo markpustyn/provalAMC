@@ -24,14 +24,8 @@ export default async function Page() {
         <div className='flex items-start justify-between'>
           <Heading
             title='Quality Control'
-            description='Manage products (Server side table functionalities.)'
+            description='Quality control orders and manage order details'
           />
-          <Link
-            href='/admin/order/new'
-            className={cn(buttonVariants(), 'text-xs md:text-sm')}
-          >
-            <Plus className='mr-2 h-4 w-4' /> Add New
-          </Link>
         </div>
         <Separator />
         <ProductTableAction />

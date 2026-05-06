@@ -22,6 +22,10 @@ export async function PUT(req: Request, {params}: {params: {id:string}}) {
       .update(pcrForms)
       .set({ data: body , vendorId: session.user.id})
       .where(eq(pcrForms.orderId, id));
+       await db
+      .update(order).set({status: "Quality Control"})
+      .where(eq(order.orderId, id))
+
   } else {
     await db.insert(pcrForms).values({
       orderId: id,
@@ -54,6 +58,11 @@ export async function POST(_:Request, {params}: {params: {id:string}}) {
    await db
     .update(order)
     .set({status: "Quality Control"})
+    .where(eq(order.orderId, id))
+
+
+   await db
+    .update(order).set({status: "Quality Control"})
     .where(eq(order.orderId, id))
 
 

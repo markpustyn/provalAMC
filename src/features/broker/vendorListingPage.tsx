@@ -15,14 +15,6 @@ export default async function VendorListingPage({}: VendorListingPage) {
   const page = searchParamsCache.get('page');
   const search = searchParamsCache.get('q');
   const pageLimit = searchParamsCache.get('limit');
-  const categories = searchParamsCache.get('categories');
-
-  const filters = {
-    page,
-    limit: pageLimit,
-    ...(search && { search }),
-    ...(categories && { categories: categories })
-  };
 
   const vendors = (await db.select().from(users)) as AuthCredentials[]
   const totalProducts = vendors.length

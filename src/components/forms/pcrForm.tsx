@@ -20,7 +20,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { FetchImages } from "@/app/broker/dashboard/order/upload/fetchImg";
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   inspector: z.string().min(1, "Inspector name is required"),
@@ -557,7 +557,7 @@ async function onSave() {
       <FetchImages userId={session?.user?.id!} propId={OrderDetails.orderId} />
                 <div className="flex justify-end gap-4 mx-auto">
               <Button type="button" className="px-6 py-2 font-semibold border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg shadow-sm" onClick={()=> onSave()}>Save</Button>
-              <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm" form="reportForm">Submit Report</Button>
+              <Button type="submit" className="px-6 py-2 font-semibold bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-sm" form="reportForm" onClick={() => router.push('/')}>Submit Report</Button>
             </div>
     </div>
   );

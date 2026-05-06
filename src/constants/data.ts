@@ -42,13 +42,6 @@ export const navItems: NavItem[] = [
     items: [] // No child items
   },
   {
-    title: 'Billing',
-    url: '/admin/billing',
-    icon: 'orderbilling',
-    isActive: false,
-    items: [] // No child items
-  },
-  {
     title: 'Account',
     url: '#', // Placeholder as there is no direct link for the parent
     icon: 'billing',
@@ -67,13 +60,6 @@ export const navItems: NavItem[] = [
       }
     ]
   },
-  {
-    title: 'Create Order',
-    url: '/admin/order/new',
-    icon: 'kanban',
-    isActive: false,
-    items: []
-  }
 ];
 export const brokerNav: BrokerNavItem[] = [
   {

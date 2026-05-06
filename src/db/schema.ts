@@ -81,7 +81,6 @@ export const zipCodes = pgTable('zip_codes', {
   city: varchar('city', { length: 100 }),
   stateId: char('state_id', { length: 2 }),
   stateName: varchar('state_name', { length: 100 }),
-  countyFips: varchar('county_fips', { length: 100 }),
   countyName: varchar('county_name', { length: 100 }),
 });
 

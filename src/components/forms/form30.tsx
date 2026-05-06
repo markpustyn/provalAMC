@@ -21,6 +21,9 @@ import { FetchImages } from "@/app/broker/dashboard/order/upload/fetchImg";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { order } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/drizzle";
 
 const FormSchema = z.object({
   inspector: z.string().min(1, "Inspector name is required"),
@@ -118,6 +121,8 @@ const signageOptions = [
 
   async function onSubmit(values: z.infer<typeof FormSchema>) {
     try {
+
+      await db.update(order).set({status: "Quality Control"}).where(eq(order.orderId, OrderDetails.orderId))
       const res = await fetch(`/api/order/${OrderDetails.orderId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
