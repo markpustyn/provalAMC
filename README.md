@@ -265,11 +265,12 @@ Administrators can automatically assign orders to vendors based on service area 
 
 <img width="2480" height="3509" alt="sampleReport-1" src="https://github.com/user-attachments/assets/7f889c81-49ea-4477-822f-59ed1378ef3a" />
 <img width="2480" height="3509" alt="sampleReport-2" src="https://github.com/user-attachments/assets/3f6e745e-a265-473b-afc0-d8c1371c6df1" />
-<img width="2480" height="3509" alt="sampleReport-7" src="https://github.com/user-attachments/assets/51e57d62-641a-4172-a131-abf6eb0c5fb2" />
-<img width="2480" height="3509" alt="sampleReport-6" src="https://github.com/user-attachments/assets/c40df15c-a0ed-47f4-8867-b4de06071cba" />
-<img width="2480" height="3509" alt="sampleReport-5" src="https://github.com/user-attachments/assets/4e4003c9-fbc7-477b-92fa-42ffc28750b7" />
-<img width="2480" height="3509" alt="sampleReport-4" src="https://github.com/user-attachments/assets/6e142aff-1dfb-473e-a0a4-9d10a85d67b6" />
 <img width="2480" height="3509" alt="sampleReport-3" src="https://github.com/user-attachments/assets/c683eec7-9d53-4d00-8928-f7901fa756cd" />
+<img width="2480" height="3509" alt="sampleReport-4" src="https://github.com/user-attachments/assets/6e142aff-1dfb-473e-a0a4-9d10a85d67b6" />
+<img width="2480" height="3509" alt="sampleReport-5" src="https://github.com/user-attachments/assets/4e4003c9-fbc7-477b-92fa-42ffc28750b7" />
+<img width="2480" height="3509" alt="sampleReport-6" src="https://github.com/user-attachments/assets/c40df15c-a0ed-47f4-8867-b4de06071cba" />
+
+
 
 ## Purpose
 
@@ -312,6 +313,10 @@ Lenders and financial institutions use these reports for:
 * PostgreSQL Database
 * Drizzle ORM
 * AUTH JS Authentication
+* Resend
+* React-pdf
+* NEON
+* Stripe API
 
 ## Features
 
